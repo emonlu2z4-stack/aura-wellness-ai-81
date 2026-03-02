@@ -122,3 +122,66 @@
     @apply bg-card/90 border-border/60;
   }
 }
+
+/* Print styles for thesis PDF download */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Hide all app UI except thesis content */
+  .no-print,
+  nav,
+  header,
+  footer,
+  [class*="BottomNav"],
+  [class*="bottom-nav"] {
+    display: none !important;
+  }
+
+  #thesis-root {
+    background: #fff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Reset A4 screen-only styles for print */
+  [data-page] {
+    width: auto !important;
+    min-height: auto !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-break-after {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  h1, h2, h3, h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  p, li, tr {
+    orphans: 3;
+    widows: 3;
+  }
+
+  table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    break-inside: avoid;
+  }
+}
