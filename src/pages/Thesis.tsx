@@ -8,7 +8,7 @@ const a4ScreenStyle: React.CSSProperties = {
   width: '210mm',
   minHeight: '297mm',
   background: '#fff',
-  padding: '25mm 20mm',
+  padding: '25.4mm 25.4mm',
   boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
   marginBottom: '24px',
   overflow: 'visible',
@@ -67,7 +67,7 @@ const Thesis = () => {
 
       <div
         ref={contentRef}
-        style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000", width: '210mm', overflow: 'visible', background: '#fff' }}
+        style={{ fontFamily: "'Times New Roman', 'Georgia', 'Cambria', Times, serif", fontSize: "12pt", lineHeight: "2", color: "#000", width: '210mm', overflow: 'visible', background: '#fff', letterSpacing: '0.01em', wordSpacing: '0.05em' }}
       >
         {/* ===== COVER PAGE ===== */}
         <div data-page className="page-break-after text-center" style={{ ...pageStyle, paddingTop: "40px" }}>
@@ -161,19 +161,19 @@ const Thesis = () => {
         {/* ===== ACKNOWLEDGEMENT PAGE ===== */}
         <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Acknowledgement</h2>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             First and foremost, we express our deepest gratitude to the Almighty for granting us the strength, patience, and knowledge to complete this thesis proposal successfully.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             We are profoundly grateful to our respected supervisor, <strong>Kazi Md. Jahid Hasan</strong>, Assistant Professor, Department of Computer Science and Engineering, Leading University, Sylhet, for his invaluable guidance, constructive feedback, and constant encouragement throughout this work. His expertise and mentorship have been instrumental in shaping this project.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             We extend our sincere thanks to the faculty members of the Department of Computer Science and Engineering, Leading University, for providing us with a strong academic foundation and a supportive learning environment.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             We are deeply indebted to our families for their unconditional love, moral support, and continuous encouragement, which have been the driving force behind our perseverance.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", textAlign: "justify" }}>
             Finally, we thank our friends and peers for their valuable suggestions, stimulating discussions, and unwavering support throughout this journey. This work would not have been possible without the collective contributions of all those mentioned above.
           </p>
         </div>
@@ -181,19 +181,19 @@ const Thesis = () => {
         {/* ===== ABSTRACT PAGE ===== */}
         <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Abstract</h2>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             The rising prevalence of lifestyle-related health conditions worldwide has created a growing demand for intelligent tools that can help individuals manage their nutrition effectively. However, most existing nutrition tracking apps rely on tedious manual food logging, offer limited macronutrient coverage, and lack AI-powered automation, leading to poor user engagement and inaccurate dietary records.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             This thesis presents <strong>NutriSNAp</strong>, an AI-powered nutrition and wellness tracking application that leverages Google's Gemini model to automatically analyze food items from photographs and provide comprehensive nutritional breakdowns. The app estimates seven key macronutrients — calories, protein, carbohydrates, fats, fiber, sugar, and sodium — from a single meal photo, significantly reducing the effort required for dietary tracking.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+           <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             Built using modern mobile technologies including React Native, TypeScript, Tailwind CSS, and a cloud-based backend with PostgreSQL, the application features an intuitive dark glassmorphic user interface, real-time progress visualization with interactive charts, weight and BMI tracking, personalized macro targets, and social wellness groups that foster community-based health accountability.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+          <p style={{ fontSize: "12pt", lineHeight: "2", marginBottom: "16px", textAlign: "justify" }}>
             The system follows a three-tier architecture with a responsive frontend, serverless edge functions for AI processing, and a secure database layer with Row Level Security (RLS) policies ensuring complete data isolation between users.
           </p>
-          <p style={{ fontSize: "12pt", lineHeight: "1.8", textAlign: "justify" }}>
+          <p style={{ fontSize: "12pt", lineHeight: "2", textAlign: "justify" }}>
             <strong>Keywords:</strong> Artificial Intelligence, Nutrition Tracking, Food Image Recognition, Gemini AI, Wellness App, Macronutrient Analysis, Mobile Health, React Native, Mobile App.
           </p>
         </div>
@@ -695,6 +695,54 @@ const Thesis = () => {
           break-after: page;
         }
         
+        /* Professional academic paragraph styling */
+        [data-page] p {
+          text-indent: 0;
+          margin-bottom: 14px;
+          text-align: justify;
+          hyphens: auto;
+          -webkit-hyphens: auto;
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Headings */
+        [data-page] h2 {
+          font-size: 18pt;
+          font-weight: bold;
+          margin-bottom: 24px;
+          letter-spacing: 0.02em;
+          page-break-after: avoid;
+          break-after: avoid;
+        }
+
+        [data-page] h3 {
+          font-size: 13pt;
+          font-weight: bold;
+          margin-bottom: 12px;
+          margin-top: 24px;
+          page-break-after: avoid;
+          break-after: avoid;
+        }
+
+        /* Lists */
+        [data-page] ol, [data-page] ul {
+          padding-left: 28px;
+          margin-bottom: 14px;
+        }
+
+        [data-page] li {
+          margin-bottom: 8px;
+          text-align: justify;
+          line-height: 1.9;
+        }
+
+        /* Strong tags - slightly heavier for academic readability */
+        [data-page] strong {
+          font-weight: 700;
+        }
+
         /* Prevent content from being cut across pages */
         h2, h3, h4 {
           page-break-after: avoid;
@@ -704,13 +752,11 @@ const Thesis = () => {
           page-break-inside: avoid;
           break-inside: avoid;
         }
-        /* Keep headings with their following content */
         h2 + p, h2 + ol, h2 + ul, h2 + table,
         h3 + p, h3 + ol, h3 + ul, h3 + table {
           page-break-before: avoid;
           break-before: avoid;
         }
-        /* Prevent orphan/widow lines */
         p {
           orphans: 3;
           widows: 3;
