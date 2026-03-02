@@ -169,6 +169,10 @@ const Thesis = () => {
                 ["3.2", "System Architecture", "7"],
                 ["3.3", "AI-Based Food Recognition", "8"],
                 ["3.4", "Data Flow", "9"],
+                ["", "List of Figures", ""],
+                ["", "  Figure 1.1 — Use Case Diagram", "4"],
+                ["", "  Figure 3.1 — System Architecture", "8"],
+                ["", "  Figure 3.2 — Data Flow Diagram", "9"],
                 ["Chapter 4", "Resources and Tools", "10"],
                 ["Chapter 5", "Work Plan", "11"],
                 ["Chapter 6", "Expected Outcomes", "12"],
@@ -231,6 +235,55 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The scope of Aura Wellness AI encompasses the development of a fully functional nutrition and wellness tracking app with the following capabilities: AI-powered meal analysis using image recognition, manual meal logging with detailed macronutrient input, daily calorie and macronutrient goal tracking with visual progress indicators, weight logging and trend analysis with interactive charts, social wellness groups with invite code functionality, user profile management with personalized macro targets, and a responsive, modern user interface optimized for mobile devices.
           </p>
+
+          {/* ===== FIGURE 1.1: USE CASE DIAGRAM ===== */}
+          <div style={{ margin: "30px 0", pageBreakInside: "avoid" }}>
+            <div style={{ border: "2px solid #000", borderRadius: "12px", padding: "30px 20px", position: "relative", minHeight: "400px" }}>
+              <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "13pt", marginBottom: "24px", textDecoration: "underline" }}>Use Case Diagram — Aura Wellness AI</p>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                {/* User Actor */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "80px" }}>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", border: "2px solid #000", marginBottom: "4px" }} />
+                  <div style={{ width: "2px", height: "30px", backgroundColor: "#000" }} />
+                  <div style={{ display: "flex" }}>
+                    <div style={{ width: "20px", height: "2px", backgroundColor: "#000", transform: "rotate(-30deg)", transformOrigin: "right" }} />
+                    <div style={{ width: "20px", height: "2px", backgroundColor: "#000", transform: "rotate(30deg)", transformOrigin: "left" }} />
+                  </div>
+                  <div style={{ display: "flex", marginTop: "-2px" }}>
+                    <div style={{ width: "20px", height: "2px", backgroundColor: "#000", transform: "rotate(30deg)", transformOrigin: "right" }} />
+                    <div style={{ width: "20px", height: "2px", backgroundColor: "#000", transform: "rotate(-30deg)", transformOrigin: "left" }} />
+                  </div>
+                  <p style={{ fontSize: "10pt", fontWeight: "bold", marginTop: "8px" }}>User</p>
+                </div>
+
+                {/* Use Cases */}
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "0 20px" }}>
+                  {["Sign Up / Log In", "Capture Meal Photo", "View Nutrition Data", "Track Weight & BMI", "Set Macro Targets", "Join Wellness Groups", "View Progress Charts"].map((uc, i) => (
+                    <div key={i} style={{ border: "1.5px solid #000", borderRadius: "20px", padding: "6px 18px", fontSize: "10pt", textAlign: "center", width: "200px", backgroundColor: "#f9f9f9" }}>
+                      {uc}
+                    </div>
+                  ))}
+                </div>
+
+                {/* AI System Actor */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "80px" }}>
+                  <div style={{ width: "50px", height: "40px", border: "2px solid #000", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "8pt", textAlign: "center" }}>
+                    AI
+                  </div>
+                  <p style={{ fontSize: "10pt", fontWeight: "bold", marginTop: "8px" }}>AI System</p>
+                  <div style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {["Analyze Food Image", "Estimate Nutrients"].map((uc, i) => (
+                      <div key={i} style={{ border: "1.5px solid #000", borderRadius: "20px", padding: "6px 14px", fontSize: "10pt", textAlign: "center", width: "160px", backgroundColor: "#eef4ff" }}>
+                        {uc}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 1.1: Use Case Diagram of Aura Wellness AI</p>
+          </div>
         </div>
 
         {/* ===== CHAPTER 2: LITERATURE REVIEW ===== */}
@@ -319,6 +372,60 @@ const Thesis = () => {
             <strong>Data Layer (Database):</strong> A PostgreSQL database stores user profiles, meal logs, weight records, and group information. Row Level Security (RLS) policies ensure data isolation between users, guaranteeing that each user can only access their own data.
           </p>
 
+          {/* ===== FIGURE 3.1: SYSTEM ARCHITECTURE DIAGRAM ===== */}
+          <div style={{ margin: "30px 0", pageBreakInside: "avoid" }}>
+            <div style={{ border: "2px solid #000", padding: "24px", position: "relative" }}>
+              <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "13pt", marginBottom: "20px", textDecoration: "underline" }}>System Architecture</p>
+
+              {/* Presentation Layer */}
+              <div style={{ border: "2px solid #2563eb", padding: "12px", marginBottom: "6px", backgroundColor: "#eff6ff" }}>
+                <p style={{ fontWeight: "bold", fontSize: "11pt", marginBottom: "6px", color: "#1d4ed8" }}>Presentation Layer (Frontend)</p>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  {["React 18", "TypeScript", "Tailwind CSS", "Framer Motion", "React Query", "Recharts"].map((t, i) => (
+                    <span key={i} style={{ border: "1px solid #93c5fd", padding: "3px 10px", borderRadius: "4px", fontSize: "9pt", backgroundColor: "#dbeafe" }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Arrow Down */}
+              <div style={{ textAlign: "center", fontSize: "18pt", lineHeight: "1" }}>↕</div>
+
+              {/* Application Layer */}
+              <div style={{ border: "2px solid #16a34a", padding: "12px", marginBottom: "6px", backgroundColor: "#f0fdf4" }}>
+                <p style={{ fontWeight: "bold", fontSize: "11pt", marginBottom: "6px", color: "#15803d" }}>Application Layer (Backend Services)</p>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  {["Edge Functions", "Authentication", "Storage", "REST API", "RLS Policies"].map((t, i) => (
+                    <span key={i} style={{ border: "1px solid #86efac", padding: "3px 10px", borderRadius: "4px", fontSize: "9pt", backgroundColor: "#dcfce7" }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Arrow Down */}
+              <div style={{ textAlign: "center", fontSize: "18pt", lineHeight: "1" }}>↕</div>
+
+              {/* Data Layer */}
+              <div style={{ border: "2px solid #9333ea", padding: "12px", marginBottom: "12px", backgroundColor: "#faf5ff" }}>
+                <p style={{ fontWeight: "bold", fontSize: "11pt", marginBottom: "6px", color: "#7e22ce" }}>Data Layer (Database)</p>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  {["PostgreSQL", "Profiles Table", "Meals Table", "Weight Logs", "Groups & Members"].map((t, i) => (
+                    <span key={i} style={{ border: "1px solid #c084fc", padding: "3px 10px", borderRadius: "4px", fontSize: "9pt", backgroundColor: "#f3e8ff" }}>{t}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* External AI */}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px" }}>
+                <div style={{ flex: 1, borderTop: "2px dashed #f59e0b" }} />
+                <div style={{ border: "2px solid #f59e0b", padding: "10px 18px", backgroundColor: "#fffbeb", borderRadius: "8px" }}>
+                  <p style={{ fontWeight: "bold", fontSize: "11pt", color: "#b45309" }}>External: Google Gemini AI API</p>
+                  <p style={{ fontSize: "9pt", color: "#92400e" }}>Food image analysis &amp; nutrient estimation</p>
+                </div>
+                <div style={{ flex: 1, borderTop: "2px dashed #f59e0b" }} />
+              </div>
+            </div>
+            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 3.1: System Architecture of Aura Wellness AI</p>
+          </div>
+
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>3.3 AI-Based Food Recognition</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The core innovation of Aura Wellness AI lies in its AI-powered food analysis system. The process follows these steps:
@@ -338,6 +445,39 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             User interactions trigger actions in the frontend → React Query manages API calls to the backend → The backend processes requests, applies RLS policies, and returns data → The frontend updates the UI reactively based on the response. For real-time features, the app subscribes to database changes, ensuring that data remains synchronized across sessions.
           </p>
+
+          {/* ===== FIGURE 3.2: DATA FLOW DIAGRAM ===== */}
+          <div style={{ margin: "30px 0", pageBreakInside: "avoid" }}>
+            <div style={{ border: "2px solid #000", padding: "24px", overflowX: "auto" }}>
+              <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "13pt", marginBottom: "20px", textDecoration: "underline" }}>Data Flow — Meal Analysis Pipeline</p>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", gap: "4px" }}>
+                {[
+                  { label: "User", color: "#dbeafe", border: "#2563eb" },
+                  null,
+                  { label: "Camera / Photo", color: "#fef3c7", border: "#f59e0b" },
+                  null,
+                  { label: "Edge Function", color: "#dcfce7", border: "#16a34a" },
+                  null,
+                  { label: "Gemini AI", color: "#fffbeb", border: "#f59e0b" },
+                  null,
+                  { label: "JSON Response", color: "#f3e8ff", border: "#9333ea" },
+                  null,
+                  { label: "Database", color: "#dcfce7", border: "#16a34a" },
+                  null,
+                  { label: "UI Display", color: "#dbeafe", border: "#2563eb" },
+                ].map((item, i) =>
+                  item === null ? (
+                    <span key={i} style={{ fontSize: "16pt", fontWeight: "bold" }}>→</span>
+                  ) : (
+                    <div key={i} style={{ border: `2px solid ${item.border}`, backgroundColor: item.color, padding: "8px 14px", borderRadius: "8px", fontSize: "9pt", fontWeight: "bold", textAlign: "center", minWidth: "70px" }}>
+                      {item.label}
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 3.2: Data Flow Diagram for AI-Powered Meal Analysis</p>
+          </div>
         </div>
 
         {/* ===== CHAPTER 4: RESOURCES AND TOOLS ===== */}
