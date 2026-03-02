@@ -157,13 +157,13 @@ const Thesis = () => {
             This thesis presents <strong>NutriSNAp</strong>, an AI-powered nutrition and wellness tracking application that leverages Google's Gemini model to automatically analyze food items from photographs and provide comprehensive nutritional breakdowns. The app estimates seven key macronutrients — calories, protein, carbohydrates, fats, fiber, sugar, and sodium — from a single meal photo, significantly reducing the effort required for dietary tracking.
           </p>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
-            Built using modern web technologies including React, TypeScript, Tailwind CSS, and a cloud-based backend with PostgreSQL, the application features an intuitive dark glassmorphic user interface, real-time progress visualization with interactive charts, weight and BMI tracking, personalized macro targets, and social wellness groups that foster community-based health accountability.
+            Built using modern mobile technologies including React Native, TypeScript, Tailwind CSS, and a cloud-based backend with PostgreSQL, the application features an intuitive dark glassmorphic user interface, real-time progress visualization with interactive charts, weight and BMI tracking, personalized macro targets, and social wellness groups that foster community-based health accountability.
           </p>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
             The system follows a three-tier architecture with a responsive frontend, serverless edge functions for AI processing, and a secure database layer with Row Level Security (RLS) policies ensuring complete data isolation between users.
           </p>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", textAlign: "justify" }}>
-            <strong>Keywords:</strong> Artificial Intelligence, Nutrition Tracking, Food Image Recognition, Gemini AI, Wellness App, Macronutrient Analysis, Mobile Health, React, Progressive Web App.
+            <strong>Keywords:</strong> Artificial Intelligence, Nutrition Tracking, Food Image Recognition, Gemini AI, Wellness App, Macronutrient Analysis, Mobile Health, React Native, Mobile App.
           </p>
         </div>
 
@@ -386,7 +386,7 @@ const Thesis = () => {
             NutriSNAp employs a modern three-tier architecture consisting of:
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            <strong>Presentation Layer (Frontend):</strong> Built with React and TypeScript, the frontend provides a responsive, single-page app experience. Tailwind CSS and Framer Motion are used for styling and animations respectively. The app follows a component-based architecture with reusable UI components, custom hooks for business logic, and React Query for server state management.
+            <strong>Presentation Layer (Frontend):</strong> Built with React Native and TypeScript, the frontend provides a responsive, cross-platform mobile app experience. Tailwind CSS and Framer Motion are used for styling and animations respectively. The app follows a component-based architecture with reusable UI components, custom hooks for business logic, and React Query for server state management.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             <strong>Application Layer (Backend Services):</strong> The backend is powered by a cloud-based platform providing authentication, database, storage, and serverless edge functions. The edge function for meal analysis serves as the intermediary between the frontend and the AI model, processing image data and returning structured nutritional information.
@@ -404,7 +404,7 @@ const Thesis = () => {
               <div style={{ border: "2px solid #2563eb", padding: "12px", marginBottom: "6px", backgroundColor: "#eff6ff" }}>
                 <p style={{ fontWeight: "bold", fontSize: "11pt", marginBottom: "6px", color: "#1d4ed8" }}>Presentation Layer (Frontend)</p>
                 <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                  {["React 18", "TypeScript", "Tailwind CSS", "Framer Motion", "React Query", "Recharts"].map((t, i) => (
+                  {["React Native", "TypeScript", "Tailwind CSS", "Framer Motion", "React Query", "Recharts"].map((t, i) => (
                     <span key={i} style={{ border: "1px solid #93c5fd", padding: "3px 10px", borderRadius: "4px", fontSize: "9pt", backgroundColor: "#dbeafe" }}>{t}</span>
                   ))}
                 </div>
@@ -520,7 +520,7 @@ const Thesis = () => {
             </thead>
             <tbody>
               {[
-                ["Frontend Framework", "React 18", "Component-based UI development"],
+                ["Frontend Framework", "React Native", "Cross-platform mobile UI development"],
                 ["Programming Language", "TypeScript", "Type-safe JavaScript development"],
                 ["Styling", "Tailwind CSS", "Utility-first CSS framework for rapid UI design"],
                 ["Animation", "Framer Motion", "Fluid animations and gesture support"],
@@ -626,7 +626,7 @@ const Thesis = () => {
             The use of Google's Gemini AI model for food image recognition eliminates the tedious process of manual food logging, making it easier for users to maintain consistent tracking habits. The comprehensive macronutrient tracking system goes beyond simple calorie counting to provide a holistic view of nutritional intake, while the social wellness group feature adds a valuable dimension of community support and accountability.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            The technical architecture of the app, built on modern technologies such as React, TypeScript, and cloud-based backend services, ensures scalability, security, and performance. The implementation of Row Level Security policies guarantees data privacy, while the responsive design ensures accessibility across various devices.
+            The technical architecture of the app, built on modern technologies such as React Native, TypeScript, and cloud-based backend services, ensures scalability, security, and performance. The implementation of Row Level Security policies guarantees data privacy, while the responsive design ensures accessibility across various devices.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             This thesis project not only demonstrates the practical application of AI in health technology but also contributes to the growing body of knowledge on how intelligent systems can be leveraged to promote healthier lifestyles. We believe that NutriSNAp has the potential to make a meaningful impact on users' health management practices and serve as a foundation for future research in AI-driven wellness solutions.
