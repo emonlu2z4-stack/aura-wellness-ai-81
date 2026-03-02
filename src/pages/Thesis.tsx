@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -39,10 +40,11 @@ const Thesis = () => {
         style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000" }}
       >
         {/* ===== COVER PAGE ===== */}
-        <div className="page-break-after text-center" style={{ paddingTop: "60px" }}>
+        <div className="page-break-after text-center" style={{ paddingTop: "40px" }}>
+          <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ width: "120px", height: "auto", margin: "0 auto 16px auto", display: "block" }} />
           <h1 style={{ fontSize: "20pt", fontWeight: "bold", marginBottom: "4px" }}>Leading University</h1>
           <p style={{ fontSize: "13pt", marginBottom: "2px" }}>Sylhet, Bangladesh</p>
-          <p style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "30px" }}>Department of Computer Science and Engineering (CSE)</p>
+          <p style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "24px" }}>Department of Computer Science and Engineering (CSE)</p>
 
           <div style={{ border: "2px solid #000", padding: "20px 30px", margin: "30px auto", maxWidth: "500px" }}>
             <p style={{ fontSize: "13pt", fontWeight: "bold", marginBottom: "6px" }}>Thesis Proposal</p>
