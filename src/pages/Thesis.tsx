@@ -25,26 +25,51 @@ const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
-  const pageStyle = generating ? a4PdfStyle : a4ScreenStyle;
+  const pageStyle = a4ScreenStyle;
 
   const handleDownload = async () => {
     if (!contentRef.current) return;
     setGenerating(true);
 
-    // Wait for React to re-render with PDF styles
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     try {
+      // Clone content to avoid style interference
+      const clone = contentRef.current.cloneNode(true) as HTMLElement;
+      
+      // Strip all A4 screen styles from cloned pages
+      const pages = clone.querySelectorAll<HTMLElement>('[data-page]');
+      pages.forEach((page) => {
+        page.style.width = 'auto';
+        page.style.minHeight = 'auto';
+        page.style.boxShadow = 'none';
+        page.style.marginBottom = '0';
+      });
+      clone.style.width = 'auto';
+      
+      // Temporarily add clone to DOM (hidden) for html2pdf to render
+      clone.style.position = 'absolute';
+      clone.style.left = '-9999px';
+      clone.style.top = '0';
+      document.body.appendChild(clone);
+
       const html2pdf = (await import("html2pdf.js")).default;
       const opt = {
-        margin: [0.7, 0.8, 0.7, 0.8],
+        margin: [0.5, 0.6, 0.5, 0.6],
         filename: "Thesis_Proposal_NutriSNAp.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          backgroundColor: '#ffffff',
+          logging: false,
+          width: 794, // A4 width in px at 96dpi
+        },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
         pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td", "li", "p", "h2", "h3", "ol", "ul"] },
       };
-      await html2pdf().set(opt).from(contentRef.current).save();
+      await html2pdf().set(opt).from(clone).save();
+      
+      // Clean up clone
+      document.body.removeChild(clone);
     } finally {
       setGenerating(false);
     }
