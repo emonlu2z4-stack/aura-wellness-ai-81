@@ -560,36 +560,38 @@ const Thesis = () => {
         <div className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 5: Work Plan</h2>
           <p style={{ textAlign: "justify", marginBottom: "16px" }}>
-            The development of NutriSNAp is planned over a period of six months, from January 2026 to June 2026. The following Gantt chart illustrates the timeline for each phase of the project:
+            The development of NutriSNAp is planned over a period of two months, from March 1, 2026 to April 30, 2026. The following Gantt chart illustrates the timeline for each phase of the project:
           </p>
 
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "10pt", marginBottom: "16px" }}>
             <thead>
               <tr style={{ backgroundColor: "#f0f0f0" }}>
                 <th style={{ border: "1px solid #000", padding: "6px", textAlign: "left" }}>Task</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Jan</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Feb</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Mar</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Apr</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>May</th>
-                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Jun</th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 1<br/><span style={{ fontSize: "8pt" }}>Mar 1–7</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 2<br/><span style={{ fontSize: "8pt" }}>Mar 8–14</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 3<br/><span style={{ fontSize: "8pt" }}>Mar 15–21</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 4<br/><span style={{ fontSize: "8pt" }}>Mar 22–31</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 5<br/><span style={{ fontSize: "8pt" }}>Apr 1–7</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 6<br/><span style={{ fontSize: "8pt" }}>Apr 8–14</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 7<br/><span style={{ fontSize: "8pt" }}>Apr 15–21</span></th>
+                <th style={{ border: "1px solid #000", padding: "6px", textAlign: "center" }}>Week 8<br/><span style={{ fontSize: "8pt" }}>Apr 22–30</span></th>
               </tr>
             </thead>
             <tbody>
               {[
-                ["Requirements Analysis", [1, 1, 0, 0, 0, 0]],
-                ["UI/UX Design", [0, 1, 1, 0, 0, 0]],
-                ["Database & Backend Setup", [0, 1, 1, 0, 0, 0]],
-                ["Frontend Development", [0, 0, 1, 1, 1, 0]],
-                ["AI Integration (Gemini)", [0, 0, 1, 1, 0, 0]],
-                ["Social Features (Groups)", [0, 0, 0, 1, 1, 0]],
-                ["Testing & Bug Fixing", [0, 0, 0, 0, 1, 1]],
-                ["Documentation & Report", [0, 0, 0, 0, 1, 1]],
-                ["Final Submission", [0, 0, 0, 0, 0, 1]],
-              ].map(([task, months], i) => (
+                ["Requirements Analysis",      [1, 1, 0, 0, 0, 0, 0, 0]],
+                ["UI/UX Design",               [0, 1, 1, 0, 0, 0, 0, 0]],
+                ["Database & Backend Setup",   [0, 1, 1, 0, 0, 0, 0, 0]],
+                ["Frontend Development",       [0, 0, 1, 1, 1, 0, 0, 0]],
+                ["AI Integration (Gemini)",    [0, 0, 0, 1, 1, 0, 0, 0]],
+                ["Social Features (Groups)",   [0, 0, 0, 0, 1, 1, 0, 0]],
+                ["Testing & Bug Fixing",       [0, 0, 0, 0, 0, 1, 1, 0]],
+                ["Documentation & Report",     [0, 0, 0, 0, 0, 0, 1, 1]],
+                ["Final Submission",           [0, 0, 0, 0, 0, 0, 0, 1]],
+              ].map(([task, weeks], i) => (
                 <tr key={i}>
                   <td style={{ border: "1px solid #000", padding: "6px" }}>{task as string}</td>
-                  {(months as number[]).map((active, j) => (
+                  {(weeks as number[]).map((active, j) => (
                     <td key={j} style={{ border: "1px solid #000", padding: "6px", textAlign: "center", backgroundColor: active ? "#4a90d9" : "transparent", color: active ? "#fff" : "#000" }}>
                       {active ? "✓" : ""}
                     </td>
