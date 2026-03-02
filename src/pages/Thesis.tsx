@@ -76,6 +76,7 @@ const Thesis = () => {
 
             <div>
               <p style={{ fontSize: "13pt", fontWeight: "bold", textDecoration: "underline", marginBottom: "6px" }}>Submitted By:</p>
+              <p style={{ fontSize: "12pt", marginBottom: "6px" }}>Batch: 62 &nbsp;&nbsp;|&nbsp;&nbsp; Section: H</p>
               <table style={{ fontSize: "12pt", borderCollapse: "collapse" }}>
                 <tbody>
                   <tr><td style={{ padding: "3px 12px 3px 0" }}>1.</td><td style={{ padding: "3px 16px 3px 0" }}>Emon Ahmed</td><td>ID: 0182320012101356</td></tr>
