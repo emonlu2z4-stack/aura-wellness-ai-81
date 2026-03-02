@@ -1,30 +1,30 @@
 
 
-## Plan: Style Thesis Page as A4 Paper Pages
+## Problem Analysis
 
-### Problem
-The thesis page currently renders as a continuous scroll without visual A4 page boundaries. The screenshot shows a dark bar cutting through content between team member names, likely caused by the app's dark theme CSS bleeding into the thesis content or `page-break-after` classes not creating visual separation.
+The current `window.open()` approach fails because the new print window doesn't have access to:
+1. **Tailwind CSS classes** (`text-center`, `page-break-after`, etc.) — these render as nothing
+2. **Vite-bundled image URLs** — the logo import resolves to a hashed URL that may not load in the new window context
+3. The `padding: 0 !important` override in the print window CSS strips all content spacing
 
-### Root Cause
-- The `page-break-after` class is only meaningful for print/PDF — it doesn't create visual page breaks on screen
-- The app's dark background (`bg-background` = dark) may bleed through despite the white `bg-white` on the container
-- No visual A4 page separation (shadows, gaps) between sections
+This is why the PDF appears blank — the content is there but unstyled and collapsed.
 
-### Changes (all in `src/pages/Thesis.tsx`)
+## Solution: Use `@media print` on the current page
 
-1. **Wrap each section in an A4-styled container** — Give each `page-break-after` div explicit A4 dimensions with white background, box shadow, and margin between pages so they look like stacked paper sheets on screen:
-   - `min-height: 297mm`, `width: 210mm`, `padding` for margins, `box-shadow` for paper effect
-   - Gap between pages to visually separate them
+Instead of opening a new window (which loses all styles), use `window.print()` directly on the current page with `@media print` CSS rules. This is the most reliable browser-based PDF approach because all styles, images, and fonts are already loaded.
 
-2. **Force white background isolation** — Add explicit inline `background: #fff` on every section div to prevent dark theme bleed-through
+### Changes to `src/pages/Thesis.tsx`:
 
-3. **Outer container styling** — Change the outer wrapper to a neutral gray background (`#e5e7eb` or similar) so the white A4 pages stand out like paper on a desk
+1. **Simplify `handleDownload`** to just call `window.print()` directly — no cloning, no new windows
+2. **Add a `<style>` block** (or update `src/index.css`) with `@media print` rules that:
+   - Hide the download button and any non-thesis UI (bottom nav, etc.)
+   - Reset A4 screen styles (shadows, fixed width) for print
+   - Set `@page { size: A4; margin: 20mm 18mm; }`
+   - Ensure `page-break-after` works via CSS `break-after: page`
+   - Set body background to white, proper font
 
-4. **Fix the content overflow** — Ensure the `contentRef` wrapper and its children all have `overflow: visible` and no clipping that could cause the dark bar artifact
+### Changes to `src/index.css`:
+- Add `@media print` rules to hide app chrome (bottom nav, button) and style the thesis content for clean PDF output
 
-### Technical Approach
-- Create a reusable inline style object for A4 page styling
-- Apply it to each section (cover, permission, dedication, acknowledgement, abstract, TOC, chapters, references)
-- Keep `page-break-after` class for PDF generation compatibility
-- All changes confined to `src/pages/Thesis.tsx` — no other files affected
+This approach guarantees all Tailwind classes, images, and fonts work because we're printing the actual rendered page.
 
