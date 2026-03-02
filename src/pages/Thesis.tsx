@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 // A4 visual styles for screen display only
@@ -16,113 +16,25 @@ const a4ScreenStyle: React.CSSProperties = {
 
 const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [generating, setGenerating] = useState(false);
 
   const pageStyle = a4ScreenStyle;
 
   const handleDownload = () => {
-    if (!contentRef.current) return;
-    setGenerating(true);
-
-    // Use browser print dialog — most reliable PDF generation
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-      setGenerating(false);
-      alert('Please allow popups to download the PDF.');
-      return;
-    }
-
-    const content = contentRef.current.innerHTML;
-    
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Thesis Proposal - NutriSNAp</title>
-        <style>
-          @page {
-            size: A4;
-            margin: 20mm 18mm;
-          }
-          body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
-            line-height: 1.8;
-            color: #000;
-            background: #fff;
-            margin: 0;
-            padding: 0;
-          }
-          .page-break-after {
-            page-break-after: always;
-          }
-          table {
-            border-collapse: collapse;
-            width: 100%;
-          }
-          td, th {
-            border: 1px solid #000;
-            padding: 6px 10px;
-            text-align: left;
-            font-size: 11pt;
-          }
-          h1, h2, h3, h4 {
-            page-break-after: avoid;
-          }
-          p, li {
-            orphans: 3;
-            widows: 3;
-          }
-          img {
-            max-width: 100%;
-          }
-          /* Remove A4 screen styles in print */
-          [data-page] {
-            width: auto !important;
-            min-height: auto !important;
-            box-shadow: none !important;
-            margin-bottom: 0 !important;
-            padding: 0 !important;
-          }
-        </style>
-      </head>
-      <body>${content}</body>
-      </html>
-    `);
-    printWindow.document.close();
-    
-    // Wait for images to load before printing
-    printWindow.onload = () => {
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-        setGenerating(false);
-      }, 500);
-    };
-
-    // Fallback if onload doesn't fire
-    setTimeout(() => {
-      if (generating) {
-        printWindow.print();
-        printWindow.close();
-        setGenerating(false);
-      }
-    }, 3000);
+    window.print();
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: generating ? '#fff' : '#d1d5db', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: generating ? '0' : '32px 16px' }}>
+    <div id="thesis-root" style={{ minHeight: '100vh', background: '#d1d5db', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '32px 16px' }}>
       <button
         onClick={handleDownload}
-        disabled={generating}
-        className="mb-6 px-8 py-3 bg-blue-700 text-white font-semibold rounded-lg shadow hover:bg-blue-800 disabled:opacity-50 print:hidden sticky top-4 z-50"
+        className="no-print mb-6 px-8 py-3 bg-blue-700 text-white font-semibold rounded-lg shadow hover:bg-blue-800 sticky top-4 z-50"
       >
-        {generating ? "Generating PDF..." : "Download as PDF"}
+        Download as PDF
       </button>
 
       <div
         ref={contentRef}
-        style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000", width: generating ? 'auto' : '210mm', overflow: 'visible', background: '#fff' }}
+        style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000", width: '210mm', overflow: 'visible', background: '#fff' }}
       >
         {/* ===== COVER PAGE ===== */}
         <div data-page className="page-break-after text-center" style={{ ...pageStyle, paddingTop: "40px" }}>
