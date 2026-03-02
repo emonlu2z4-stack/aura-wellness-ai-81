@@ -1,5 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // A4 visual styles for screen display only
 const a4ScreenStyle: React.CSSProperties = {
@@ -16,20 +18,51 @@ const a4ScreenStyle: React.CSSProperties = {
 
 const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [generating, setGenerating] = useState(false);
 
   const pageStyle = a4ScreenStyle;
 
-  const handleDownload = () => {
-    window.print();
+  const handleDownload = async () => {
+    if (!contentRef.current) return;
+    setGenerating(true);
+
+    try {
+      const pages = contentRef.current.querySelectorAll<HTMLElement>('[data-page]');
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const canvas = await html2canvas(page, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        const imgWidth = pdfWidth;
+        const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, Math.min(imgHeight, pdfHeight));
+      }
+
+      pdf.save('Thesis_Proposal_NutriSNAp.pdf');
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
     <div id="thesis-root" style={{ minHeight: '100vh', background: '#d1d5db', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '32px 16px' }}>
       <button
         onClick={handleDownload}
-        className="no-print mb-6 px-8 py-3 bg-blue-700 text-white font-semibold rounded-lg shadow hover:bg-blue-800 sticky top-4 z-50"
+        disabled={generating}
+        className="no-print mb-6 px-8 py-3 bg-blue-700 text-white font-semibold rounded-lg shadow hover:bg-blue-800 disabled:opacity-50 sticky top-4 z-50"
       >
-        Download as PDF
+        {generating ? "Generating PDF..." : "Download as PDF"}
       </button>
 
       <div
