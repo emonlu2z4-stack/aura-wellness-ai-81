@@ -11,6 +11,7 @@ import Groups from "./pages/Groups";
 import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
+import Thesis from "./pages/Thesis";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/settings/macros" element={<ProfileSettings view="macros" />} />
             <Route path="/settings/goal" element={<ProfileSettings view="goal" />} />
             <Route path="/settings/weight-history" element={<ProfileSettings view="weight-history" />} />
+            <Route path="/thesis" element={<Thesis />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
