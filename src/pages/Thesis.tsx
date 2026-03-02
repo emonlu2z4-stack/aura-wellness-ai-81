@@ -117,12 +117,42 @@ const Thesis = () => {
           </p>
         </div>
 
+        {/* ===== DEDICATION PAGE ===== */}
+        <div className="page-break-after" style={{ paddingTop: "200px", textAlign: "center" }}>
+          <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "40px" }}>Dedication</h2>
+          <p style={{ fontSize: "13pt", fontStyle: "italic", lineHeight: "2", maxWidth: "400px", margin: "0 auto" }}>
+            This work is lovingly dedicated to our parents, whose endless sacrifices and unwavering support have made our academic journey possible; to our teachers, who have guided us with wisdom and patience; and to all our well-wishers, whose encouragement has been a constant source of strength.
+          </p>
+        </div>
+
+        {/* ===== ACKNOWLEDGEMENT PAGE ===== */}
+        <div className="page-break-after" style={{ paddingTop: "40px" }}>
+          <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Acknowledgement</h2>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            First and foremost, we express our deepest gratitude to the Almighty for granting us the strength, patience, and knowledge to complete this thesis proposal successfully.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            We are profoundly grateful to our respected supervisor, <strong>Kazi Md. Jahid Hasan</strong>, Assistant Professor, Department of Computer Science and Engineering, Leading University, Sylhet, for his invaluable guidance, constructive feedback, and constant encouragement throughout this work. His expertise and mentorship have been instrumental in shaping this project.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            We extend our sincere thanks to the faculty members of the Department of Computer Science and Engineering, Leading University, for providing us with a strong academic foundation and a supportive learning environment.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            We are deeply indebted to our families for their unconditional love, moral support, and continuous encouragement, which have been the driving force behind our perseverance.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", textAlign: "justify" }}>
+            Finally, we thank our friends and peers for their valuable suggestions, stimulating discussions, and unwavering support throughout this journey. This work would not have been possible without the collective contributions of all those mentioned above.
+          </p>
+        </div>
+
         {/* ===== TABLE OF CONTENTS ===== */}
         <div className="page-break-after" style={{ paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Table of Contents</h2>
           <table style={{ width: "100%", fontSize: "12pt", borderCollapse: "collapse" }}>
             <tbody>
               {[
+                ["", "Dedication", "iii"],
+                ["", "Acknowledgement", "iv"],
                 ["Chapter 1", "Introduction", "1"],
                 ["1.1", "Background", "1"],
                 ["1.2", "Motivation", "2"],
