@@ -14,65 +14,100 @@ const a4ScreenStyle: React.CSSProperties = {
   boxSizing: 'border-box' as const,
 };
 
-// Clean style for PDF generation — no fixed dimensions, no shadows
-const a4PdfStyle: React.CSSProperties = {
-  background: '#fff',
-  overflow: 'visible',
-  color: '#000',
-};
-
 const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
   const pageStyle = a4ScreenStyle;
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
     if (!contentRef.current) return;
     setGenerating(true);
 
-    try {
-      // Clone content to avoid style interference
-      const clone = contentRef.current.cloneNode(true) as HTMLElement;
-      
-      // Strip all A4 screen styles from cloned pages
-      const pages = clone.querySelectorAll<HTMLElement>('[data-page]');
-      pages.forEach((page) => {
-        page.style.width = 'auto';
-        page.style.minHeight = 'auto';
-        page.style.boxShadow = 'none';
-        page.style.marginBottom = '0';
-      });
-      clone.style.width = 'auto';
-      
-      // Temporarily add clone to DOM (hidden) for html2pdf to render
-      clone.style.position = 'absolute';
-      clone.style.left = '-9999px';
-      clone.style.top = '0';
-      document.body.appendChild(clone);
-
-      const html2pdf = (await import("html2pdf.js")).default;
-      const opt = {
-        margin: [0.5, 0.6, 0.5, 0.6],
-        filename: "Thesis_Proposal_NutriSNAp.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { 
-          scale: 2, 
-          useCORS: true, 
-          backgroundColor: '#ffffff',
-          logging: false,
-          width: 794, // A4 width in px at 96dpi
-        },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td", "li", "p", "h2", "h3", "ol", "ul"] },
-      };
-      await html2pdf().set(opt).from(clone).save();
-      
-      // Clean up clone
-      document.body.removeChild(clone);
-    } finally {
+    // Use browser print dialog — most reliable PDF generation
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
       setGenerating(false);
+      alert('Please allow popups to download the PDF.');
+      return;
     }
+
+    const content = contentRef.current.innerHTML;
+    
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Thesis Proposal - NutriSNAp</title>
+        <style>
+          @page {
+            size: A4;
+            margin: 20mm 18mm;
+          }
+          body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12pt;
+            line-height: 1.8;
+            color: #000;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+          }
+          .page-break-after {
+            page-break-after: always;
+          }
+          table {
+            border-collapse: collapse;
+            width: 100%;
+          }
+          td, th {
+            border: 1px solid #000;
+            padding: 6px 10px;
+            text-align: left;
+            font-size: 11pt;
+          }
+          h1, h2, h3, h4 {
+            page-break-after: avoid;
+          }
+          p, li {
+            orphans: 3;
+            widows: 3;
+          }
+          img {
+            max-width: 100%;
+          }
+          /* Remove A4 screen styles in print */
+          [data-page] {
+            width: auto !important;
+            min-height: auto !important;
+            box-shadow: none !important;
+            margin-bottom: 0 !important;
+            padding: 0 !important;
+          }
+        </style>
+      </head>
+      <body>${content}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    
+    // Wait for images to load before printing
+    printWindow.onload = () => {
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+        setGenerating(false);
+      }, 500);
+    };
+
+    // Fallback if onload doesn't fire
+    setTimeout(() => {
+      if (generating) {
+        printWindow.print();
+        printWindow.close();
+        setGenerating(false);
+      }
+    }, 3000);
   };
 
   return (
