@@ -28,7 +28,7 @@ const Thesis = () => {
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td"] },
+        pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td", "li", "p", "h2", "h3", "ol", "ul", ".no-break"] },
       };
       await html2pdf().set(opt).from(contentRef.current).save();
     } finally {
@@ -243,7 +243,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The primary motivation behind developing NutriSNAp stems from several key observations:
           </p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "8px", textAlign: "justify" }}><strong>Manual Tracking is Tedious:</strong> Most existing nutrition tracking apps require users to manually search for food items in databases and input quantities. This process is time-consuming and often discourages consistent use, leading to abandoned health goals.</li>
             <li style={{ marginBottom: "8px", textAlign: "justify" }}><strong>Inaccurate Estimations:</strong> Users frequently misjudge portion sizes and nutritional content when manually logging meals, leading to significant inaccuracies in their dietary records.</li>
             <li style={{ marginBottom: "8px", textAlign: "justify" }}><strong>Lack of AI Integration:</strong> While AI has made remarkable strides in image recognition and natural language processing, very few nutrition apps have effectively integrated these capabilities to simplify the food logging process.</li>
@@ -258,7 +258,7 @@ const Thesis = () => {
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>1.4 Research Objectives</h3>
           <p style={{ textAlign: "justify", marginBottom: "8px" }}>The primary objectives of this thesis are:</p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>To develop an AI-powered nutrition tracking app that can accurately analyze food items from photographs and estimate their nutritional content.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>To implement comprehensive macronutrient tracking including calories, protein, carbohydrates, fats, fiber, sugar, and sodium.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>To create an intuitive and visually appealing user interface that encourages consistent daily usage.</li>
@@ -346,7 +346,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             Through our analysis of existing nutrition tracking apps, we identified several common limitations:
           </p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Manual Data Entry Dependency:</strong> All major apps require users to manually search, select, and log food items, which is a significant barrier to consistent usage.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Limited Macronutrient Scope:</strong> Most apps primarily focus on calories, with secondary attention to protein, carbs, and fats. Tracking of fiber, sugar, and sodium is often limited or requires premium subscriptions.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Poor Social Integration:</strong> While some apps offer community features, they typically lack the ability to create private wellness groups with invite-based membership.</li>
@@ -366,7 +366,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
              NutriSNAp distinguishes itself from existing solutions through several key innovations:
           </p>
-          <ul style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ul style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>AI-powered instant food analysis from photographs using Google's Gemini model, eliminating the need for manual food database searches.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>Comprehensive tracking of seven macronutrients (calories, protein, carbs, fats, fiber, sugar, sodium) without requiring premium subscriptions.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>Modern, dark glassmorphic user interface with fluid animations and intuitive navigation.</li>
@@ -383,7 +383,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The development of NutriSNAp follows an Agile methodology with iterative development cycles. This approach allows for continuous refinement based on testing and feedback. The development process is divided into the following phases:
           </p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Requirements Analysis and Planning:</strong> Identifying user needs, defining feature requirements, and planning the system architecture.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>UI/UX Design:</strong> Creating wireframes and high-fidelity mockups for all screens, establishing the dark glassmorphic design system.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Backend Development:</strong> Setting up the cloud database, authentication system, storage, and API endpoints.</li>
@@ -465,7 +465,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The core innovation of NutriSNAp lies in its AI-powered food analysis system. The process follows these steps:
           </p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Image Capture:</strong> The user photographs their meal using the app's built-in camera interface or selects an existing photo from their device gallery.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Image Processing:</strong> The captured image is converted to a base64-encoded format and transmitted to the backend edge function via a secure API call.</li>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>AI Analysis:</strong> The edge function forwards the image data to Google's Gemini 2.5 Flash model with a carefully crafted prompt that instructs the AI to identify all food items in the image and estimate their nutritional content.</li>
@@ -522,7 +522,7 @@ const Thesis = () => {
             The following technologies and tools are utilized in the development of NutriSNAp:
           </p>
 
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11pt", marginBottom: "16px" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11pt", marginBottom: "16px", pageBreakInside: "avoid" }}>
             <thead>
               <tr style={{ backgroundColor: "#f0f0f0" }}>
                 <th style={{ border: "1px solid #000", padding: "8px", textAlign: "left" }}>Category</th>
@@ -563,7 +563,7 @@ const Thesis = () => {
             The development of NutriSNAp is planned over a period of two months, from March 1, 2026 to April 30, 2026. The following Gantt chart illustrates the timeline for each phase of the project:
           </p>
 
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "10pt", marginBottom: "16px" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "10pt", marginBottom: "16px", pageBreakInside: "avoid" }}>
             <thead>
               <tr style={{ backgroundColor: "#f0f0f0" }}>
                 <th style={{ border: "1px solid #000", padding: "6px", textAlign: "left" }}>Task</th>
@@ -608,7 +608,7 @@ const Thesis = () => {
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             Upon successful completion of this thesis project, we expect to achieve the following outcomes:
           </p>
-          <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
+          <ol style={{ paddingLeft: "24px", marginBottom: "12px", pageBreakInside: "avoid" }}>
             <li style={{ marginBottom: "10px", textAlign: "justify" }}>
               <strong>Accurate AI-Powered Meal Analysis:</strong> The app will be capable of analyzing food photographs with reasonable accuracy, identifying food items and estimating their nutritional content within an acceptable margin of error. Users will be able to log meals in seconds rather than minutes, significantly reducing the friction associated with nutrition tracking.
             </li>
@@ -674,6 +674,27 @@ const Thesis = () => {
         .page-break-after {
           page-break-after: always;
           break-after: page;
+        }
+        
+        /* Prevent content from being cut across pages */
+        h2, h3, h4 {
+          page-break-after: avoid;
+          break-after: avoid;
+        }
+        h2, h3, h4, p, li, tr, table, ol, ul, div[style*="pageBreakInside"] {
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        /* Keep headings with their following content */
+        h2 + p, h2 + ol, h2 + ul, h2 + table,
+        h3 + p, h3 + ol, h3 + ul, h3 + table {
+          page-break-before: avoid;
+          break-before: avoid;
+        }
+        /* Prevent orphan/widow lines */
+        p {
+          orphans: 3;
+          widows: 3;
         }
         @media print {
           body { margin: 0; padding: 0; }
