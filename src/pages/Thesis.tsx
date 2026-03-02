@@ -21,15 +21,18 @@ const Thesis = () => {
     if (!contentRef.current) return;
     setGenerating(true);
     try {
-      // Strip A4 visual styles before PDF generation
+      // Save original styles and strip A4 visual styles before PDF generation
       const pages = contentRef.current.querySelectorAll<HTMLElement>('[data-page]');
+      const savedStyles: string[] = [];
       pages.forEach((page) => {
+        savedStyles.push(page.getAttribute('style') || '');
         page.style.minHeight = 'auto';
         page.style.boxShadow = 'none';
         page.style.marginBottom = '0';
         page.style.width = 'auto';
         page.style.padding = '0';
       });
+      const savedContainerWidth = contentRef.current.style.width;
       contentRef.current.style.width = 'auto';
 
       const html2pdf = (await import("html2pdf.js")).default;
@@ -43,15 +46,11 @@ const Thesis = () => {
       };
       await html2pdf().set(opt).from(contentRef.current).save();
 
-      // Restore A4 visual styles after PDF generation
-      pages.forEach((page) => {
-        page.style.minHeight = '297mm';
-        page.style.boxShadow = '0 2px 16px rgba(0,0,0,0.15)';
-        page.style.marginBottom = '24px';
-        page.style.width = '210mm';
-        page.style.padding = '25mm 20mm';
+      // Restore original styles after PDF generation
+      pages.forEach((page, i) => {
+        page.setAttribute('style', savedStyles[i]);
       });
-      contentRef.current.style.width = '210mm';
+      contentRef.current.style.width = savedContainerWidth;
     } finally {
       setGenerating(false);
     }
