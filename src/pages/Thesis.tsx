@@ -145,6 +145,26 @@ const Thesis = () => {
           </p>
         </div>
 
+        {/* ===== ABSTRACT PAGE ===== */}
+        <div className="page-break-after" style={{ paddingTop: "40px" }}>
+          <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Abstract</h2>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            The rising prevalence of lifestyle-related health conditions worldwide has created a growing demand for intelligent tools that can help individuals manage their nutrition effectively. However, most existing nutrition tracking apps rely on tedious manual food logging, offer limited macronutrient coverage, and lack AI-powered automation, leading to poor user engagement and inaccurate dietary records.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            This thesis presents <strong>Aura Wellness AI</strong>, an AI-powered nutrition and wellness tracking application that leverages Google's Gemini model to automatically analyze food items from photographs and provide comprehensive nutritional breakdowns. The app estimates seven key macronutrients — calories, protein, carbohydrates, fats, fiber, sugar, and sodium — from a single meal photo, significantly reducing the effort required for dietary tracking.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            Built using modern web technologies including React, TypeScript, Tailwind CSS, and a cloud-based backend with PostgreSQL, the application features an intuitive dark glassmorphic user interface, real-time progress visualization with interactive charts, weight and BMI tracking, personalized macro targets, and social wellness groups that foster community-based health accountability.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
+            The system follows a three-tier architecture with a responsive frontend, serverless edge functions for AI processing, and a secure database layer with Row Level Security (RLS) policies ensuring complete data isolation between users.
+          </p>
+          <p style={{ fontSize: "12pt", lineHeight: "1.8", textAlign: "justify" }}>
+            <strong>Keywords:</strong> Artificial Intelligence, Nutrition Tracking, Food Image Recognition, Gemini AI, Wellness App, Macronutrient Analysis, Mobile Health, React, Progressive Web App.
+          </p>
+        </div>
+
         {/* ===== TABLE OF CONTENTS ===== */}
         <div className="page-break-after" style={{ paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Table of Contents</h2>
@@ -153,6 +173,7 @@ const Thesis = () => {
               {[
                 ["", "Dedication", "iii"],
                 ["", "Acknowledgement", "iv"],
+                ["", "Abstract", "v"],
                 ["Chapter 1", "Introduction", "1"],
                 ["1.1", "Background", "1"],
                 ["1.2", "Motivation", "2"],
