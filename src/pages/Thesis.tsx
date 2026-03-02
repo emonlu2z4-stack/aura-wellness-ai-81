@@ -12,7 +12,7 @@ const Thesis = () => {
       const html2pdf = (await import("html2pdf.js")).default;
       const opt = {
         margin: [0.7, 0.8, 0.7, 0.8],
-        filename: "Thesis_Proposal_Aura_Wellness_AI.pdf",
+        filename: "Thesis_Proposal_NutriSNAp.pdf",
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -50,7 +50,7 @@ const Thesis = () => {
             <p style={{ fontSize: "13pt", fontWeight: "bold", marginBottom: "6px" }}>Thesis Proposal</p>
             <p style={{ fontSize: "11pt", marginBottom: "4px" }}>On</p>
             <h2 style={{ fontSize: "16pt", fontWeight: "bold", lineHeight: "1.4" }}>
-              Aura Wellness AI: An AI-Powered Nutrition and Wellness Tracking App
+               NutriSNAp: An AI-Powered Nutrition and Wellness Tracking App
             </h2>
           </div>
 
@@ -87,11 +87,11 @@ const Thesis = () => {
           <p style={{ marginBottom: "2px" }}>Department of Computer Science and Engineering</p>
           <p style={{ marginBottom: "20px" }}>Leading University, Sylhet</p>
 
-          <p style={{ marginBottom: "16px" }}><strong>Subject:</strong> Application for Permission to Conduct Thesis on "Aura Wellness AI: An AI-Powered Nutrition and Wellness Tracking App"</p>
+          <p style={{ marginBottom: "16px" }}><strong>Subject:</strong> Application for Permission to Conduct Thesis on "NutriSNAp: An AI-Powered Nutrition and Wellness Tracking App"</p>
 
           <p style={{ marginBottom: "12px" }}>Dear Sir,</p>
           <p style={{ marginBottom: "12px", textAlign: "justify" }}>
-            We, the undersigned students of the Department of Computer Science and Engineering at Leading University, respectfully request your kind permission to undertake our thesis titled <strong>"Aura Wellness AI: An AI-Powered Nutrition and Wellness Tracking App"</strong>.
+            We, the undersigned students of the Department of Computer Science and Engineering at Leading University, respectfully request your kind permission to undertake our thesis titled <strong>"NutriSNAp: An AI-Powered Nutrition and Wellness Tracking App"</strong>.
           </p>
           <p style={{ marginBottom: "12px", textAlign: "justify" }}>
             The proposed thesis aims to develop an intelligent nutrition and wellness tracking app that leverages artificial intelligence to analyze food items from photographs and provide real-time macronutrient estimation. The app will help users maintain a healthy lifestyle by offering personalized calorie tracking, progress monitoring, and social wellness group features.
@@ -112,7 +112,7 @@ const Thesis = () => {
         {/* ===== THESIS NAME + MOTTO ===== */}
         <div className="page-break-after text-center" style={{ paddingTop: "180px" }}>
           <h1 style={{ fontSize: "22pt", fontWeight: "bold", lineHeight: "1.5", marginBottom: "40px" }}>
-            Aura Wellness AI:<br />An AI-Powered Nutrition and Wellness Tracking App
+            NutriSNAp:<br />An AI-Powered Nutrition and Wellness Tracking App
           </h1>
           <p style={{ fontSize: "14pt", fontStyle: "italic", color: "#333" }}>
             "Empowering healthier lives through intelligent nutrition tracking."
@@ -154,7 +154,7 @@ const Thesis = () => {
             The rising prevalence of lifestyle-related health conditions worldwide has created a growing demand for intelligent tools that can help individuals manage their nutrition effectively. However, most existing nutrition tracking apps rely on tedious manual food logging, offer limited macronutrient coverage, and lack AI-powered automation, leading to poor user engagement and inaccurate dietary records.
           </p>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
-            This thesis presents <strong>Aura Wellness AI</strong>, an AI-powered nutrition and wellness tracking application that leverages Google's Gemini model to automatically analyze food items from photographs and provide comprehensive nutritional breakdowns. The app estimates seven key macronutrients — calories, protein, carbohydrates, fats, fiber, sugar, and sodium — from a single meal photo, significantly reducing the effort required for dietary tracking.
+            This thesis presents <strong>NutriSNAp</strong>, an AI-powered nutrition and wellness tracking application that leverages Google's Gemini model to automatically analyze food items from photographs and provide comprehensive nutritional breakdowns. The app estimates seven key macronutrients — calories, protein, carbohydrates, fats, fiber, sugar, and sodium — from a single meal photo, significantly reducing the effort required for dietary tracking.
           </p>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
             Built using modern web technologies including React, TypeScript, Tailwind CSS, and a cloud-based backend with PostgreSQL, the application features an intuitive dark glassmorphic user interface, real-time progress visualization with interactive charts, weight and BMI tracking, personalized macro targets, and social wellness groups that foster community-based health accountability.
@@ -186,7 +186,7 @@ const Thesis = () => {
                 ["2.1", "Existing Nutrition Tracking Apps", "4"],
                 ["2.2", "Limitations of Existing Solutions", "5"],
                 ["2.3", "AI in Nutrition Analysis", "5"],
-                ["2.4", "How Aura Wellness AI Differs", "6"],
+                ["2.4", "How NutriSNAp Differs", "6"],
                 ["Chapter 3", "Methodology", "7"],
                 ["3.1", "Development Approach", "7"],
                 ["3.2", "System Architecture", "7"],
@@ -224,12 +224,12 @@ const Thesis = () => {
             The proliferation of smartphones and advancements in artificial intelligence (AI) have created unprecedented opportunities for developing intelligent health management solutions. Mobile apps have emerged as the most accessible platform for health tracking, offering users the convenience of monitoring their dietary intake, physical activity, and health metrics from anywhere at any time.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            Aura Wellness AI is an AI-powered nutrition and wellness tracking app designed to simplify and enhance the process of dietary management. By leveraging advanced AI capabilities, particularly Google's Gemini model for food image recognition, the app enables users to simply photograph their meals and receive instant, detailed nutritional breakdowns including calories, protein, carbohydrates, fats, fiber, sugar, and sodium content.
+            NutriSNAp is an AI-powered nutrition and wellness tracking app designed to simplify and enhance the process of dietary management. By leveraging advanced AI capabilities, particularly Google's Gemini model for food image recognition, the app enables users to simply photograph their meals and receive instant, detailed nutritional breakdowns including calories, protein, carbohydrates, fats, fiber, sugar, and sodium content.
           </p>
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>1.2 Motivation</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            The primary motivation behind developing Aura Wellness AI stems from several key observations:
+            The primary motivation behind developing NutriSNAp stems from several key observations:
           </p>
           <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
             <li style={{ marginBottom: "8px", textAlign: "justify" }}><strong>Manual Tracking is Tedious:</strong> Most existing nutrition tracking apps require users to manually search for food items in databases and input quantities. This process is time-consuming and often discourages consistent use, leading to abandoned health goals.</li>
@@ -256,13 +256,13 @@ const Thesis = () => {
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>1.5 Scope of the Project</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            The scope of Aura Wellness AI encompasses the development of a fully functional nutrition and wellness tracking app with the following capabilities: AI-powered meal analysis using image recognition, manual meal logging with detailed macronutrient input, daily calorie and macronutrient goal tracking with visual progress indicators, weight logging and trend analysis with interactive charts, social wellness groups with invite code functionality, user profile management with personalized macro targets, and a responsive, modern user interface optimized for mobile devices.
+            The scope of NutriSNAp encompasses the development of a fully functional nutrition and wellness tracking app with the following capabilities: AI-powered meal analysis using image recognition, manual meal logging with detailed macronutrient input, daily calorie and macronutrient goal tracking with visual progress indicators, weight logging and trend analysis with interactive charts, social wellness groups with invite code functionality, user profile management with personalized macro targets, and a responsive, modern user interface optimized for mobile devices.
           </p>
 
           {/* ===== FIGURE 1.1: USE CASE DIAGRAM ===== */}
           <div style={{ margin: "30px 0", pageBreakInside: "avoid" }}>
             <div style={{ border: "2px solid #000", borderRadius: "12px", padding: "30px 20px", position: "relative", minHeight: "400px" }}>
-              <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "13pt", marginBottom: "24px", textDecoration: "underline" }}>Use Case Diagram — Aura Wellness AI</p>
+              <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "13pt", marginBottom: "24px", textDecoration: "underline" }}>Use Case Diagram — NutriSNAp</p>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 {/* User Actor */}
@@ -305,7 +305,7 @@ const Thesis = () => {
                 </div>
               </div>
             </div>
-            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 1.1: Use Case Diagram of Aura Wellness AI</p>
+            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 1.1: Use Case Diagram of NutriSNAp</p>
           </div>
         </div>
 
@@ -350,9 +350,9 @@ const Thesis = () => {
             Large Language Models (LLMs) with multimodal capabilities, such as Google's Gemini, represent the latest evolution in AI-powered food analysis. These models can not only identify food items in images but also estimate portion sizes and provide detailed nutritional information based on their vast training data (Gemini Team, Google, 2024). This approach eliminates the need for separate food databases and can handle a wide variety of cuisines and food preparations.
           </p>
 
-          <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>2.4 How Aura Wellness AI Differs</h3>
+           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>2.4 How NutriSNAp Differs</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            Aura Wellness AI distinguishes itself from existing solutions through several key innovations:
+             NutriSNAp distinguishes itself from existing solutions through several key innovations:
           </p>
           <ul style={{ paddingLeft: "24px", marginBottom: "12px" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}>AI-powered instant food analysis from photographs using Google's Gemini model, eliminating the need for manual food database searches.</li>
@@ -369,7 +369,7 @@ const Thesis = () => {
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px" }}>3.1 Development Approach</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            The development of Aura Wellness AI follows an Agile methodology with iterative development cycles. This approach allows for continuous refinement based on testing and feedback. The development process is divided into the following phases:
+            The development of NutriSNAp follows an Agile methodology with iterative development cycles. This approach allows for continuous refinement based on testing and feedback. The development process is divided into the following phases:
           </p>
           <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Requirements Analysis and Planning:</strong> Identifying user needs, defining feature requirements, and planning the system architecture.</li>
@@ -383,7 +383,7 @@ const Thesis = () => {
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>3.2 System Architecture</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            Aura Wellness AI employs a modern three-tier architecture consisting of:
+            NutriSNAp employs a modern three-tier architecture consisting of:
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             <strong>Presentation Layer (Frontend):</strong> Built with React and TypeScript, the frontend provides a responsive, single-page app experience. Tailwind CSS and Framer Motion are used for styling and animations respectively. The app follows a component-based architecture with reusable UI components, custom hooks for business logic, and React Query for server state management.
@@ -446,12 +446,12 @@ const Thesis = () => {
                 <div style={{ flex: 1, borderTop: "2px dashed #f59e0b" }} />
               </div>
             </div>
-            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 3.1: System Architecture of Aura Wellness AI</p>
+            <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "10px" }}>Figure 3.1: System Architecture of NutriSNAp</p>
           </div>
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px", marginTop: "20px" }}>3.3 AI-Based Food Recognition</h3>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            The core innovation of Aura Wellness AI lies in its AI-powered food analysis system. The process follows these steps:
+            The core innovation of NutriSNAp lies in its AI-powered food analysis system. The process follows these steps:
           </p>
           <ol style={{ paddingLeft: "24px", marginBottom: "12px" }}>
             <li style={{ marginBottom: "6px", textAlign: "justify" }}><strong>Image Capture:</strong> The user photographs their meal using the app's built-in camera interface or selects an existing photo from their device gallery.</li>
@@ -507,7 +507,7 @@ const Thesis = () => {
         <div className="page-break-after" style={{ paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 4: Resources and Tools</h2>
           <p style={{ textAlign: "justify", marginBottom: "16px" }}>
-            The following technologies and tools are utilized in the development of Aura Wellness AI:
+            The following technologies and tools are utilized in the development of NutriSNAp:
           </p>
 
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "11pt", marginBottom: "16px" }}>
@@ -548,7 +548,7 @@ const Thesis = () => {
         <div className="page-break-after" style={{ paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 5: Work Plan</h2>
           <p style={{ textAlign: "justify", marginBottom: "16px" }}>
-            The development of Aura Wellness AI is planned over a period of six months, from January 2026 to June 2026. The following Gantt chart illustrates the timeline for each phase of the project:
+            The development of NutriSNAp is planned over a period of six months, from January 2026 to June 2026. The following Gantt chart illustrates the timeline for each phase of the project:
           </p>
 
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "10pt", marginBottom: "16px" }}>
@@ -620,7 +620,7 @@ const Thesis = () => {
         <div className="page-break-after" style={{ paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 7: Conclusion</h2>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            Aura Wellness AI represents a significant step forward in the evolution of nutrition and wellness tracking apps. By integrating cutting-edge artificial intelligence technology with a modern, user-centric design, this app addresses the key limitations of existing solutions and offers a more intuitive, efficient, and comprehensive approach to dietary management.
+            NutriSNAp represents a significant step forward in the evolution of nutrition and wellness tracking apps. By integrating cutting-edge artificial intelligence technology with a modern, user-centric design, this app addresses the key limitations of existing solutions and offers a more intuitive, efficient, and comprehensive approach to dietary management.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             The use of Google's Gemini AI model for food image recognition eliminates the tedious process of manual food logging, making it easier for users to maintain consistent tracking habits. The comprehensive macronutrient tracking system goes beyond simple calorie counting to provide a holistic view of nutritional intake, while the social wellness group feature adds a valuable dimension of community support and accountability.
@@ -629,7 +629,7 @@ const Thesis = () => {
             The technical architecture of the app, built on modern technologies such as React, TypeScript, and cloud-based backend services, ensures scalability, security, and performance. The implementation of Row Level Security policies guarantees data privacy, while the responsive design ensures accessibility across various devices.
           </p>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
-            This thesis project not only demonstrates the practical application of AI in health technology but also contributes to the growing body of knowledge on how intelligent systems can be leveraged to promote healthier lifestyles. We believe that Aura Wellness AI has the potential to make a meaningful impact on users' health management practices and serve as a foundation for future research in AI-driven wellness solutions.
+            This thesis project not only demonstrates the practical application of AI in health technology but also contributes to the growing body of knowledge on how intelligent systems can be leveraged to promote healthier lifestyles. We believe that NutriSNAp has the potential to make a meaningful impact on users' health management practices and serve as a foundation for future research in AI-driven wellness solutions.
           </p>
         </div>
 
