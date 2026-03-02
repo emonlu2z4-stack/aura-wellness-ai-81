@@ -1,38 +1,14 @@
 
 
-## Thesis Proposal PDF Generator
+## Add Dedication & Acknowledgement Pages
 
-I'll create a dedicated page in your app (`/thesis`) that renders a professionally formatted thesis proposal following the Leading University template exactly, with a "Download PDF" button using `html2pdf.js`.
+Insert two new pages in `src/pages/Thesis.tsx` between the motto page (ends at line 118) and the Table of Contents (starts at line 120):
 
-### Content Structure (following template)
+1. **Dedication Page** (line ~119): Centered text dedicating the work to parents, teachers, and well-wishers, styled with italic quote formatting.
 
-**Cover Page**: Leading University header, Department of CSE, Thesis Title: "Aura Wellness AI: An AI-Powered Nutrition and Wellness Tracking App", Submitted To: Kazi Md. Jahid Hasan (Assistant Professor), Submitted By: all 3 members with IDs, Submission Date.
+2. **Acknowledgement Page**: Formal acknowledgement thanking the supervisor (Kazi Md. Jahid Hasan), the CSE department, family, and peers for their support.
 
-**Page 2**: Permission application letter with all member names.
+3. **Update Table of Contents** (lines 125-146): Add entries for "Dedication" and "Acknowledgement" pages and shift page numbers accordingly.
 
-**Page 3**: Thesis name + motto page.
-
-**Page 4**: Table of Contents.
-
-**Chapters 1-7** filled with actual content about the Aura Wellness AI app:
-- **Ch1 Introduction**: About the app, motivations (rising health awareness, AI in nutrition), research objectives
-- **Ch2 Literature Review**: Existing apps (MyFitnessPal, Lose It!, etc.), their limitations, how Aura differs with AI photo analysis
-- **Ch3 Methodology**: Agile development, AI-based food recognition via Gemini, real-time macro tracking, cloud backend
-- **Ch4 Resources & Tools**: React, TypeScript, Tailwind CSS, Supabase, Gemini AI, Framer Motion, Recharts
-- **Ch5 Work Plan**: Gantt-style table with monthly breakdown
-- **Ch6 Expected Outcomes**: Accurate AI meal analysis, improved health tracking, social wellness groups
-- **Ch7 Conclusion**: Summary and significance
-
-**References**: Relevant academic and technical sources.
-
-### Technical Approach
-1. Add `html2pdf.js` dependency
-2. Create `/thesis` page with print-optimized CSS (A4 sizing, page breaks, Times New Roman for academic style)
-3. "Download as PDF" button that generates a multi-page PDF
-4. All content refers to the app as "app" (not "web app") per your request
-
-### Group Members
-1. Emon Ahmed — ID: 0182320012101356
-2. MD Rayhan Akhand — ID: 0182320012101320
-3. Md Sams Uddin Emon — ID: 0182310012101144
+Both pages will use the same styling conventions (Times New Roman, A4 sizing, `page-break-after` class) as the existing pages.
 
