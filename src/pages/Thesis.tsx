@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
-const a4PageStyle: React.CSSProperties = {
+// A4 visual styles for screen display only
+const a4ScreenStyle: React.CSSProperties = {
   width: '210mm',
   minHeight: '297mm',
   background: '#fff',
@@ -13,51 +14,44 @@ const a4PageStyle: React.CSSProperties = {
   boxSizing: 'border-box' as const,
 };
 
+// Clean style for PDF generation — no fixed dimensions, no shadows
+const a4PdfStyle: React.CSSProperties = {
+  background: '#fff',
+  overflow: 'visible',
+  color: '#000',
+};
+
 const Thesis = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
 
+  const pageStyle = generating ? a4PdfStyle : a4ScreenStyle;
+
   const handleDownload = async () => {
     if (!contentRef.current) return;
     setGenerating(true);
-    try {
-      // Save original styles and strip A4 visual styles before PDF generation
-      const pages = contentRef.current.querySelectorAll<HTMLElement>('[data-page]');
-      const savedStyles: string[] = [];
-      pages.forEach((page) => {
-        savedStyles.push(page.getAttribute('style') || '');
-        page.style.minHeight = 'auto';
-        page.style.boxShadow = 'none';
-        page.style.marginBottom = '0';
-        page.style.width = 'auto';
-        page.style.padding = '0';
-      });
-      const savedContainerWidth = contentRef.current.style.width;
-      contentRef.current.style.width = 'auto';
 
+    // Wait for React to re-render with PDF styles
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    try {
       const html2pdf = (await import("html2pdf.js")).default;
       const opt = {
         margin: [0.7, 0.8, 0.7, 0.8],
         filename: "Thesis_Proposal_NutriSNAp.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
         jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td", "li", "p", "h2", "h3", "ol", "ul", ".no-break"] },
+        pagebreak: { mode: ["css", "legacy"], avoid: ["tr", "td", "li", "p", "h2", "h3", "ol", "ul"] },
       };
       await html2pdf().set(opt).from(contentRef.current).save();
-
-      // Restore original styles after PDF generation
-      pages.forEach((page, i) => {
-        page.setAttribute('style', savedStyles[i]);
-      });
-      contentRef.current.style.width = savedContainerWidth;
     } finally {
       setGenerating(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#d1d5db', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '32px 16px' }}>
+    <div style={{ minHeight: '100vh', background: generating ? '#fff' : '#d1d5db', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: generating ? '0' : '32px 16px' }}>
       <button
         onClick={handleDownload}
         disabled={generating}
@@ -68,10 +62,10 @@ const Thesis = () => {
 
       <div
         ref={contentRef}
-        style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000", width: '210mm', overflow: 'visible' }}
+        style={{ fontFamily: "'Times New Roman', Times, serif", fontSize: "12pt", lineHeight: "1.8", color: "#000", width: generating ? 'auto' : '210mm', overflow: 'visible', background: '#fff' }}
       >
         {/* ===== COVER PAGE ===== */}
-        <div data-page className="page-break-after text-center" style={{ ...a4PageStyle, paddingTop: "40px" }}>
+        <div data-page className="page-break-after text-center" style={{ ...pageStyle, paddingTop: "40px" }}>
           <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ width: "120px", height: "auto", margin: "0 auto 16px auto", display: "block" }} />
           <h1 style={{ fontSize: "20pt", fontWeight: "bold", marginBottom: "4px" }}>Leading University</h1>
           <p style={{ fontSize: "13pt", marginBottom: "2px" }}>Sylhet, Bangladesh</p>
@@ -111,7 +105,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== PERMISSION APPLICATION ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "60px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "60px" }}>
           <p style={{ textAlign: "right", marginBottom: "20px" }}>Date: March 2, 2026</p>
           <p style={{ marginBottom: "4px" }}>To</p>
           <p style={{ marginBottom: "2px" }}>Kazi Md. Jahid Hasan</p>
@@ -142,7 +136,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== THESIS NAME + MOTTO ===== */}
-        <div data-page className="page-break-after text-center" style={{ ...a4PageStyle, paddingTop: "180px" }}>
+        <div data-page className="page-break-after text-center" style={{ ...pageStyle, paddingTop: "180px" }}>
           <h1 style={{ fontSize: "22pt", fontWeight: "bold", lineHeight: "1.5", marginBottom: "40px" }}>
             NutriSNAp:<br />An AI-Powered Nutrition and Wellness Tracking App
           </h1>
@@ -152,7 +146,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== DEDICATION PAGE ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "200px", textAlign: "center" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "200px", textAlign: "center" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "40px" }}>Dedication</h2>
           <p style={{ fontSize: "13pt", fontStyle: "italic", lineHeight: "2", maxWidth: "400px", margin: "0 auto" }}>
             This work is lovingly dedicated to our parents, whose endless sacrifices and unwavering support have made our academic journey possible; to our teachers, who have guided us with wisdom and patience; and to all our well-wishers, whose encouragement has been a constant source of strength.
@@ -160,7 +154,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== ACKNOWLEDGEMENT PAGE ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "40px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Acknowledgement</h2>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
             First and foremost, we express our deepest gratitude to the Almighty for granting us the strength, patience, and knowledge to complete this thesis proposal successfully.
@@ -180,7 +174,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== ABSTRACT PAGE ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "40px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Abstract</h2>
           <p style={{ fontSize: "12pt", lineHeight: "1.8", marginBottom: "16px", textAlign: "justify" }}>
             The rising prevalence of lifestyle-related health conditions worldwide has created a growing demand for intelligent tools that can help individuals manage their nutrition effectively. However, most existing nutrition tracking apps rely on tedious manual food logging, offer limited macronutrient coverage, and lack AI-powered automation, leading to poor user engagement and inaccurate dietary records.
@@ -200,7 +194,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== TABLE OF CONTENTS ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "40px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "40px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", textAlign: "center", marginBottom: "30px" }}>Table of Contents</h2>
           <table style={{ width: "100%", fontSize: "12pt", borderCollapse: "collapse" }}>
             <tbody>
@@ -245,7 +239,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 1: INTRODUCTION ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 1: Introduction</h2>
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px" }}>1.1 Background</h3>
@@ -342,7 +336,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 2: LITERATURE REVIEW ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 2: Literature Review</h2>
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px" }}>2.1 Existing Nutrition Tracking Apps</h3>
@@ -396,7 +390,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 3: METHODOLOGY ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 3: Methodology</h2>
 
           <h3 style={{ fontSize: "14pt", fontWeight: "bold", marginBottom: "10px" }}>3.1 Development Approach</h3>
@@ -536,7 +530,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 4: RESOURCES AND TOOLS ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 4: Resources and Tools</h2>
           <p style={{ textAlign: "justify", marginBottom: "16px" }}>
             The following technologies and tools are utilized in the development of NutriSNAp:
@@ -577,7 +571,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 5: WORK PLAN ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 5: Work Plan</h2>
           <p style={{ textAlign: "justify", marginBottom: "16px" }}>
             The development of NutriSNAp is planned over a period of two months, from March 1, 2026 to April 30, 2026. The following Gantt chart illustrates the timeline for each phase of the project:
@@ -623,7 +617,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 6: EXPECTED OUTCOMES ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 6: Expected Outcomes</h2>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             Upon successful completion of this thesis project, we expect to achieve the following outcomes:
@@ -651,7 +645,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== CHAPTER 7: CONCLUSION ===== */}
-        <div data-page className="page-break-after" style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page className="page-break-after" style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>Chapter 7: Conclusion</h2>
           <p style={{ textAlign: "justify", marginBottom: "12px" }}>
             NutriSNAp represents a significant step forward in the evolution of nutrition and wellness tracking apps. By integrating cutting-edge artificial intelligence technology with a modern, user-centric design, this app addresses the key limitations of existing solutions and offers a more intuitive, efficient, and comprehensive approach to dietary management.
@@ -668,7 +662,7 @@ const Thesis = () => {
         </div>
 
         {/* ===== REFERENCES ===== */}
-        <div data-page style={{ ...a4PageStyle, paddingTop: "30px" }}>
+        <div data-page style={{ ...pageStyle, paddingTop: "30px" }}>
           <h2 style={{ fontSize: "18pt", fontWeight: "bold", marginBottom: "20px" }}>References</h2>
           <ol style={{ paddingLeft: "24px", fontSize: "11pt" }}>
             {[
