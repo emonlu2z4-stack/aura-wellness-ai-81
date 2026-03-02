@@ -1,59 +1,38 @@
 
 
-## Recreate Aura Wellness AI
+## Thesis Proposal PDF Generator
 
-Your original project is a **premium AI-powered wellness & nutrition tracker** with a dark glassmorphic UI. Here's everything we'll build:
+I'll create a dedicated page in your app (`/thesis`) that renders a professionally formatted thesis proposal following the Leading University template exactly, with a "Download PDF" button using `html2pdf.js`.
 
-### 1. Backend Setup (Lovable Cloud / Supabase)
-- **Database tables**: `profiles` (user settings, macro targets), `meals` (daily food logs with macros), `weight_logs` (weight tracking), `groups` & `group_members` (social wellness groups with invite codes)
-- **Storage**: Photo bucket for meal photos
-- **RLS policies**: Row-level security so users can only access their own data
-- **Auth**: Google OAuth sign-in
-- **Edge function**: `analyze-meal` — uses AI (Gemini) to analyze food photos and estimate calories, protein, carbs, fats, fiber, sugar, sodium
+### Content Structure (following template)
 
-### 2. Dark Glassmorphic Theme
-- Space Grotesk + Inter fonts
-- Dark purple/blue color scheme with neon accents (violet, blue, green, orange, pink, cyan)
-- Glass card effects with backdrop blur, glow shadows, gradient accents
+**Cover Page**: Leading University header, Department of CSE, Thesis Title: "Aura Wellness AI: An AI-Powered Nutrition and Wellness Tracking App", Submitted To: Kazi Md. Jahid Hasan (Assistant Professor), Submitted By: all 3 members with IDs, Submission Date.
 
-### 3. Pages & Features
+**Page 2**: Permission application letter with all member names.
 
-**Auth Page** — Google sign-in with branded landing screen
+**Page 3**: Thesis name + motto page.
 
-**Home Dashboard** (/)
-- Greeting with user name and time of day
-- Streak banner (weekly activity dots)
-- Hero calorie card with circular progress ring showing calories remaining vs goal
-- Swipeable macro cards (protein, carbs, fats + fiber, sugar, sodium)
-- Today's meal log with expandable items
-- Floating "+" button to log meals (manual entry or AI photo analysis)
+**Page 4**: Table of Contents.
 
-**Progress Page** (/progress)
-- Current weight vs goal weight with progress bar
-- Weight trend line chart (filterable: 90 days, 6 months, 1 year, all time)
-- Progress photos section
-- Weekly calorie & macro bar charts (filterable by week)
-- BMI calculator card with color-coded scale
+**Chapters 1-7** filled with actual content about the Aura Wellness AI app:
+- **Ch1 Introduction**: About the app, motivations (rising health awareness, AI in nutrition), research objectives
+- **Ch2 Literature Review**: Existing apps (MyFitnessPal, Lose It!, etc.), their limitations, how Aura differs with AI photo analysis
+- **Ch3 Methodology**: Agile development, AI-based food recognition via Gemini, real-time macro tracking, cloud backend
+- **Ch4 Resources & Tools**: React, TypeScript, Tailwind CSS, Supabase, Gemini AI, Framer Motion, Recharts
+- **Ch5 Work Plan**: Gantt-style table with monthly breakdown
+- **Ch6 Expected Outcomes**: Accurate AI meal analysis, improved health tracking, social wellness groups
+- **Ch7 Conclusion**: Summary and significance
 
-**Groups Page** (/groups)
-- Create groups with auto-generated invite codes
-- Join groups via 8-character invite code
-- Share/copy invite codes, leave groups
+**References**: Relevant academic and technical sources.
 
-**Profile Page** (/profile)
-- User card with avatar initial, invite friends button
-- Settings links: Personal details, Macronutrients targets, Goal & weight, Weight history
+### Technical Approach
+1. Add `html2pdf.js` dependency
+2. Create `/thesis` page with print-optimized CSS (A4 sizing, page breaks, Times New Roman for academic style)
+3. "Download as PDF" button that generates a multi-page PDF
+4. All content refers to the app as "app" (not "web app") per your request
 
-**Profile Settings** (/settings/*)
-- Personal details form (name, age, height, activity level)
-- Macro targets form (calories, protein, carbs, fats, fiber, sugar, sodium)
-- Goal weight form
-- Weight history list
-
-### 4. Animations
-- Framer Motion for page transitions, card entrances, and swipe gestures on macro cards
-- Scanning animation overlay when AI analyzes food photos
-
-### 5. Bottom Navigation
-- 4-tab nav: Home, Progress, Groups, Profile with active glow effect
+### Group Members
+1. Emon Ahmed — ID: 0182320012101356
+2. MD Rayhan Akhand — ID: 0182320012101320
+3. Md Sams Uddin Emon — ID: 0182310012101144
 
