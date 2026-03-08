@@ -111,6 +111,7 @@ function GroupCard({ group, onLeave }: { group: any; onLeave: (id: string) => vo
         <button onClick={shareInvite} className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors btn-bounce"><Share2 className="h-3.5 w-3.5 text-muted-foreground" /></button>
         <button onClick={() => onLeave(group.id)} className="p-2 rounded-lg bg-destructive/10 hover:bg-destructive/20 transition-colors btn-bounce"><LogOut className="h-3.5 w-3.5 text-destructive" /></button>
       </div>
+      <GroupChallenges groupId={group.id} />
     </motion.div>
   );
 }
