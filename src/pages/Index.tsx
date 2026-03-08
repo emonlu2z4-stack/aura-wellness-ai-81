@@ -490,23 +490,7 @@ export default function Index() {
     prevCaloriesRef.current = totals.calories;
   }, [totals.calories, targets.calories]);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!user) return <Navigate to="/auth" replace />;
-
-  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
-  const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
-  const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
-
-  const [weather, setWeather] = useState<{ temp: number; desc: string; icon: string } | null>(null);
-  const todayStr = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
-
+  // Fetch weather from Open-Meteo (free, no API key)
   useEffect(() => {
     const weatherCodeToInfo = (code: number): { desc: string; icon: string } => {
       if (code === 0) return { desc: "Clear", icon: "☀️" };
@@ -517,7 +501,6 @@ export default function Index() {
       if (code <= 82) return { desc: "Showers", icon: "🌦️" };
       return { desc: "Stormy", icon: "⛈️" };
     };
-
     navigator.geolocation?.getCurrentPosition(
       async (pos) => {
         try {
@@ -533,6 +516,20 @@ export default function Index() {
       () => { /* location denied */ }
     );
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/auth" replace />;
+
+  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
+  const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
+  const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
   return (
     <div className="min-h-screen bg-background pb-28">
