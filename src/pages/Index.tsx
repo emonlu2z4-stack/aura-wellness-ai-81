@@ -252,6 +252,105 @@ function NutritionInsights({ meals, targets, userName }: { meals: any[]; targets
   );
 }
 
+type SuggestedMeal = { name: string; emoji: string; calories: number; protein: number; carbs: number; fats: number; description: string };
+
+function MealSuggestions({ remaining, mealsEaten, onAddMeal }: {
+  remaining: { calories: number; protein: number; carbs: number; fats: number };
+  mealsEaten: string[];
+  onAddMeal: (meal: { name: string; calories: number; protein: number; carbs: number; fats: number }) => void;
+}) {
+  const [suggestions, setSuggestions] = useState<SuggestedMeal[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const fetchSuggestions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("suggest-meals", {
+        body: { remaining, mealsEatenToday: mealsEaten },
+      });
+      if (error) throw error;
+      if (data?.error) { toast.error(data.error); return; }
+      setSuggestions(data?.meals ?? []);
+      setShow(true);
+    } catch (e: any) {
+      console.error("Suggest meals error:", e);
+      toast.error("Couldn't get meal suggestions");
+    } finally {
+      setLoading(false);
+    }
+  }, [remaining, mealsEaten]);
+
+  return (
+    <div className="space-y-2.5">
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        onClick={fetchSuggestions}
+        disabled={loading}
+        className="w-full glass-card p-4 flex items-center gap-3 btn-bounce border-duo-purple/20 hover:border-duo-purple/40 transition-colors"
+      >
+        <div className="h-10 w-10 rounded-full bg-duo-purple/20 flex items-center justify-center flex-shrink-0">
+          {loading ? <Loader2 className="h-5 w-5 animate-spin text-duo-purple" /> : <Utensils className="h-5 w-5 text-duo-purple" />}
+        </div>
+        <div className="text-left flex-1">
+          <p className="font-display font-bold text-sm text-foreground">
+            {loading ? "Finding meals for you…" : show ? "Get new suggestions" : "What should I eat next? 🤔"}
+          </p>
+          <p className="text-xs text-muted-foreground font-semibold">
+            AI suggests meals based on your remaining macros
+          </p>
+        </div>
+      </motion.button>
+
+      <AnimatePresence>
+        {show && suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-2 overflow-hidden"
+          >
+            {suggestions.map((meal, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="glass-card p-4 space-y-2"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{meal.emoji}</span>
+                    <div>
+                      <p className="font-bold text-sm text-foreground">{meal.name}</p>
+                      <p className="text-xs text-muted-foreground">{meal.description}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-[11px] font-semibold">
+                    <span className="text-duo-orange">{meal.calories} cal</span>
+                    <span className="text-duo-blue">P {meal.protein}g</span>
+                    <span className="text-duo-yellow">C {meal.carbs}g</span>
+                    <span className="text-duo-green">F {meal.fats}g</span>
+                  </div>
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => onAddMeal({ name: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fats: meal.fats })}
+                    className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors btn-bounce"
+                  >
+                    + Log this
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Index() {
   const { user, loading } = useAuth();
   const { profile } = useProfile();
