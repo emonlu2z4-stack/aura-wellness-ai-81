@@ -23,7 +23,7 @@ function MacroCard({ emoji, label, current, target, color, unit = "g" }: {
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
-      className="glass-card-elevated flex flex-1 flex-col items-center gap-2.5 p-4"
+      className="glass-card-elevated flex flex-1 flex-col items-center gap-3 p-5 min-h-[120px]"
     >
       <CircularProgress value={current} max={target} size={52} strokeWidth={4.5} color={color}>
         <span className="text-base">{emoji}</span>
