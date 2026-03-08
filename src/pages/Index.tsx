@@ -416,6 +416,9 @@ export default function Index() {
           </div>
         </motion.div>
 
+        {/* AI Nutrition Insights */}
+        <NutritionInsights meals={meals} targets={targets} userName={profile?.name?.split(' ')[0] || ''} />
+
         {/* Water Tracker */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
           <WaterTracker />
