@@ -454,8 +454,9 @@ export default function Index() {
                   key={meal.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ delay: 0.05 * idx }}
-                  className="meal-item flex items-center gap-4 p-4 min-h-[72px]"
+                  className="meal-item flex items-center gap-4 p-4 min-h-[72px] cursor-pointer"
                 >
                   {meal.photo_url ? (
                     <img src={meal.photo_url} alt={meal.name} className="h-12 w-12 rounded-xl object-cover flex-shrink-0 ring-1 ring-border/30" />
