@@ -32,6 +32,13 @@ export function WaterTracker() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: getToday(), glasses }));
   }, [glasses]);
 
+  useEffect(() => {
+    if (prevGlassesRef.current < GOAL && glasses >= GOAL) {
+      setShowConfetti(true);
+    }
+    prevGlassesRef.current = glasses;
+  }, [glasses]);
+
   const add = () => {
     if (glasses >= GOAL) return;
     setGlasses((g) => g + 1);
