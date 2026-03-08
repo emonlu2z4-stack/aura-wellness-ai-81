@@ -1,4 +1,4 @@
-import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles } from "lucide-react";
+import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2 } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { Confetti } from "@/components/Confetti";
@@ -8,7 +8,7 @@ import { WaterTracker } from "@/components/WaterTracker";
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useTodayMeals, useAddMeal } from "@/hooks/useMeals";
+import { useTodayMeals, useAddMeal, useDeleteMeal } from "@/hooks/useMeals";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -188,6 +188,7 @@ export default function Index() {
   const { user, loading } = useAuth();
   const { profile } = useProfile();
   const { data: meals = [] } = useTodayMeals();
+  const deleteMeal = useDeleteMeal();
   const [slide, setSlide] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const prevCaloriesRef = useRef(0);
@@ -398,9 +399,24 @@ export default function Index() {
                       <span className="text-[11px] font-semibold text-muted-foreground">P {Number(meal.protein)}g · C {Number(meal.carbs)}g · F {Number(meal.fats)}g</span>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/40 flex-shrink-0" />
+                  <motion.button
+                    whileTap={{ scale: 0.8 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (confirm("Delete this meal?")) {
+                        deleteMeal.mutate(meal.id, {
+                          onSuccess: () => toast.success("Meal deleted 🗑️"),
+                          onError: () => toast.error("Failed to delete meal"),
+                        });
+                      }
+                    }}
+                    className="p-2 rounded-full hover:bg-destructive/10 transition-colors flex-shrink-0"
+                  >
+                    <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive transition-colors" />
+                  </motion.button>
                 </motion.div>
               ))}
+
             </div>
           )}
         </motion.div>
