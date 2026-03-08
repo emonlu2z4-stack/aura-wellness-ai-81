@@ -502,6 +502,36 @@ export default function Index() {
   const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
   const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
+  const [weather, setWeather] = useState<{ temp: number; desc: string; icon: string } | null>(null);
+  const todayStr = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+
+  useEffect(() => {
+    const weatherCodeToInfo = (code: number): { desc: string; icon: string } => {
+      if (code === 0) return { desc: "Clear", icon: "☀️" };
+      if (code <= 3) return { desc: "Cloudy", icon: "⛅" };
+      if (code <= 48) return { desc: "Foggy", icon: "🌫️" };
+      if (code <= 67) return { desc: "Rainy", icon: "🌧️" };
+      if (code <= 77) return { desc: "Snowy", icon: "❄️" };
+      if (code <= 82) return { desc: "Showers", icon: "🌦️" };
+      return { desc: "Stormy", icon: "⛈️" };
+    };
+
+    navigator.geolocation?.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`
+          );
+          const data = await res.json();
+          const cw = data.current_weather;
+          const info = weatherCodeToInfo(cw.weathercode);
+          setWeather({ temp: Math.round(cw.temperature), ...info });
+        } catch { /* silent */ }
+      },
+      () => { /* location denied */ }
+    );
+  }, []);
+
   return (
     <div className="min-h-screen bg-background pb-28">
       <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
