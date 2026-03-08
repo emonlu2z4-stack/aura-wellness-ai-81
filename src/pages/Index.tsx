@@ -253,6 +253,100 @@ function NutritionInsights({ meals, targets, userName }: { meals: any[]; targets
 }
 
 type SuggestedMeal = { name: string; emoji: string; calories: number; protein: number; carbs: number; fats: number; description: string };
+type RecipeData = { prepTime: string; cookTime: string; servings: number; ingredients: { item: string; amount: string }[]; steps: string[]; tips?: string };
+
+function RecipeDetailDialog({ meal, open, onOpenChange }: { meal: SuggestedMeal | null; open: boolean; onOpenChange: (v: boolean) => void }) {
+  const [recipe, setRecipe] = useState<RecipeData | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open && meal && !recipe) {
+      setLoading(true);
+      supabase.functions.invoke("recipe-details", {
+        body: { mealName: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fats: meal.fats },
+      }).then(({ data, error }) => {
+        if (error || data?.error) { toast.error(data?.error || "Couldn't load recipe"); return; }
+        setRecipe(data);
+      }).catch(() => toast.error("Couldn't load recipe"))
+        .finally(() => setLoading(false));
+    }
+  }, [open, meal]);
+
+  // Reset when closed
+  useEffect(() => { if (!open) setRecipe(null); }, [open]);
+
+  if (!meal) return null;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="glass-card border-2 border-border max-w-sm max-h-[85vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="font-display text-lg flex items-center gap-2">
+            <span className="text-2xl">{meal.emoji}</span> {meal.name}
+          </DialogTitle>
+        </DialogHeader>
+
+        {/* Macro summary */}
+        <div className="flex items-center gap-3 text-xs font-semibold py-2">
+          <span className="bg-duo-orange/10 text-duo-orange px-2 py-1 rounded-full">{meal.calories} cal</span>
+          <span className="bg-duo-blue/10 text-duo-blue px-2 py-1 rounded-full">P {meal.protein}g</span>
+          <span className="bg-duo-yellow/10 text-duo-yellow px-2 py-1 rounded-full">C {meal.carbs}g</span>
+          <span className="bg-duo-green/10 text-duo-green px-2 py-1 rounded-full">F {meal.fats}g</span>
+        </div>
+
+        {loading ? (
+          <div className="flex flex-col items-center gap-3 py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <p className="text-sm font-semibold text-muted-foreground">Generating recipe…</p>
+          </div>
+        ) : recipe ? (
+          <div className="space-y-4">
+            {/* Time & servings */}
+            <div className="flex items-center gap-4 text-xs font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> Prep: {recipe.prepTime}</span>
+              <span className="flex items-center gap-1"><ChefHat className="h-3.5 w-3.5" /> Cook: {recipe.cookTime}</span>
+              <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {recipe.servings} serving{recipe.servings !== 1 ? "s" : ""}</span>
+            </div>
+
+            {/* Ingredients */}
+            <div>
+              <h4 className="font-display font-bold text-sm text-foreground mb-2">Ingredients 🛒</h4>
+              <ul className="space-y-1.5">
+                {recipe.ingredients.map((ing, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <span className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-primary mt-0.5">✓</span>
+                    <span className="text-foreground/90"><span className="font-semibold">{ing.amount}</span> {ing.item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Steps */}
+            <div>
+              <h4 className="font-display font-bold text-sm text-foreground mb-2">Steps 👨‍🍳</h4>
+              <ol className="space-y-2.5">
+                {recipe.steps.map((step, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm">
+                    <span className="h-6 w-6 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-primary-foreground">{i + 1}</span>
+                    <p className="text-foreground/90 leading-relaxed pt-0.5">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Tip */}
+            {recipe.tips && (
+              <div className="rounded-xl bg-duo-yellow/10 border-2 border-duo-yellow/20 p-3 flex items-start gap-2">
+                <Lightbulb className="h-4 w-4 text-duo-yellow flex-shrink-0 mt-0.5" />
+                <p className="text-xs font-semibold text-foreground/80">{recipe.tips}</p>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function MealSuggestions({ remaining, mealsEaten, onAddMeal }: {
   remaining: { calories: number; protein: number; carbs: number; fats: number };
@@ -262,6 +356,8 @@ function MealSuggestions({ remaining, mealsEaten, onAddMeal }: {
   const [suggestions, setSuggestions] = useState<SuggestedMeal[]>([]);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [selectedMeal, setSelectedMeal] = useState<SuggestedMeal | null>(null);
+  const [recipeOpen, setRecipeOpen] = useState(false);
 
   const fetchSuggestions = useCallback(async () => {
     setLoading(true);
@@ -316,7 +412,8 @@ function MealSuggestions({ remaining, mealsEaten, onAddMeal }: {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="glass-card p-4 space-y-2"
+                className="glass-card p-4 space-y-2 cursor-pointer hover:border-primary/30 transition-colors"
+                onClick={() => { setSelectedMeal(meal); setRecipeOpen(true); }}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
@@ -334,19 +431,24 @@ function MealSuggestions({ remaining, mealsEaten, onAddMeal }: {
                     <span className="text-duo-yellow">C {meal.carbs}g</span>
                     <span className="text-duo-green">F {meal.fats}g</span>
                   </div>
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => onAddMeal({ name: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fats: meal.fats })}
-                    className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors btn-bounce"
-                  >
-                    + Log this
-                  </motion.button>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground">Tap for recipe</span>
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={(e) => { e.stopPropagation(); onAddMeal({ name: meal.name, calories: meal.calories, protein: meal.protein, carbs: meal.carbs, fats: meal.fats }); }}
+                      className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20 transition-colors btn-bounce"
+                    >
+                      + Log
+                    </motion.button>
+                  </div>
                 </div>
               </motion.div>
             ))}
           </motion.div>
         )}
       </AnimatePresence>
+
+      <RecipeDetailDialog meal={selectedMeal} open={recipeOpen} onOpenChange={setRecipeOpen} />
     </div>
   );
 }
