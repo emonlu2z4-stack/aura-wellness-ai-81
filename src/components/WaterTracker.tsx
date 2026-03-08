@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Droplets, Plus, Minus } from "lucide-react";
+import { Confetti } from "@/components/Confetti";
 
 const GOAL = 8;
 const STORAGE_KEY = "water-tracker";
@@ -23,10 +24,19 @@ function loadGlasses(): number {
 export function WaterTracker() {
   const [glasses, setGlasses] = useState(loadGlasses);
   const [justAdded, setJustAdded] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const prevGlassesRef = useRef(glasses);
   const pct = Math.min((glasses / GOAL) * 100, 100);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: getToday(), glasses }));
+  }, [glasses]);
+
+  useEffect(() => {
+    if (prevGlassesRef.current < GOAL && glasses >= GOAL) {
+      setShowConfetti(true);
+    }
+    prevGlassesRef.current = glasses;
   }, [glasses]);
 
   const add = () => {
@@ -42,7 +52,8 @@ export function WaterTracker() {
   };
 
   return (
-    <div className="glass-card-elevated p-4">
+    <div className="glass-card-elevated p-4 relative">
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
       <div className="flex items-center gap-2 mb-3">
         <Droplets className="h-4 w-4 text-duo-blue" />
         <h3 className="font-display text-sm font-bold text-foreground">Water Intake</h3>

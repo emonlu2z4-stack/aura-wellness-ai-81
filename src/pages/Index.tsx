@@ -1,6 +1,7 @@
 import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles } from "lucide-react";
 import { Navigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Confetti } from "@/components/Confetti";
 import { CircularProgress } from "@/components/CircularProgress";
 import { StreakBanner } from "@/components/StreakBanner";
 import { WaterTracker } from "@/components/WaterTracker";
@@ -188,16 +189,8 @@ export default function Index() {
   const { profile } = useProfile();
   const { data: meals = [] } = useTodayMeals();
   const [slide, setSlide] = useState(0);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!user) return <Navigate to="/auth" replace />;
+  const [showConfetti, setShowConfetti] = useState(false);
+  const prevCaloriesRef = useRef(0);
 
   const totals = meals.reduce(
     (acc, m) => ({
@@ -214,13 +207,33 @@ export default function Index() {
     fiber: profile?.fiber_target ?? 30, sugar: profile?.sugar_target ?? 50, sodium: profile?.sodium_target ?? 2300,
   };
 
-  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
   const caloriePct = Math.round((totals.calories / targets.calories) * 100);
+
+  // Trigger confetti when calorie goal is reached
+  useEffect(() => {
+    if (prevCaloriesRef.current < targets.calories && totals.calories >= targets.calories && totals.calories > 0) {
+      setShowConfetti(true);
+    }
+    prevCaloriesRef.current = totals.calories;
+  }, [totals.calories, targets.calories]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/auth" replace />;
+
+  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
   const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
   const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
       {/* Fun background */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-duo-green/10 blur-[100px]" />
