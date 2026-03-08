@@ -24,6 +24,8 @@ function loadGlasses(): number {
 export function WaterTracker() {
   const [glasses, setGlasses] = useState(loadGlasses);
   const [justAdded, setJustAdded] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const prevGlassesRef = useRef(glasses);
   const pct = Math.min((glasses / GOAL) * 100, 100);
 
   useEffect(() => {
