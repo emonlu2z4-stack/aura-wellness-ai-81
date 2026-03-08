@@ -222,6 +222,14 @@ export default function Index() {
   const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
   const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
+  // Trigger confetti when calorie goal is reached
+  useEffect(() => {
+    if (prevCaloriesRef.current < targets.calories && totals.calories >= targets.calories && totals.calories > 0) {
+      setShowConfetti(true);
+    }
+    prevCaloriesRef.current = totals.calories;
+  }, [totals.calories, targets.calories]);
+
   return (
     <div className="min-h-screen bg-background pb-28">
       {/* Fun background */}
