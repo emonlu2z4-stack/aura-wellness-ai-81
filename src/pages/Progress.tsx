@@ -6,9 +6,10 @@ import { PhotoComparisonSection } from "@/components/PhotoComparisonSlider";
 import { useProfile } from "@/hooks/useProfile";
 import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
+import { useWaterHistory } from "@/hooks/useWaterHistory";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { Trophy, TrendingUp, TrendingDown, Calendar } from "lucide-react";
+import { Trophy, TrendingUp, TrendingDown, Calendar, Droplets } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,41 @@ function LogWeightDialog() {
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function WaterHistoryChart() {
+  const { data: waterHistory = [] } = useWaterHistory(7);
+  const goal = 8;
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-4">
+      <h3 className="mb-3 font-display font-bold text-foreground flex items-center gap-2">
+        <Droplets className="h-4 w-4 text-duo-blue" /> Water Intake (7 Days) 💧
+      </h3>
+      {waterHistory.some(d => d.glasses > 0) ? (
+        <ResponsiveContainer width="100%" height={180}>
+          <BarChart data={waterHistory}>
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 14%, 88%)" />
+            <XAxis dataKey="label" tick={{ fontSize: 11, fill: "hsl(220, 10%, 50%)", fontWeight: 600 }} />
+            <YAxis tick={{ fontSize: 10, fill: "hsl(220, 10%, 50%)" }} domain={[0, Math.max(goal + 2, ...waterHistory.map(d => d.glasses))]} />
+            <Tooltip
+              contentStyle={{ background: "hsl(0, 0%, 100%)", border: "2px solid hsl(220, 14%, 88%)", borderRadius: "12px", color: "hsl(220, 20%, 15%)", fontWeight: 600 }}
+              formatter={(value: number) => [`${value} glasses`, "Water"]}
+            />
+            <Bar dataKey="glasses" fill="hsl(199, 89%, 52%)" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      ) : (
+        <div className="py-8 text-center">
+          <p className="text-3xl mb-2">💧</p>
+          <p className="text-sm font-bold text-muted-foreground">No water logged this week</p>
+        </div>
+      )}
+      <p className="mt-2 text-[10px] font-semibold text-muted-foreground text-center">
+        Goal: {goal} glasses/day
+      </p>
+    </motion.div>
   );
 }
 
@@ -289,6 +325,8 @@ export default function ProgressPage() {
             </div>
           )}
         </div>
+
+        <WaterHistoryChart />
 
         <BMICard weight={currentWeight} height={profile?.height_cm ? Number(profile.height_cm) : 0} />
 
