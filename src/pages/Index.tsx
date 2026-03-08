@@ -1,6 +1,6 @@
-import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2 } from "lucide-react";
+import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2, Brain, RefreshCw } from "lucide-react";
 import { Navigate } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Confetti } from "@/components/Confetti";
 import { CircularProgress } from "@/components/CircularProgress";
 import { StreakBanner } from "@/components/StreakBanner";
@@ -184,6 +184,74 @@ function AddMealDialog() {
   );
 }
 
+function NutritionInsights({ meals, targets, userName }: { meals: any[]; targets: any; userName: string }) {
+  const [insight, setInsight] = useState<string | null>(null);
+  const [insightLoading, setInsightLoading] = useState(false);
+  const [hasRequested, setHasRequested] = useState(false);
+
+  const fetchInsight = useCallback(async () => {
+    if (meals.length === 0) return;
+    setInsightLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("nutrition-insights", {
+        body: { meals, targets, userName },
+      });
+      if (error) throw error;
+      if (data?.insight) setInsight(data.insight);
+      else if (data?.error) toast.error(data.error);
+    } catch (e: any) {
+      console.error("Insights error:", e);
+      toast.error("Couldn't get nutrition insights");
+    } finally {
+      setInsightLoading(false);
+      setHasRequested(true);
+    }
+  }, [meals, targets, userName]);
+
+  useEffect(() => {
+    if (meals.length > 0 && !hasRequested) {
+      fetchInsight();
+    }
+  }, [meals.length, hasRequested, fetchInsight]);
+
+  if (meals.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="glass-card glow-green p-4 border-duo-green/20"
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-full bg-duo-green/20 flex items-center justify-center">
+            <Brain className="h-4 w-4 text-duo-green" />
+          </div>
+          <h3 className="font-display font-bold text-sm text-foreground">AI Nutrition Insight</h3>
+        </div>
+        <motion.button
+          whileTap={{ scale: 0.85 }}
+          onClick={() => { setHasRequested(false); setInsight(null); }}
+          disabled={insightLoading}
+          className="p-1.5 rounded-full hover:bg-secondary transition-colors"
+        >
+          <RefreshCw className={`h-3.5 w-3.5 text-muted-foreground ${insightLoading ? "animate-spin" : ""}`} />
+        </motion.button>
+      </div>
+      {insightLoading ? (
+        <div className="flex items-center gap-2 py-2">
+          <Loader2 className="h-4 w-4 animate-spin text-primary" />
+          <p className="text-xs font-semibold text-muted-foreground">Analyzing your meals…</p>
+        </div>
+      ) : insight ? (
+        <p className="text-sm font-medium text-foreground/90 leading-relaxed">{insight}</p>
+      ) : (
+        <p className="text-xs text-muted-foreground">Tap refresh to get a new insight</p>
+      )}
+    </motion.div>
+  );
+}
+
 export default function Index() {
   const { user, loading } = useAuth();
   const { profile } = useProfile();
@@ -347,6 +415,9 @@ export default function Index() {
             ))}
           </div>
         </motion.div>
+
+        {/* AI Nutrition Insights */}
+        <NutritionInsights meals={meals} targets={targets} userName={profile?.name?.split(' ')[0] || ''} />
 
         {/* Water Tracker */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
