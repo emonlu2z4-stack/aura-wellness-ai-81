@@ -518,6 +518,23 @@ export default function Index() {
         {/* AI Nutrition Insights */}
         <NutritionInsights meals={meals} targets={targets} userName={profile?.name?.split(' ')[0] || ''} />
 
+        {/* AI Meal Suggestions */}
+        <MealSuggestions
+          remaining={{
+            calories: Math.max(targets.calories - totals.calories, 0),
+            protein: Math.max(targets.protein - totals.protein, 0),
+            carbs: Math.max(targets.carbs - totals.carbs, 0),
+            fats: Math.max(targets.fats - totals.fats, 0),
+          }}
+          mealsEaten={meals.map(m => m.name)}
+          onAddMeal={async (meal) => {
+            try {
+              await addMeal.mutateAsync(meal);
+              toast.success(`${meal.name} logged! 🎉`);
+            } catch { toast.error("Failed to log meal"); }
+          }}
+        />
+
         {/* Water Tracker */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
           <WaterTracker />
