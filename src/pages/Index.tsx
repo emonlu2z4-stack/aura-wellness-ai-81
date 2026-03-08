@@ -412,12 +412,12 @@ export default function Index() {
               </motion.div>
             )}
           </AnimatePresence>
-          <div className="mt-4 flex justify-center gap-2">
+          <div className="mt-5 flex justify-center gap-2.5">
             {[0, 1].map(i => (
               <button
                 key={i}
                 onClick={() => setSlide(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${slide === i ? "w-7 bg-primary" : "w-1.5 bg-muted-foreground/20"}`}
+                className={`h-2 rounded-full transition-all duration-300 min-w-[12px] ${slide === i ? "w-8 bg-primary" : "w-2 bg-muted-foreground/20"}`}
               />
             ))}
           </div>
