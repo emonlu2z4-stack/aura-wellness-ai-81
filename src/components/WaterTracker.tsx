@@ -52,7 +52,8 @@ export function WaterTracker() {
   };
 
   return (
-    <div className="glass-card-elevated p-4">
+    <div className="glass-card-elevated p-4 relative">
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
       <div className="flex items-center gap-2 mb-3">
         <Droplets className="h-4 w-4 text-duo-blue" />
         <h3 className="font-display text-sm font-bold text-foreground">Water Intake</h3>

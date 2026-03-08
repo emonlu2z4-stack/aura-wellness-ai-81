@@ -232,6 +232,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
       {/* Fun background */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-duo-green/10 blur-[100px]" />
