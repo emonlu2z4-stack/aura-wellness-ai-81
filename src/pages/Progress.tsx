@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { StreakBanner } from "@/components/StreakBanner";
+import { AchievementsSection, type Achievement } from "@/components/Achievements";
 import { useProfile } from "@/hooks/useProfile";
 import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
