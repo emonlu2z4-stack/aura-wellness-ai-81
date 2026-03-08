@@ -1,8 +1,9 @@
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useTheme } from "@/hooks/useTheme";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, User, Target, Scale, History, Share2, LogOut, Crown } from "lucide-react";
+import { ChevronRight, User, Target, Scale, History, Share2, LogOut, Crown, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
