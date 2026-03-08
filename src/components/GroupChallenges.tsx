@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Plus, UserCheck, UserPlus, ChevronDown, ChevronUp, Trophy } from "lucide-react";
+import {
+  Flame, Plus, UserCheck, UserPlus, ChevronDown, ChevronUp,
+  Trophy, CheckCircle2, Crown, Medal, Award, BarChart3,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +13,12 @@ import {
   useCreateChallenge,
   useJoinChallenge,
   useLeaveChallenge,
+  useCheckin,
+  useLeaderboard,
   CHALLENGE_PRESETS,
+  type LeaderboardEntry,
 } from "@/hooks/useChallenges";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 function CreateChallengeDialog({ groupId }: { groupId: string }) {
@@ -119,6 +126,87 @@ function CreateChallengeDialog({ groupId }: { groupId: string }) {
   );
 }
 
+const rankIcons = [
+  <Crown className="h-4 w-4 text-yellow-500" />,
+  <Medal className="h-4 w-4 text-gray-400" />,
+  <Award className="h-4 w-4 text-amber-600" />,
+];
+
+function LeaderboardDialog({ challengeId, title, emoji }: { challengeId: string; title: string; emoji: string }) {
+  const [open, setOpen] = useState(false);
+  const { data: entries = [], isLoading } = useLeaderboard(open ? challengeId : undefined);
+  const { user } = useAuth();
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button className="flex items-center gap-1 text-[10px] font-bold text-accent hover:text-accent/80 transition-colors btn-bounce">
+          <BarChart3 className="h-3 w-3" /> Leaderboard
+        </button>
+      </DialogTrigger>
+      <DialogContent className="glass-card border-2 border-border max-w-sm">
+        <DialogHeader>
+          <DialogTitle className="font-display text-base">
+            {emoji} {title}
+          </DialogTitle>
+          <p className="text-xs text-muted-foreground font-semibold">Streak Leaderboard 🏆</p>
+        </DialogHeader>
+        <div className="space-y-1.5 max-h-[50vh] overflow-y-auto">
+          {isLoading ? (
+            <p className="text-xs text-muted-foreground text-center py-6">Loading...</p>
+          ) : entries.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-6">
+              No check-ins yet — be the first! ✅
+            </p>
+          ) : (
+            entries.map((entry: LeaderboardEntry, i: number) => {
+              const isMe = entry.user_id === user?.id;
+              return (
+                <motion.div
+                  key={entry.user_id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors ${
+                    isMe
+                      ? "bg-primary/10 border-2 border-primary/30"
+                      : "bg-secondary/40 border-2 border-transparent"
+                  }`}
+                >
+                  <div className="w-6 flex-shrink-0 flex justify-center">
+                    {i < 3 ? (
+                      rankIcons[i]
+                    ) : (
+                      <span className="text-xs font-bold text-muted-foreground">{i + 1}</span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-bold truncate ${isMe ? "text-primary" : "text-foreground"}`}>
+                      {entry.name} {isMe && "(You)"}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground font-semibold">
+                      {entry.totalCheckins} total check-in{entry.totalCheckins !== 1 ? "s" : ""}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 text-right">
+                    <div className="flex items-center gap-1">
+                      <Flame className={`h-3.5 w-3.5 ${entry.currentStreak > 0 ? "text-orange-500" : "text-muted-foreground/40"}`} />
+                      <span className={`text-sm font-bold ${entry.currentStreak > 0 ? "text-foreground" : "text-muted-foreground/50"}`}>
+                        {entry.currentStreak}
+                      </span>
+                    </div>
+                    <p className="text-[9px] text-muted-foreground font-semibold">day streak</p>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function ChallengeCard({
   challenge,
   groupId,
@@ -128,6 +216,7 @@ function ChallengeCard({
 }) {
   const joinChallenge = useJoinChallenge();
   const leaveChallenge = useLeaveChallenge();
+  const { checkedInToday, checkin } = useCheckin(challenge.hasJoined && challenge.isActive ? challenge.id : undefined);
 
   const daysLeft = Math.max(
     0,
@@ -145,6 +234,15 @@ function ChallengeCard({
       }
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
+    }
+  };
+
+  const handleCheckin = async () => {
+    try {
+      await checkin.mutateAsync();
+      toast.success("Checked in! 🔥 Keep it up!");
+    } catch (err: any) {
+      toast.error(err.message || "Failed to check in");
     }
   };
 
@@ -183,29 +281,48 @@ function ChallengeCard({
                 <Flame className="h-3 w-3" /> {daysLeft}d left
               </span>
             )}
+            <LeaderboardDialog challengeId={challenge.id} title={challenge.title} emoji={challenge.emoji} />
           </div>
         </div>
-        {challenge.isActive && (
-          <button
-            onClick={handleToggle}
-            disabled={isPending}
-            className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold transition-all btn-bounce ${
-              challenge.hasJoined
-                ? "bg-primary/15 text-primary border-2 border-primary/30"
-                : "gradient-primary text-primary-foreground"
-            }`}
-          >
-            {challenge.hasJoined ? (
+        <div className="flex flex-col gap-1.5 flex-shrink-0">
+          {challenge.isActive && (
+            <button
+              onClick={handleToggle}
+              disabled={isPending}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all btn-bounce ${
+                challenge.hasJoined
+                  ? "bg-primary/15 text-primary border-2 border-primary/30"
+                  : "gradient-primary text-primary-foreground"
+              }`}
+            >
+              {challenge.hasJoined ? (
+                <span className="flex items-center gap-1">
+                  <UserCheck className="h-3 w-3" /> Joined
+                </span>
+              ) : (
+                <span className="flex items-center gap-1">
+                  <UserPlus className="h-3 w-3" /> Join
+                </span>
+              )}
+            </button>
+          )}
+          {challenge.hasJoined && challenge.isActive && (
+            <button
+              onClick={handleCheckin}
+              disabled={checkedInToday || checkin.isPending}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all btn-bounce ${
+                checkedInToday
+                  ? "bg-duo-green/15 text-duo-green border-2 border-duo-green/30"
+                  : "bg-foreground text-background hover:bg-foreground/90"
+              }`}
+            >
               <span className="flex items-center gap-1">
-                <UserCheck className="h-3 w-3" /> Joined
+                <CheckCircle2 className="h-3 w-3" />
+                {checkedInToday ? "Done ✓" : "Check in"}
               </span>
-            ) : (
-              <span className="flex items-center gap-1">
-                <UserPlus className="h-3 w-3" /> Join
-              </span>
-            )}
-          </button>
-        )}
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );
