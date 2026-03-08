@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Droplets, Plus, Minus } from "lucide-react";
+import { Confetti } from "@/components/Confetti";
 
 const GOAL = 8;
 const STORAGE_KEY = "water-tracker";
