@@ -236,7 +236,38 @@ export default function ProgressPage() {
           ))}
         </div>
 
-        <div className="glass-card p-4">
+        {/* Weekly Summary Card */}
+        {dailyCalories.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card glow-green p-4 space-y-3">
+            <h3 className="font-display font-bold text-foreground flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-primary" /> Weekly Summary
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-xl bg-secondary/60 p-3 text-center">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Avg/Day</p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{avgCalories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">kcal</p>
+              </div>
+              <div className="rounded-xl bg-primary/10 p-3 text-center border-2 border-primary/20">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-primary flex items-center justify-center gap-0.5">
+                  <TrendingUp className="h-3 w-3" /> Best
+                </p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{bestDay?.calories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">{bestDay ? formatDay(bestDay.date) : ""}</p>
+              </div>
+              <div className="rounded-xl bg-destructive/10 p-3 text-center border-2 border-destructive/20">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-destructive flex items-center justify-center gap-0.5">
+                  <TrendingDown className="h-3 w-3" /> Lowest
+                </p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{worstDay?.calories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">{worstDay ? formatDay(worstDay.date) : ""}</p>
+              </div>
+            </div>
+            <p className="text-[10px] font-semibold text-muted-foreground text-center">
+              {dailyCalories.length} day{dailyCalories.length !== 1 ? "s" : ""} tracked • {weeklyMeals.length} meal{weeklyMeals.length !== 1 ? "s" : ""} logged
+            </p>
+          </motion.div>
+        )}
           <h3 className="mb-1 font-display font-bold text-foreground">Total Calories 🔥</h3>
           <p className="mb-3 font-display text-2xl font-bold text-foreground">{weeklyTotals.calories}<span className="text-sm text-muted-foreground ml-1">kcal</span></p>
           {macroBarData.some(d => d.value > 0) ? (
