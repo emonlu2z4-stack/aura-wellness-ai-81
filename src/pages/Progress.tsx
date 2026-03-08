@@ -8,7 +8,7 @@ import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { Trophy } from "lucide-react";
+import { Trophy, TrendingUp, TrendingDown, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -119,6 +119,31 @@ export default function ProgressPage() {
     weight: Number(l.weight_kg),
   }));
 
+  // ── Weekly summary calculations ──
+  const dailyCalories = useMemo(() => {
+    const grouped: Record<string, number> = {};
+    for (const m of weeklyMeals) {
+      const d = m.date;
+      grouped[d] = (grouped[d] || 0) + Number(m.calories);
+    }
+    return Object.entries(grouped).map(([date, cals]) => ({ date, calories: cals }));
+  }, [weeklyMeals]);
+
+  const avgCalories = dailyCalories.length > 0
+    ? Math.round(dailyCalories.reduce((s, d) => s + d.calories, 0) / dailyCalories.length)
+    : 0;
+
+  const bestDay = dailyCalories.length > 0
+    ? dailyCalories.reduce((best, d) => d.calories > best.calories ? d : best, dailyCalories[0])
+    : null;
+
+  const worstDay = dailyCalories.length > 0
+    ? dailyCalories.reduce((worst, d) => d.calories < worst.calories ? d : worst, dailyCalories[0])
+    : null;
+
+  const formatDay = (dateStr: string) =>
+    new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+
   const weeklyTotals = weeklyMeals.reduce(
     (acc, m) => ({ protein: acc.protein + Number(m.protein), carbs: acc.carbs + Number(m.carbs), fats: acc.fats + Number(m.fats), calories: acc.calories + Number(m.calories) }),
     { protein: 0, carbs: 0, fats: 0, calories: 0 }
@@ -210,6 +235,39 @@ export default function ProgressPage() {
             </button>
           ))}
         </div>
+
+        {/* Weekly Summary Card */}
+        {dailyCalories.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card glow-green p-4 space-y-3">
+            <h3 className="font-display font-bold text-foreground flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-primary" /> Weekly Summary
+            </h3>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-xl bg-secondary/60 p-3 text-center">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-muted-foreground">Avg/Day</p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{avgCalories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">kcal</p>
+              </div>
+              <div className="rounded-xl bg-primary/10 p-3 text-center border-2 border-primary/20">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-primary flex items-center justify-center gap-0.5">
+                  <TrendingUp className="h-3 w-3" /> Best
+                </p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{bestDay?.calories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">{bestDay ? formatDay(bestDay.date) : ""}</p>
+              </div>
+              <div className="rounded-xl bg-destructive/10 p-3 text-center border-2 border-destructive/20">
+                <p className="text-[10px] uppercase tracking-wider font-bold text-destructive flex items-center justify-center gap-0.5">
+                  <TrendingDown className="h-3 w-3" /> Lowest
+                </p>
+                <p className="font-display text-xl font-bold text-foreground mt-0.5">{worstDay?.calories}</p>
+                <p className="text-[10px] font-bold text-muted-foreground">{worstDay ? formatDay(worstDay.date) : ""}</p>
+              </div>
+            </div>
+            <p className="text-[10px] font-semibold text-muted-foreground text-center">
+              {dailyCalories.length} day{dailyCalories.length !== 1 ? "s" : ""} tracked • {weeklyMeals.length} meal{weeklyMeals.length !== 1 ? "s" : ""} logged
+            </p>
+          </motion.div>
+        )}
 
         <div className="glass-card p-4">
           <h3 className="mb-1 font-display font-bold text-foreground">Total Calories 🔥</h3>
