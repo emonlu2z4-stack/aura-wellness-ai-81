@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { StreakBanner } from "@/components/StreakBanner";
+import { AchievementsSection, type Achievement } from "@/components/Achievements";
 import { useProfile } from "@/hooks/useProfile";
 import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
@@ -94,6 +95,23 @@ export default function ProgressPage() {
   const totalToLose = Math.abs(startWeight - goalWeight);
   const lost = Math.abs(startWeight - currentWeight);
   const progressPct = totalToLose > 0 ? Math.min((lost / totalToLose) * 100, 100) : 0;
+
+  const proteinTarget = profile?.protein_target ?? 150;
+  const mealsLogged = weeklyMeals.length;
+  const proteinGoalDays = weeklyMeals.filter(m => Number(m.protein) >= proteinTarget / 3).length; // rough per-meal check
+  const hasWeightLogs = weightLogs.length > 0;
+
+  const achievements: Achievement[] = useMemo(() => [
+    { id: "first-meal", emoji: "🍽️", title: "First Bite", description: "Log your first meal", unlocked: mealsLogged > 0, color: "green" },
+    { id: "first-week", emoji: "📅", title: "First Week", description: "Log meals for 7 days", unlocked: mealsLogged >= 7, color: "blue" },
+    { id: "protein-3x", emoji: "💪", title: "Protein Pro", description: "Hit protein goal 3 times", unlocked: proteinGoalDays >= 3, color: "orange" },
+    { id: "streak-3", emoji: "🔥", title: "On Fire!", description: "3-day streak", unlocked: true, color: "red" },
+    { id: "streak-7", emoji: "⚡", title: "7-Day Streak", description: "Log meals 7 days straight", unlocked: mealsLogged >= 7, color: "yellow" },
+    { id: "weight-log", emoji: "⚖️", title: "Scale Master", description: "Log your first weight", unlocked: hasWeightLogs, color: "cyan" },
+    { id: "meals-20", emoji: "🌟", title: "Dedicated", description: "Log 20 meals", unlocked: mealsLogged >= 20, color: "purple" },
+    { id: "streak-30", emoji: "👑", title: "Monthly King", description: "30-day streak", unlocked: false, color: "pink" },
+    { id: "goal-reach", emoji: "🏆", title: "Goal Crusher", description: "Reach your weight goal", unlocked: progressPct >= 100, color: "green" },
+  ], [mealsLogged, proteinGoalDays, hasWeightLogs, progressPct]);
 
   const chartData = weightLogs.map(l => ({
     date: new Date(l.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
@@ -223,6 +241,10 @@ export default function ProgressPage() {
         </div>
 
         <BMICard weight={currentWeight} height={profile?.height_cm ? Number(profile.height_cm) : 0} />
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+          <AchievementsSection achievements={achievements} />
+        </motion.div>
       </div>
 
       <BottomNav />
