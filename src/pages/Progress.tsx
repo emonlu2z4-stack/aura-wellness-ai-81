@@ -268,6 +268,8 @@ export default function ProgressPage() {
             </p>
           </motion.div>
         )}
+
+        <div className="glass-card p-4">
           <h3 className="mb-1 font-display font-bold text-foreground">Total Calories 🔥</h3>
           <p className="mb-3 font-display text-2xl font-bold text-foreground">{weeklyTotals.calories}<span className="text-sm text-muted-foreground ml-1">kcal</span></p>
           {macroBarData.some(d => d.value > 0) ? (
