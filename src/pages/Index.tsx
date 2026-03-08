@@ -334,6 +334,11 @@ export default function Index() {
           </div>
         </motion.div>
 
+        {/* Water Tracker */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
+          <WaterTracker />
+        </motion.div>
+
         {/* Today's Meals */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
           <div className="flex items-center justify-between mb-3">
