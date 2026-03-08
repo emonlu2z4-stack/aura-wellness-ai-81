@@ -241,6 +241,10 @@ export default function ProgressPage() {
         </div>
 
         <BMICard weight={currentWeight} height={profile?.height_cm ? Number(profile.height_cm) : 0} />
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+          <AchievementsSection achievements={achievements} />
+        </motion.div>
       </div>
 
       <BottomNav />
