@@ -1,4 +1,4 @@
-import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles } from "lucide-react";
+import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2 } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { Confetti } from "@/components/Confetti";
