@@ -414,7 +414,9 @@ export default function Index() {
                   >
                     <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive transition-colors" />
                   </motion.button>
+                </motion.div>
               ))}
+
             </div>
           )}
         </motion.div>
