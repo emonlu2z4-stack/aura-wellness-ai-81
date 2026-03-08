@@ -546,8 +546,16 @@ export default function Index() {
         {/* Greeting */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between pt-3">
           <div>
-            <p className="text-xs uppercase tracking-widest font-bold text-muted-foreground">{greetEmoji} Good {greeting}</p>
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="text-xs uppercase tracking-widest font-bold text-muted-foreground">{greetEmoji} Good {greeting}</p>
+              {weather && (
+                <span className="text-xs font-bold text-muted-foreground/70">
+                  {weather.icon} {weather.temp}°C · {weather.desc}
+                </span>
+              )}
+            </div>
             <h1 className="font-display text-2xl font-bold mt-0.5 text-foreground">{profile?.name || "Wellness Coach"}</h1>
+            <p className="text-[11px] font-semibold text-muted-foreground/60 mt-0.5">{todayStr}</p>
           </div>
           <motion.div whileTap={{ scale: 0.9 }} className="h-12 w-12 rounded-full gradient-primary flex items-center justify-center shadow-lg shadow-primary/20 border-2 border-primary/20">
             <span className="text-sm font-bold text-primary-foreground">{(profile?.name?.[0] || "W").toUpperCase()}</span>
