@@ -16,7 +16,6 @@ export function useGroupChallenges(groupId: string | undefined) {
         .order("created_at", { ascending: false });
       if (error) throw error;
 
-      // Fetch participant counts & user participation
       const challengeIds = (challenges ?? []).map((c) => c.id);
       if (!challengeIds.length) return [];
 
@@ -64,7 +63,6 @@ export function useCreateChallenge() {
         .single();
       if (error) throw error;
 
-      // Auto-join the creator
       await supabase
         .from("challenge_participants")
         .insert({ challenge_id: data.id, user_id: user.id });
@@ -114,6 +112,146 @@ export function useLeaveChallenge() {
     },
     onSuccess: (groupId) =>
       queryClient.invalidateQueries({ queryKey: ["group-challenges", groupId] }),
+  });
+}
+
+// ── Check-in hooks ──
+
+export function useCheckin(challengeId: string | undefined) {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const today = new Date().toISOString().split("T")[0];
+
+  const { data: checkedInToday = false } = useQuery({
+    queryKey: ["challenge-checkin-today", challengeId, today],
+    queryFn: async () => {
+      if (!challengeId || !user) return false;
+      const { data } = await supabase
+        .from("challenge_checkins")
+        .select("id")
+        .eq("challenge_id", challengeId)
+        .eq("user_id", user.id)
+        .eq("date", today)
+        .maybeSingle();
+      return !!data;
+    },
+    enabled: !!challengeId && !!user,
+  });
+
+  const checkin = useMutation({
+    mutationFn: async () => {
+      if (!user || !challengeId) throw new Error("Not ready");
+      const { error } = await supabase
+        .from("challenge_checkins")
+        .insert({ challenge_id: challengeId, user_id: user.id });
+      if (error) {
+        if (error.code === "23505") throw new Error("Already checked in today!");
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["challenge-checkin-today", challengeId] });
+      queryClient.invalidateQueries({ queryKey: ["challenge-leaderboard", challengeId] });
+    },
+  });
+
+  return { checkedInToday, checkin };
+}
+
+// ── Leaderboard hook ──
+
+export interface LeaderboardEntry {
+  user_id: string;
+  name: string;
+  currentStreak: number;
+  totalCheckins: number;
+}
+
+export function useLeaderboard(challengeId: string | undefined) {
+  const { user } = useAuth();
+
+  return useQuery({
+    queryKey: ["challenge-leaderboard", challengeId],
+    queryFn: async () => {
+      if (!challengeId) return [];
+
+      // Get all checkins for this challenge
+      const { data: checkins, error } = await supabase
+        .from("challenge_checkins")
+        .select("user_id, date")
+        .eq("challenge_id", challengeId)
+        .order("date", { ascending: true });
+      if (error) throw error;
+
+      // Get participant user IDs
+      const { data: participants } = await supabase
+        .from("challenge_participants")
+        .select("user_id")
+        .eq("challenge_id", challengeId);
+
+      const userIds = [...new Set([
+        ...(checkins ?? []).map((c) => c.user_id),
+        ...(participants ?? []).map((p) => p.user_id),
+      ])];
+
+      if (!userIds.length) return [];
+
+      // Get profile names
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("user_id, name")
+        .in("user_id", userIds);
+
+      const profileMap = new Map((profiles ?? []).map((p) => [p.user_id, p.name || "Anonymous"]));
+
+      // Calculate streaks per user
+      const userCheckins = new Map<string, string[]>();
+      for (const c of checkins ?? []) {
+        if (!userCheckins.has(c.user_id)) userCheckins.set(c.user_id, []);
+        userCheckins.get(c.user_id)!.push(c.date);
+      }
+
+      const entries: LeaderboardEntry[] = userIds.map((uid) => {
+        const dates = (userCheckins.get(uid) ?? []).sort();
+        const totalCheckins = dates.length;
+        let currentStreak = 0;
+
+        if (dates.length > 0) {
+          // Calculate current streak (consecutive days ending today or yesterday)
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+
+          const lastDate = new Date(dates[dates.length - 1] + "T00:00:00");
+          if (lastDate >= yesterday) {
+            currentStreak = 1;
+            for (let i = dates.length - 2; i >= 0; i--) {
+              const curr = new Date(dates[i + 1] + "T00:00:00");
+              const prev = new Date(dates[i] + "T00:00:00");
+              const diff = (curr.getTime() - prev.getTime()) / 86400000;
+              if (diff === 1) {
+                currentStreak++;
+              } else {
+                break;
+              }
+            }
+          }
+        }
+
+        return {
+          user_id: uid,
+          name: profileMap.get(uid) ?? "Anonymous",
+          currentStreak,
+          totalCheckins,
+        };
+      });
+
+      // Sort by current streak desc, then total checkins desc
+      entries.sort((a, b) => b.currentStreak - a.currentStreak || b.totalCheckins - a.totalCheckins);
+      return entries;
+    },
+    enabled: !!challengeId && !!user,
   });
 }
 
