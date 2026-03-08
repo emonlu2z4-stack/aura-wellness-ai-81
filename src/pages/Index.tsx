@@ -329,7 +329,7 @@ export default function Index() {
   const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-28">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-primary/8 blur-[120px]" />
         <div className="absolute top-1/3 -left-40 h-72 w-72 rounded-full bg-accent/8 blur-[100px]" />
