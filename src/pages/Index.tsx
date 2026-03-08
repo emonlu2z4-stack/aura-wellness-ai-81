@@ -454,7 +454,7 @@ export default function Index() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * idx }}
-                  className="meal-item flex items-center gap-3 p-3.5"
+                  className="meal-item flex items-center gap-4 p-4 min-h-[72px]"
                 >
                   {meal.photo_url ? (
                     <img src={meal.photo_url} alt={meal.name} className="h-12 w-12 rounded-xl object-cover flex-shrink-0 ring-1 ring-border/30" />
