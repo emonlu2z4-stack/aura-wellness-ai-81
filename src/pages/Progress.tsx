@@ -119,6 +119,31 @@ export default function ProgressPage() {
     weight: Number(l.weight_kg),
   }));
 
+  // ── Weekly summary calculations ──
+  const dailyCalories = useMemo(() => {
+    const grouped: Record<string, number> = {};
+    for (const m of weeklyMeals) {
+      const d = m.date;
+      grouped[d] = (grouped[d] || 0) + Number(m.calories);
+    }
+    return Object.entries(grouped).map(([date, cals]) => ({ date, calories: cals }));
+  }, [weeklyMeals]);
+
+  const avgCalories = dailyCalories.length > 0
+    ? Math.round(dailyCalories.reduce((s, d) => s + d.calories, 0) / dailyCalories.length)
+    : 0;
+
+  const bestDay = dailyCalories.length > 0
+    ? dailyCalories.reduce((best, d) => d.calories > best.calories ? d : best, dailyCalories[0])
+    : null;
+
+  const worstDay = dailyCalories.length > 0
+    ? dailyCalories.reduce((worst, d) => d.calories < worst.calories ? d : worst, dailyCalories[0])
+    : null;
+
+  const formatDay = (dateStr: string) =>
+    new Date(dateStr + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+
   const weeklyTotals = weeklyMeals.reduce(
     (acc, m) => ({ protein: acc.protein + Number(m.protein), carbs: acc.carbs + Number(m.carbs), fats: acc.fats + Number(m.fats), calories: acc.calories + Number(m.calories) }),
     { protein: 0, carbs: 0, fats: 0, calories: 0 }
