@@ -336,7 +336,7 @@ export default function Index() {
         <div className="absolute bottom-20 right-0 h-60 w-60 rounded-full bg-neon-pink/5 blur-[80px]" />
       </div>
 
-      <div className="relative mx-auto max-w-md space-y-5 p-4">
+      <div className="relative mx-auto max-w-md space-y-6 px-5 py-4">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
