@@ -17,9 +17,11 @@ function useWaterIntake() {
   return useQuery({
     queryKey: ["water-intake", user?.id, getToday()],
     queryFn: async () => {
+      if (!user) return 0;
       const { data, error } = await supabase
         .from("water_intake")
         .select("*")
+        .eq("user_id", user.id)
         .eq("date", getToday())
         .maybeSingle();
       if (error) throw error;
