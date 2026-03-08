@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.suggest-meals]
 verify_jwt = false
+
+[functions.recipe-details]
+verify_jwt = false
