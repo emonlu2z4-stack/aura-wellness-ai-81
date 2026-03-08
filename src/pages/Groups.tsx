@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useMyGroups, useCreateGroup, useJoinGroup, useLeaveGroup } from "@/hooks/useGroups";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { GroupChallenges } from "@/components/GroupChallenges";
 import { motion } from "framer-motion";
 
 function CreateGroupDialog() {
