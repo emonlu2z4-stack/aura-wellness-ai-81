@@ -23,6 +23,7 @@ function MacroCard({ emoji, label, current, target, color, unit = "g" }: {
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.96 }}
       className="glass-card-elevated flex flex-1 flex-col items-center gap-3 p-5 min-h-[120px]"
     >
       <CircularProgress value={current} max={target} size={52} strokeWidth={4.5} color={color}>
@@ -137,9 +138,9 @@ function AddMealDialog() {
   return (
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) clearPhoto(); }}>
       <DialogTrigger asChild>
-        <button className="fixed bottom-24 right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform active:scale-95">
+        <motion.button whileTap={{ scale: 0.9 }} className="fixed bottom-24 right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform">
           <Plus className="h-7 w-7 text-primary-foreground" />
-        </button>
+        </motion.button>
       </DialogTrigger>
       <DialogContent className="glass-card border-border/50 max-w-sm">
         <DialogHeader>
@@ -453,8 +454,9 @@ export default function Index() {
                   key={meal.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
+                  whileTap={{ scale: 0.98 }}
                   transition={{ delay: 0.05 * idx }}
-                  className="meal-item flex items-center gap-4 p-4 min-h-[72px]"
+                  className="meal-item flex items-center gap-4 p-4 min-h-[72px] cursor-pointer"
                 >
                   {meal.photo_url ? (
                     <img src={meal.photo_url} alt={meal.name} className="h-12 w-12 rounded-xl object-cover flex-shrink-0 ring-1 ring-border/30" />
