@@ -50,6 +50,18 @@ export function useAddMeal() {
   });
 }
 
+export function useDeleteMeal() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (mealId: string) => {
+      const { error } = await supabase.from("meals").delete().eq("id", mealId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["meals"] }),
+  });
+}
+
 export function useWeeklyMeals(weeksAgo: number = 0) {
   const { user } = useAuth();
   const now = new Date();

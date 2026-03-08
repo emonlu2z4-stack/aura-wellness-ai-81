@@ -8,7 +8,7 @@ import { WaterTracker } from "@/components/WaterTracker";
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
-import { useTodayMeals, useAddMeal } from "@/hooks/useMeals";
+import { useTodayMeals, useAddMeal, useDeleteMeal } from "@/hooks/useMeals";
 import { motion, AnimatePresence } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
