@@ -2,3 +2,6 @@ project_id = "nbpbsgynrwtvarpicpux"
 
 [functions.analyze-meal]
 verify_jwt = false
+
+[functions.nutrition-insights]
+verify_jwt = false
