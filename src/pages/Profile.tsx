@@ -18,6 +18,7 @@ const SETTINGS = [
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {

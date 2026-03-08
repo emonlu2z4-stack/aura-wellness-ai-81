@@ -18,27 +18,29 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/groups" element={<Groups />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings/personal" element={<ProfileSettings view="personal" />} />
-            <Route path="/settings/macros" element={<ProfileSettings view="macros" />} />
-            <Route path="/settings/goal" element={<ProfileSettings view="goal" />} />
-            <Route path="/settings/weight-history" element={<ProfileSettings view="weight-history" />} />
-            <Route path="/thesis" element={<Thesis />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/progress" element={<Progress />} />
+              <Route path="/groups" element={<Groups />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings/personal" element={<ProfileSettings view="personal" />} />
+              <Route path="/settings/macros" element={<ProfileSettings view="macros" />} />
+              <Route path="/settings/goal" element={<ProfileSettings view="goal" />} />
+              <Route path="/settings/weight-history" element={<ProfileSettings view="weight-history" />} />
+              <Route path="/thesis" element={<Thesis />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
