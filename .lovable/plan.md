@@ -1,30 +1,33 @@
 
 
-## Problem Analysis
+## Problem
 
-The current `window.open()` approach fails because the new print window doesn't have access to:
-1. **Tailwind CSS classes** (`text-center`, `page-break-after`, etc.) — these render as nothing
-2. **Vite-bundled image URLs** — the logo import resolves to a hashed URL that may not load in the new window context
-3. The `padding: 0 !important` override in the print window CSS strips all content spacing
+All RLS policies on the `water_intake` table are created as **RESTRICTIVE** instead of **PERMISSIVE**. In Postgres, restrictive policies can only narrow access granted by permissive policies. With zero permissive policies, no rows are ever returned — so the query always returns 0 glasses.
 
-This is why the PDF appears blank — the content is there but unstyled and collapsed.
+This same issue likely affects other tables too (meals, profiles, weight_logs, etc.), but we'll focus on `water_intake` for now since that's the reported issue.
 
-## Solution: Use `@media print` on the current page
+## Fix
 
-Instead of opening a new window (which loses all styles), use `window.print()` directly on the current page with `@media print` CSS rules. This is the most reliable browser-based PDF approach because all styles, images, and fonts are already loaded.
+Drop the three existing restrictive policies on `water_intake` and recreate them as **permissive** (the default):
 
-### Changes to `src/pages/Thesis.tsx`:
+```sql
+DROP POLICY "Users can view own water intake" ON public.water_intake;
+DROP POLICY "Users can insert own water intake" ON public.water_intake;
+DROP POLICY "Users can update own water intake" ON public.water_intake;
 
-1. **Simplify `handleDownload`** to just call `window.print()` directly — no cloning, no new windows
-2. **Add a `<style>` block** (or update `src/index.css`) with `@media print` rules that:
-   - Hide the download button and any non-thesis UI (bottom nav, etc.)
-   - Reset A4 screen styles (shadows, fixed width) for print
-   - Set `@page { size: A4; margin: 20mm 18mm; }`
-   - Ensure `page-break-after` works via CSS `break-after: page`
-   - Set body background to white, proper font
+CREATE POLICY "Users can view own water intake" ON public.water_intake
+  FOR SELECT TO authenticated USING (auth.uid() = user_id);
 
-### Changes to `src/index.css`:
-- Add `@media print` rules to hide app chrome (bottom nav, button) and style the thesis content for clean PDF output
+CREATE POLICY "Users can insert own water intake" ON public.water_intake
+  FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
 
-This approach guarantees all Tailwind classes, images, and fonts work because we're printing the actual rendered page.
+CREATE POLICY "Users can update own water intake" ON public.water_intake
+  FOR UPDATE TO authenticated USING (auth.uid() = user_id);
+```
+
+No code changes needed — the component logic is correct.
+
+## Scope Check
+
+The same restrictive policy issue exists on **all tables** (groups, group_members, meals, profiles, progress_photos, weight_logs). We should fix all of them in the same migration to prevent similar bugs elsewhere.
 
