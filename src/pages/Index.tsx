@@ -1,4 +1,4 @@
-import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2, Brain, RefreshCw, Utensils, Clock, Users, ChefHat, Lightbulb } from "lucide-react";
+import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles, Trash2, Brain, RefreshCw, Utensils, Clock, Users, ChefHat, Lightbulb, CloudSun } from "lucide-react";
 import { Navigate } from "react-router-dom";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Confetti } from "@/components/Confetti";
