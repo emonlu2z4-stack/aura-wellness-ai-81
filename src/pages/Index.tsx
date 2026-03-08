@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import { CircularProgress } from "@/components/CircularProgress";
 import { StreakBanner } from "@/components/StreakBanner";
+import { WaterTracker } from "@/components/WaterTracker";
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
