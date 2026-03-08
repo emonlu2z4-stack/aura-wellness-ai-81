@@ -6,54 +6,54 @@
 
 @layer base {
   :root {
-    --background: 240 10% 8%;
+    --background: 0 0% 4%;
     --foreground: 0 0% 95%;
 
-    --card: 240 8% 12%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 240 8% 12%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 252 87% 64%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 85%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 240 8% 18%;
+    --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted: 240 6% 20%;
-    --muted-foreground: 240 5% 55%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 210 100% 56%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 75%;
+    --accent-foreground: 0 0% 4%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 6% 20%;
-    --input: 240 6% 20%;
-    --ring: 252 87% 64%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 0 0% 60%;
 
     --radius: 1rem;
 
-    --neon-blue: 210 100% 56%;
-    --neon-violet: 252 87% 64%;
-    --neon-green: 142 71% 45%;
-    --neon-orange: 25 95% 53%;
-    --neon-pink: 330 81% 60%;
-    --neon-cyan: 187 92% 50%;
+    --neon-blue: 0 0% 70%;
+    --neon-violet: 0 0% 75%;
+    --neon-green: 0 0% 65%;
+    --neon-orange: 0 0% 60%;
+    --neon-pink: 0 0% 68%;
+    --neon-cyan: 0 0% 72%;
 
-    --card-glass: 240 8% 14%;
-    --card-glass-border: 240 6% 24%;
+    --card-glass: 0 0% 10%;
+    --card-glass-border: 0 0% 18%;
 
-    --sidebar-background: 240 10% 8%;
+    --sidebar-background: 0 0% 4%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 252 87% 64%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 8% 18%;
+    --sidebar-primary: 0 0% 85%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 240 6% 20%;
-    --sidebar-ring: 252 87% 64%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 0 0% 60%;
   }
 }
 
