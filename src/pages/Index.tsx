@@ -138,7 +138,7 @@ function AddMealDialog() {
   return (
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) clearPhoto(); }}>
       <DialogTrigger asChild>
-        <button className="fixed bottom-24 right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform active:scale-95">
+        <motion.button whileTap={{ scale: 0.9 }} className="fixed bottom-24 right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform">
           <Plus className="h-7 w-7 text-primary-foreground" />
         </button>
       </DialogTrigger>
