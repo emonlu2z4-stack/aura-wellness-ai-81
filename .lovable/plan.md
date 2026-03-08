@@ -1,35 +1,30 @@
 
 
-## Water Intake Tracker with Animated Glass Fill
+## Problem Analysis
 
-### What we'll build
-A visually engaging water tracker row on the home dashboard, placed between the macro cards and "Today's Meals" section. Features an animated SVG glass that fills up as users tap to add water, with a daily goal of 8 glasses (2L).
+The current `window.open()` approach fails because the new print window doesn't have access to:
+1. **Tailwind CSS classes** (`text-center`, `page-break-after`, etc.) — these render as nothing
+2. **Vite-bundled image URLs** — the logo import resolves to a hashed URL that may not load in the new window context
+3. The `padding: 0 !important` override in the print window CSS strips all content spacing
 
-### Components
+This is why the PDF appears blank — the content is there but unstyled and collapsed.
 
-**1. New `WaterTracker` component** (`src/components/WaterTracker.tsx`)
-- SVG glass/cup shape with animated fill level using framer-motion
-- Displays current intake vs goal (e.g., "5/8 glasses")
-- Quick-add buttons: +1 glass (250ml), custom amount
-- Tap the glass itself to add one glass with a satisfying bounce animation
-- Water ripple/wave effect inside the glass using CSS animation
-- Color transitions: light blue → deeper blue as it fills
+## Solution: Use `@media print` on the current page
 
-**2. State management** — Local state with `useState` for now (no DB table needed initially). Water resets daily. We can persist to localStorage for session survival.
+Instead of opening a new window (which loses all styles), use `window.print()` directly on the current page with `@media print` CSS rules. This is the most reliable browser-based PDF approach because all styles, images, and fonts are already loaded.
 
-**3. Integration into `Index.tsx`**
-- Insert the water tracker as a new `motion.div` section between macro cards (line ~334) and "Today's Meals" (line ~336)
-- Matches existing design: `glass-card-elevated` styling, `motion` entrance animation
+### Changes to `src/pages/Thesis.tsx`:
 
-### Design details
-- Glass SVG: ~80px tall rounded rectangle with wave animation inside
-- Fill uses `clipPath` + animated height via framer-motion `animate={{ height }}`
-- Wave effect: CSS keyframe sine-wave at the water line
-- Quick-add buttons styled as pill-shaped with 💧 emoji
-- Progress text: "5/8 glasses 💧" with percentage ring or linear bar
+1. **Simplify `handleDownload`** to just call `window.print()` directly — no cloning, no new windows
+2. **Add a `<style>` block** (or update `src/index.css`) with `@media print` rules that:
+   - Hide the download button and any non-thesis UI (bottom nav, etc.)
+   - Reset A4 screen styles (shadows, fixed width) for print
+   - Set `@page { size: A4; margin: 20mm 18mm; }`
+   - Ensure `page-break-after` works via CSS `break-after: page`
+   - Set body background to white, proper font
 
-### Files to create/edit
-- **Create**: `src/components/WaterTracker.tsx`
-- **Edit**: `src/pages/Index.tsx` (import + place component)
-- **Edit**: `src/index.css` (wave animation keyframe)
+### Changes to `src/index.css`:
+- Add `@media print` rules to hide app chrome (bottom nav, button) and style the thesis content for clean PDF output
+
+This approach guarantees all Tailwind classes, images, and fonts work because we're printing the actual rendered page.
 

@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import { CircularProgress } from "@/components/CircularProgress";
 import { StreakBanner } from "@/components/StreakBanner";
+import { WaterTracker } from "@/components/WaterTracker";
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
@@ -331,6 +332,11 @@ export default function Index() {
                 className={`h-2.5 rounded-full transition-all duration-300 min-w-[12px] ${slide === i ? "w-8 bg-primary" : "w-2.5 bg-border"}`} />
             ))}
           </div>
+        </motion.div>
+
+        {/* Water Tracker */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.17 }}>
+          <WaterTracker />
         </motion.div>
 
         {/* Today's Meals */}
