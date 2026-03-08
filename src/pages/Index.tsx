@@ -1,6 +1,7 @@
 import { Plus, Flame, Camera, Loader2, X, ChevronRight, Sparkles } from "lucide-react";
 import { Navigate } from "react-router-dom";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Confetti } from "@/components/Confetti";
 import { CircularProgress } from "@/components/CircularProgress";
 import { StreakBanner } from "@/components/StreakBanner";
 import { WaterTracker } from "@/components/WaterTracker";
