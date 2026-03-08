@@ -2,12 +2,13 @@ import { useState, useMemo } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { StreakBanner } from "@/components/StreakBanner";
 import { AchievementsSection, type Achievement } from "@/components/Achievements";
+import { PhotoComparisonSection } from "@/components/PhotoComparisonSlider";
 import { useProfile } from "@/hooks/useProfile";
 import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { Camera, Upload, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -194,18 +195,9 @@ export default function ProgressPage() {
           )}
         </div>
 
-        <div className="glass-card p-4">
-          <h3 className="mb-3 font-display font-bold text-foreground">Progress Photos 📸</h3>
-          <div className="flex flex-col items-center gap-3 py-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-              <Camera className="h-7 w-7 text-muted-foreground" />
-            </div>
-            <p className="text-sm font-semibold text-muted-foreground">Track your visual progress</p>
-            <Button variant="outline" size="sm" className="gap-2 font-bold rounded-full btn-bounce border-2">
-              <Upload className="h-4 w-4" /> Upload a Photo
-            </Button>
-          </div>
-        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+          <PhotoComparisonSection />
+        </motion.div>
 
         {/* Week filter pills */}
         <div className="flex gap-2 overflow-x-auto pb-1">
