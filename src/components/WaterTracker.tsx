@@ -1,36 +1,75 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Droplets, Plus, Minus } from "lucide-react";
 import { Confetti } from "@/components/Confetti";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const GOAL = 8;
-const STORAGE_KEY = "water-tracker";
 
 function getToday() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function loadGlasses(): number {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return 0;
-    const { date, glasses } = JSON.parse(raw);
-    return date === getToday() ? glasses : 0;
-  } catch {
-    return 0;
-  }
+function useWaterIntake() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["water-intake", user?.id, getToday()],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("water_intake")
+        .select("*")
+        .eq("date", getToday())
+        .maybeSingle();
+      if (error) throw error;
+      return data?.glasses ?? 0;
+    },
+    enabled: !!user,
+    staleTime: 0,
+  });
+}
+
+function useUpdateWater() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newGlasses: number) => {
+      if (!user) throw new Error("Not authenticated");
+      const { error } = await supabase
+        .from("water_intake")
+        .upsert(
+          { user_id: user.id, date: getToday(), glasses: newGlasses, updated_at: new Date().toISOString() },
+          { onConflict: "user_id,date" }
+        );
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["water-intake"] });
+    },
+  });
 }
 
 export function WaterTracker() {
-  const [glasses, setGlasses] = useState(loadGlasses);
+  const { data: dbGlasses = 0, isLoading } = useWaterIntake();
+  const updateWater = useUpdateWater();
+  const [glasses, setGlasses] = useState(0);
   const [justAdded, setJustAdded] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const prevGlassesRef = useRef(glasses);
-  const pct = Math.min((glasses / GOAL) * 100, 100);
+  const prevGlassesRef = useRef(0);
+  const initializedRef = useRef(false);
 
+  // Sync from DB on load
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: getToday(), glasses }));
-  }, [glasses]);
+    if (!isLoading && !initializedRef.current) {
+      setGlasses(dbGlasses);
+      prevGlassesRef.current = dbGlasses;
+      initializedRef.current = true;
+    }
+  }, [dbGlasses, isLoading]);
+
+  const pct = Math.min((glasses / GOAL) * 100, 100);
 
   useEffect(() => {
     if (prevGlassesRef.current < GOAL && glasses >= GOAL) {
@@ -39,16 +78,22 @@ export function WaterTracker() {
     prevGlassesRef.current = glasses;
   }, [glasses]);
 
+  const persistGlasses = useCallback((newGlasses: number) => {
+    setGlasses(newGlasses);
+    updateWater.mutate(newGlasses);
+  }, [updateWater]);
+
   const add = () => {
     if (glasses >= GOAL) return;
-    setGlasses((g) => g + 1);
+    const next = glasses + 1;
+    persistGlasses(next);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 600);
   };
 
   const remove = () => {
     if (glasses <= 0) return;
-    setGlasses((g) => g - 1);
+    persistGlasses(glasses - 1);
   };
 
   return (
@@ -71,20 +116,17 @@ export function WaterTracker() {
           aria-label="Add one glass of water"
         >
           <svg width="56" height="76" viewBox="0 0 56 76" fill="none">
-            {/* Glass outline */}
             <path
               d="M8 8 L4 68 C4 72 8 76 14 76 L42 76 C48 76 52 72 52 68 L48 8 Z"
               className="stroke-duo-blue/30"
               strokeWidth="2"
               fill="none"
             />
-            {/* Glass fill area with clip */}
             <defs>
               <clipPath id="glass-clip">
                 <path d="M8 8 L4 68 C4 72 8 76 14 76 L42 76 C48 76 52 72 52 68 L48 8 Z" />
               </clipPath>
             </defs>
-            {/* Fill */}
             <motion.rect
               x="0"
               width="56"
@@ -94,7 +136,6 @@ export function WaterTracker() {
               animate={{ y: 76 - (pct / 100) * 68, height: (pct / 100) * 68 }}
               transition={{ type: "spring", stiffness: 80, damping: 15 }}
             />
-            {/* Wave overlay */}
             <motion.g clipPath="url(#glass-clip)" initial={false} animate={{ y: 76 - (pct / 100) * 68 }}>
               <motion.path
                 d="M0 4 Q7 0 14 4 Q21 8 28 4 Q35 0 42 4 Q49 8 56 4 L56 12 L0 12 Z"
@@ -103,11 +144,9 @@ export function WaterTracker() {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
             </motion.g>
-            {/* Rim */}
             <rect x="6" y="4" width="44" height="4" rx="2" className="fill-duo-blue/20" />
           </svg>
 
-          {/* Splash effect */}
           <AnimatePresence>
             {justAdded && (
               <motion.div
@@ -125,7 +164,6 @@ export function WaterTracker() {
 
         {/* Progress bar + buttons */}
         <div className="flex-1 space-y-3">
-          {/* Progress bar */}
           <div className="h-3 rounded-full bg-secondary overflow-hidden">
             <motion.div
               className="h-full rounded-full"
@@ -138,7 +176,6 @@ export function WaterTracker() {
             />
           </div>
 
-          {/* Amount display */}
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold text-muted-foreground">
               {(glasses * 250)}ml / {GOAL * 250}ml
@@ -154,7 +191,6 @@ export function WaterTracker() {
             )}
           </div>
 
-          {/* Quick-add buttons */}
           <div className="flex gap-2">
             <motion.button
               whileTap={{ scale: 0.85 }}
