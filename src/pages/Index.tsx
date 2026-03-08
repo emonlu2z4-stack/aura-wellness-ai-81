@@ -462,6 +462,8 @@ export default function Index() {
   const [slide, setSlide] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const prevCaloriesRef = useRef(0);
+  const [weather, setWeather] = useState<{ temp: number; desc: string; icon: string } | null>(null);
+  const todayStr = new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 
   const totals = meals.reduce(
     (acc, m) => ({
