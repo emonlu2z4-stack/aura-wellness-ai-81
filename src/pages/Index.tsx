@@ -192,16 +192,6 @@ export default function Index() {
   const [showConfetti, setShowConfetti] = useState(false);
   const prevCaloriesRef = useRef(0);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (!user) return <Navigate to="/auth" replace />;
-
   const totals = meals.reduce(
     (acc, m) => ({
       calories: acc.calories + Number(m.calories), protein: acc.protein + Number(m.protein),
@@ -217,10 +207,7 @@ export default function Index() {
     fiber: profile?.fiber_target ?? 30, sugar: profile?.sugar_target ?? 50, sodium: profile?.sodium_target ?? 2300,
   };
 
-  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
   const caloriePct = Math.round((totals.calories / targets.calories) * 100);
-  const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
-  const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
   // Trigger confetti when calorie goal is reached
   useEffect(() => {
@@ -229,6 +216,20 @@ export default function Index() {
     }
     prevCaloriesRef.current = totals.calories;
   }, [totals.calories, targets.calories]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/auth" replace />;
+
+  const caloriesLeft = Math.max(targets.calories - totals.calories, 0);
+  const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
+  const greetEmoji = new Date().getHours() < 12 ? "☀️" : new Date().getHours() < 18 ? "🌤️" : "🌙";
 
   return (
     <div className="min-h-screen bg-background pb-28">
