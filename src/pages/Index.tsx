@@ -23,7 +23,7 @@ function MacroCard({ emoji, label, current, target, color, unit = "g" }: {
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
-      className="glass-card-elevated flex flex-1 flex-col items-center gap-2.5 p-4"
+      className="glass-card-elevated flex flex-1 flex-col items-center gap-3 p-5 min-h-[120px]"
     >
       <CircularProgress value={current} max={target} size={52} strokeWidth={4.5} color={color}>
         <span className="text-base">{emoji}</span>
@@ -137,7 +137,7 @@ function AddMealDialog() {
   return (
     <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) clearPhoto(); }}>
       <DialogTrigger asChild>
-        <button className="fixed bottom-20 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform active:scale-95">
+        <button className="fixed bottom-24 right-5 z-40 flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-lg shadow-primary/30 transition-transform active:scale-95">
           <Plus className="h-7 w-7 text-primary-foreground" />
         </button>
       </DialogTrigger>
@@ -329,14 +329,14 @@ export default function Index() {
   const greeting = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-28">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-primary/8 blur-[120px]" />
         <div className="absolute top-1/3 -left-40 h-72 w-72 rounded-full bg-accent/8 blur-[100px]" />
         <div className="absolute bottom-20 right-0 h-60 w-60 rounded-full bg-neon-pink/5 blur-[80px]" />
       </div>
 
-      <div className="relative mx-auto max-w-md space-y-5 p-4">
+      <div className="relative mx-auto max-w-md space-y-6 px-5 py-4">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -412,12 +412,12 @@ export default function Index() {
               </motion.div>
             )}
           </AnimatePresence>
-          <div className="mt-4 flex justify-center gap-2">
+          <div className="mt-5 flex justify-center gap-2.5">
             {[0, 1].map(i => (
               <button
                 key={i}
                 onClick={() => setSlide(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${slide === i ? "w-7 bg-primary" : "w-1.5 bg-muted-foreground/20"}`}
+                className={`h-2 rounded-full transition-all duration-300 min-w-[12px] ${slide === i ? "w-8 bg-primary" : "w-2 bg-muted-foreground/20"}`}
               />
             ))}
           </div>
@@ -454,7 +454,7 @@ export default function Index() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 * idx }}
-                  className="meal-item flex items-center gap-3 p-3.5"
+                  className="meal-item flex items-center gap-4 p-4 min-h-[72px]"
                 >
                   {meal.photo_url ? (
                     <img src={meal.photo_url} alt={meal.name} className="h-12 w-12 rounded-xl object-cover flex-shrink-0 ring-1 ring-border/30" />
