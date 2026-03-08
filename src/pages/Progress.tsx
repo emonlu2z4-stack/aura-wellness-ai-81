@@ -8,7 +8,7 @@ import { useWeightLogs, useAddWeightLog } from "@/hooks/useWeightLogs";
 import { useWeeklyMeals } from "@/hooks/useMeals";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
-import { Trophy } from "lucide-react";
+import { Trophy, TrendingUp, TrendingDown, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
