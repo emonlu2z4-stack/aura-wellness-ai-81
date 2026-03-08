@@ -399,8 +399,21 @@ export default function Index() {
                       <span className="text-[11px] font-semibold text-muted-foreground">P {Number(meal.protein)}g · C {Number(meal.carbs)}g · F {Number(meal.fats)}g</span>
                     </div>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/40 flex-shrink-0" />
-                </motion.div>
+                  <motion.button
+                    whileTap={{ scale: 0.8 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (confirm("Delete this meal?")) {
+                        deleteMeal.mutate(meal.id, {
+                          onSuccess: () => toast.success("Meal deleted 🗑️"),
+                          onError: () => toast.error("Failed to delete meal"),
+                        });
+                      }
+                    }}
+                    className="p-2 rounded-full hover:bg-destructive/10 transition-colors flex-shrink-0"
+                  >
+                    <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive transition-colors" />
+                  </motion.button>
               ))}
             </div>
           )}
