@@ -189,6 +189,8 @@ export default function Index() {
   const { profile } = useProfile();
   const { data: meals = [] } = useTodayMeals();
   const [slide, setSlide] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const prevCaloriesRef = useRef(0);
 
   if (loading) {
     return (
