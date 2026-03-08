@@ -1,8 +1,9 @@
 import { BottomNav } from "@/components/BottomNav";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useTheme } from "@/hooks/useTheme";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, User, Target, Scale, History, Share2, LogOut, Crown } from "lucide-react";
+import { ChevronRight, User, Target, Scale, History, Share2, LogOut, Crown, Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -17,6 +18,7 @@ const SETTINGS = [
 export default function ProfilePage() {
   const { user, signOut } = useAuth();
   const { profile } = useProfile();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -91,7 +93,26 @@ export default function ProfilePage() {
         {/* Settings list */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
           className="glass-card divide-y-2 divide-border/50 overflow-hidden">
-          {SETTINGS.map(({ icon: Icon, label, path, emoji }, i) => (
+          {/* Theme toggle */}
+          <motion.button
+            onClick={toggleTheme}
+            whileTap={{ scale: 0.98 }}
+            className="flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-secondary/50 btn-bounce"
+          >
+            <span className="text-lg">{theme === "dark" ? "🌙" : "☀️"}</span>
+            <span className="flex-1 text-sm font-bold text-foreground">
+              {theme === "dark" ? "Dark Mode" : "Light Mode"}
+            </span>
+            <div className="flex items-center gap-2">
+              <Sun className={`h-4 w-4 transition-colors ${theme === "light" ? "text-duo-orange" : "text-muted-foreground/40"}`} />
+              <div className={`relative h-6 w-11 rounded-full transition-colors ${theme === "dark" ? "bg-primary" : "bg-border"}`}>
+                <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${theme === "dark" ? "translate-x-5" : "translate-x-0.5"}`} />
+              </div>
+              <Moon className={`h-4 w-4 transition-colors ${theme === "dark" ? "text-duo-blue" : "text-muted-foreground/40"}`} />
+            </div>
+          </motion.button>
+
+          {SETTINGS.map(({ icon: Icon, label, path, emoji }) => (
             <motion.button
               key={label}
               onClick={() => navigate(path)}
