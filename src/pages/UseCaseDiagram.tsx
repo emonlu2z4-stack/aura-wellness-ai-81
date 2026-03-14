@@ -145,7 +145,7 @@ function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x
   );
 }
 
-// Dashed arrow for include/extend (draw.io style - open arrowhead)
+// Dashed arrow for include/extend (draw.io style - filled blue arrowhead)
 function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
@@ -156,29 +156,31 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
   // Shorten line to ellipse edge
   const ux = dx / len;
   const uy = dy / len;
+  const arrowLen = 12;
   const endX = to.x - ux * 30;
   const endY = to.y - uy * 30;
 
   const angle = Math.atan2(dy, dx);
-  const arrowLen = 10;
+  const tipX = endX;
+  const tipY = endY;
+  const leftX = tipX - arrowLen * Math.cos(angle - 0.35);
+  const leftY = tipY - arrowLen * Math.sin(angle - 0.35);
+  const rightX = tipX - arrowLen * Math.cos(angle + 0.35);
+  const rightY = tipY - arrowLen * Math.sin(angle + 0.35);
+
+  // Shorten the dashed line so it ends at the base of the arrowhead
+  const lineEndX = endX - ux * arrowLen * 0.7;
+  const lineEndY = endY - uy * arrowLen * 0.7;
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={endX} y2={endY} stroke="#000" strokeWidth="1" strokeDasharray="7,4" />
-      {/* Open arrowhead */}
-      <line
-        x1={endX}
-        y1={endY}
-        x2={endX - arrowLen * Math.cos(angle - 0.4)}
-        y2={endY - arrowLen * Math.sin(angle - 0.4)}
-        stroke="#000" strokeWidth="1.2"
-      />
-      <line
-        x1={endX}
-        y1={endY}
-        x2={endX - arrowLen * Math.cos(angle + 0.4)}
-        y2={endY - arrowLen * Math.sin(angle + 0.4)}
-        stroke="#000" strokeWidth="1.2"
+      <line x1={from.x} y1={from.y} x2={lineEndX} y2={lineEndY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />
+      {/* Filled blue arrowhead */}
+      <polygon
+        points={`${tipX},${tipY} ${leftX},${leftY} ${rightX},${rightY}`}
+        fill="#4a90d9"
+        stroke="#4a90d9"
+        strokeWidth="1"
       />
       <text
         x={mx}
@@ -186,7 +188,8 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
         textAnchor="middle"
         fontSize="10"
         fontFamily="Helvetica, Arial, sans-serif"
-        fill="#000"
+        fill="#4a90d9"
+        fontStyle="italic"
       >
         {label}
       </text>
