@@ -36,6 +36,7 @@ const App = () => (
               <Route path="/settings/goal" element={<ProfileSettings view="goal" />} />
               <Route path="/settings/weight-history" element={<ProfileSettings view="weight-history" />} />
               <Route path="/thesis" element={<Thesis />} />
+              <Route path="/use-case-diagram" element={<UseCaseDiagram />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
