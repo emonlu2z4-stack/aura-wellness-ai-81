@@ -255,7 +255,7 @@ export default function UseCaseDiagram() {
 
             {/* Associations */}
             {associations.map(([fromId, toId], i) => (
-              <AssociationLine key={i} from={getPos(fromId)} to={getPos(toId)} />
+              <AssociationLine key={i} from={getPos(fromId)} to={getPos(toId)} color={actorColors[fromId] || "#1e293b"} />
             ))}
 
             {/* Include relationships */}
