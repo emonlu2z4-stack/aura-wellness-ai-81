@@ -200,11 +200,11 @@ export default function UseCaseDiagram() {
     if (!coverRef.current || !diagramRef.current) return;
     setGenerating(true);
     try {
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
       const pdfW = pdf.internal.pageSize.getWidth();
       const pdfH = pdf.internal.pageSize.getHeight();
 
-      // Page 1: Cover page
+      // Page 1: Cover page (A3 landscape)
       const coverCanvas = await html2canvas(coverRef.current, {
         scale: 3,
         backgroundColor: "#ffffff",
@@ -218,7 +218,7 @@ export default function UseCaseDiagram() {
       else { cW = pdfH * coverRatio; cX = (pdfW - cW) / 2; }
       pdf.addImage(coverImg, "PNG", cX, cY, cW, cH);
 
-      // Page 2: Diagram (landscape)
+      // Page 2: Diagram (A3 landscape)
       pdf.addPage("a3", "landscape");
       const diagCanvas = await html2canvas(diagramRef.current, {
         scale: 3,
