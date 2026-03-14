@@ -67,7 +67,6 @@ const includes: [string, string][] = [
 ];
 
 const extends_: [string, string][] = [
-  ["uc14", "uc4"],  // Track Streak «extend» Log Meal Manually
   ["uc17", "uc12"], // View Weight Chart «extend» Log Weight
   ["uc7", "uc4"],   // Delete Meal Entry «extend» Log Meal Manually
 ];
