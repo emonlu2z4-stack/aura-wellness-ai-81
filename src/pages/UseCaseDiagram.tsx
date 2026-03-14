@@ -219,15 +219,7 @@ export default function UseCaseDiagram() {
             borderRadius: "4px",
           }}
         >
-          {/* University Header */}
-          <div style={{ textAlign: "center", marginBottom: "28px", borderBottom: "2px solid #1e293b", paddingBottom: "20px" }}>
-            <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ height: "72px", margin: "0 auto 10px" }} />
-            <h2 style={{ fontSize: "18pt", fontWeight: "bold", margin: "0 0 4px", color: "#0f172a" }}>
-              Leading University, Sylhet
-            </h2>
-            <p style={{ fontSize: "12pt", margin: "0 0 2px", color: "#334155" }}>
-              Department of Computer Science &amp; Engineering
-            </p>
+          {/* Diagram Title */}
             <p style={{ fontSize: "11pt", margin: "0 0 10px", color: "#475569" }}>
               Course: Software Engineering (CSE 332)
             </p>
