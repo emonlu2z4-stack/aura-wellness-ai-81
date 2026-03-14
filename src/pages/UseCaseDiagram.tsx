@@ -253,10 +253,32 @@ export default function UseCaseDiagram() {
             <text x="160" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
             <text x="160" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
 
-            {/* Associations */}
-            {associations.map(([fromId, toId], i) => (
-              <AssociationLine key={i} from={getPos(fromId)} to={getPos(toId)} color={actorColors[fromId] || "#1e293b"} />
-            ))}
+            {/* Associations — fan out from each actor */}
+            {(() => {
+              // Group associations by actor to spread origin points
+              const byActor: Record<string, string[]> = {};
+              associations.forEach(([fromId, toId]) => {
+                if (!byActor[fromId]) byActor[fromId] = [];
+                byActor[fromId].push(toId);
+              });
+              return Object.entries(byActor).flatMap(([actorId, targets]) => {
+                const actorPos = getPos(actorId);
+                const count = targets.length;
+                const spread = Math.min(count * 5, 60); // total spread range
+                return targets.map((toId, idx) => {
+                  const offset = -spread / 2 + (count > 1 ? (idx / (count - 1)) * spread : 0);
+                  const fromWithOffset = { x: actorPos.x, y: actorPos.y + offset };
+                  return (
+                    <AssociationLine
+                      key={`${actorId}-${toId}`}
+                      from={fromWithOffset}
+                      to={getPos(toId)}
+                      color={actorColors[actorId] || "#1e293b"}
+                    />
+                  );
+                });
+              });
+            })()}
 
             {/* Include relationships */}
             {includes.map(([fromId, toId], i) => (
