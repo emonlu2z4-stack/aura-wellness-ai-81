@@ -47,7 +47,7 @@ const useCases = [
 
 const associations: [string, string][] = [
   ["user", "uc1"], ["user", "uc2"], ["user", "uc4"], ["user", "uc5"],
-  ["user", "uc7"], ["user", "uc8"], ["user", "uc10"], ["user", "uc11"],
+  ["user", "uc7"], ["user", "uc10"], ["user", "uc11"],
   ["user", "uc12"], ["user", "uc13"], ["user", "uc15"], ["user", "uc16"],
   ["user", "uc17"], ["user", "uc18"], ["user", "uc19"], ["user", "uc20"],
   ["user", "uc21"], ["user", "uc22"], ["user", "uc23"],
