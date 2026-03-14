@@ -283,35 +283,46 @@ export default function UseCaseDiagram() {
           <div style={{
             border: "1.5px solid #334155",
             borderRadius: "4px",
-            padding: "12px 24px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "40px",
+            padding: "14px 20px",
             marginTop: "16px",
-            fontSize: "11pt",
+            fontSize: "10pt",
             color: "#1e293b",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="36" height="14"><line x1="0" y1="7" x2="36" y2="7" stroke="#475569" strokeWidth="1.5" /></svg>
-              <span>Association</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="48" height="14"><line x1="0" y1="7" x2="38" y2="7" stroke="#64748b" strokeWidth="1.5" strokeDasharray="6,3" /><polygon points="38,7 31,3 31,11" fill="#64748b" /></svg>
-              <span style={{ fontStyle: "italic" }}>«include» / «extend»</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="28" height="20"><ellipse cx="14" cy="10" rx="13" ry="9" fill="#f8fafc" stroke="#2563eb" strokeWidth="1.5" /></svg>
-              <span>Use Case</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="20" height="30">
-                <circle cx="10" cy="4" r="4" fill="none" stroke="#1e293b" strokeWidth="1.5" />
-                <line x1="10" y1="8" x2="10" y2="18" stroke="#1e293b" strokeWidth="1.5" />
-                <line x1="3" y1="12" x2="17" y2="12" stroke="#1e293b" strokeWidth="1.5" />
-                <line x1="10" y1="18" x2="4" y2="26" stroke="#1e293b" strokeWidth="1.5" />
-                <line x1="10" y1="18" x2="16" y2="26" stroke="#1e293b" strokeWidth="1.5" />
-              </svg>
-              <span>Actor</span>
+            <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#2563eb" strokeWidth="1.8" /></svg>
+                <span style={{ color: "#2563eb" }}>User</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#dc2626" strokeWidth="1.8" /></svg>
+                <span style={{ color: "#dc2626" }}>Admin</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#059669" strokeWidth="1.8" /></svg>
+                <span style={{ color: "#059669" }}>AI System</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#d97706" strokeWidth="1.8" /></svg>
+                <span style={{ color: "#d97706" }}>Weather API</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="40" height="12"><line x1="0" y1="6" x2="32" y2="6" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="6,3" /><polygon points="32,6 26,3 26,9" fill="#1e293b" /></svg>
+                <span style={{ fontStyle: "italic" }}>«include» / «extend»</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="26" height="18"><ellipse cx="13" cy="9" rx="12" ry="8" fill="#f8fafc" stroke="#2563eb" strokeWidth="1.3" /></svg>
+                <span>Use Case</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="18" height="26">
+                  <circle cx="9" cy="4" r="3.5" fill="none" stroke="#1e293b" strokeWidth="1.3" />
+                  <line x1="9" y1="7.5" x2="9" y2="15" stroke="#1e293b" strokeWidth="1.3" />
+                  <line x1="3" y1="10" x2="15" y2="10" stroke="#1e293b" strokeWidth="1.3" />
+                  <line x1="9" y1="15" x2="4" y2="22" stroke="#1e293b" strokeWidth="1.3" />
+                  <line x1="9" y1="15" x2="14" y2="22" stroke="#1e293b" strokeWidth="1.3" />
+                </svg>
+                <span>Actor</span>
+              </div>
             </div>
           </div>
 
