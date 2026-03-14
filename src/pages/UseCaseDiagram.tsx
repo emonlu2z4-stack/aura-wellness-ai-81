@@ -153,28 +153,37 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
   const mx = (from.x + to.x) / 2;
   const my = (from.y + to.y) / 2;
 
-  // Shorten line to ellipse edge
   const ux = dx / len;
   const uy = dy / len;
-  const arrowLen = 12;
-  const endX = to.x - ux * 30;
-  const endY = to.y - uy * 30;
 
+  // Calculate exact ellipse edge intersection (rx=100, ry=30)
+  // Point on ellipse: parametric angle t where cos(t)=-ux, sin(t)=-uy scaled
+  const rx = 100;
+  const ry = 30;
+  const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
+  const edgeX = to.x - ux * scale;
+  const edgeY = to.y - uy * scale;
+
+  // Also compute start edge (from ellipse)
+  const startEdgeX = from.x + ux * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
+  const startEdgeY = from.y + uy * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
+
+  const arrowLen = 12;
   const angle = Math.atan2(dy, dx);
-  const tipX = endX;
-  const tipY = endY;
+  const tipX = edgeX;
+  const tipY = edgeY;
   const leftX = tipX - arrowLen * Math.cos(angle - 0.35);
   const leftY = tipY - arrowLen * Math.sin(angle - 0.35);
   const rightX = tipX - arrowLen * Math.cos(angle + 0.35);
   const rightY = tipY - arrowLen * Math.sin(angle + 0.35);
 
   // Shorten the dashed line so it ends at the base of the arrowhead
-  const lineEndX = endX - ux * arrowLen * 0.7;
-  const lineEndY = endY - uy * arrowLen * 0.7;
+  const lineEndX = edgeX - ux * arrowLen * 0.8;
+  const lineEndY = edgeY - uy * arrowLen * 0.8;
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={lineEndX} y2={lineEndY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />
+      <line x1={startEdgeX} y1={startEdgeY} x2={lineEndX} y2={lineEndY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />
       {/* Filled blue arrowhead */}
       <polygon
         points={`${tipX},${tipY} ${leftX},${leftY} ${rightX},${rightY}`}
