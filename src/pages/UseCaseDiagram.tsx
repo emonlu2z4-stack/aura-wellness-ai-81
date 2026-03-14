@@ -238,13 +238,13 @@ export default function UseCaseDiagram() {
             </text>
 
             {/* Group labels */}
-            <text x="178" y="70" fontSize="11" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
-            <text x="178" y="185" fontSize="11" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
-            <text x="178" y="340" fontSize="11" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
-            <text x="178" y="415" fontSize="11" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
-            <text x="178" y="580" fontSize="11" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
-            <text x="178" y="680" fontSize="11" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
-            <text x="178" y="780" fontSize="11" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
+            <text x="208" y="85" fontSize="12" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
+            <text x="208" y="225" fontSize="12" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
+            <text x="208" y="420" fontSize="12" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
+            <text x="208" y="515" fontSize="12" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
+            <text x="208" y="720" fontSize="12" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
+            <text x="208" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
+            <text x="208" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
 
             {/* Associations */}
             {associations.map(([fromId, toId], i) => (
