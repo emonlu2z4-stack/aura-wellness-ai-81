@@ -138,7 +138,7 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#64748b" strokeWidth="1.5" strokeDasharray="8,4" />
+      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4" />
       <polygon
         points={`${arrowX},${arrowY} ${arrowX - 10 * Math.cos(angle - 0.4)},${arrowY - 10 * Math.sin(angle - 0.4)} ${arrowX - 10 * Math.cos(angle + 0.4)},${arrowY - 10 * Math.sin(angle + 0.4)}`}
         fill="#64748b"
