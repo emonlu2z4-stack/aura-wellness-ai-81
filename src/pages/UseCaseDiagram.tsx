@@ -232,26 +232,26 @@ export default function UseCaseDiagram() {
           </h1>
 
           {/* SVG Diagram */}
-          <svg viewBox="0 0 1350 1060" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
+          <svg viewBox="0 0 1400 1060" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
             {/* Group background bands */}
             {groupBands.map((g, i) => (
-              <rect key={i} x="198" y={g.y} width="955" height={g.h} rx="6" fill={g.color} opacity="0.6" />
+              <rect key={i} x="148" y={g.y} width="1010" height={g.h} rx="6" fill={g.color} opacity="0.6" />
             ))}
 
             {/* System boundary */}
-            <rect x="190" y="35" width="970" height="1000" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
-            <text x="675" y="26" textAnchor="middle" fontSize="16" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
+            <rect x="140" y="35" width="1025" height="1000" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
+            <text x="652" y="26" textAnchor="middle" fontSize="16" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
               NutriTrack AI System
             </text>
 
-            {/* Group labels */}
-            <text x="208" y="85" fontSize="12" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
-            <text x="208" y="225" fontSize="12" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
-            <text x="208" y="420" fontSize="12" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
-            <text x="208" y="515" fontSize="12" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
-            <text x="208" y="720" fontSize="12" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
-            <text x="208" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
-            <text x="208" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
+            {/* Group labels — positioned inside boundary with enough room */}
+            <text x="160" y="85" fontSize="12" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
+            <text x="160" y="225" fontSize="12" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
+            <text x="160" y="420" fontSize="12" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
+            <text x="160" y="515" fontSize="12" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
+            <text x="160" y="720" fontSize="12" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
+            <text x="160" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
+            <text x="160" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
 
             {/* Associations */}
             {associations.map(([fromId, toId], i) => (
