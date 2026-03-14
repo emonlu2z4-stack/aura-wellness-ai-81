@@ -191,14 +191,24 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
         stroke="#4a90d9"
         strokeWidth="1"
       />
+      {/* Label background for visibility */}
+      <rect
+        x={mx - 30}
+        y={my - 20}
+        width={60}
+        height={14}
+        fill="#fff"
+        stroke="none"
+        rx={2}
+      />
       <text
         x={mx}
-        y={my - 8}
+        y={my - 9}
         textAnchor="middle"
-        fontSize="10"
+        fontSize="11"
         fontFamily="Helvetica, Arial, sans-serif"
         fill="#4a90d9"
-        fontStyle="italic"
+        fontWeight="bold"
       >
         {label}
       </text>
