@@ -225,15 +225,15 @@ export default function UseCaseDiagram() {
           </h1>
 
           {/* SVG Diagram */}
-          <svg viewBox="0 0 1150 870" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
+          <svg viewBox="0 0 1350 1060" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
             {/* Group background bands */}
             {groupBands.map((g, i) => (
-              <rect key={i} x="168" y={g.y} width="815" height={g.h} rx="6" fill={g.color} opacity="0.6" />
+              <rect key={i} x="198" y={g.y} width="955" height={g.h} rx="6" fill={g.color} opacity="0.6" />
             ))}
 
             {/* System boundary */}
-            <rect x="160" y="30" width="830" height="820" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
-            <text x="575" y="22" textAnchor="middle" fontSize="15" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
+            <rect x="190" y="35" width="970" height="1000" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
+            <text x="675" y="26" textAnchor="middle" fontSize="16" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
               NutriTrack AI System
             </text>
 
