@@ -74,7 +74,7 @@ const extends_: [string, string][] = [
 ];
 
 const groupBands: { label: string; y: number; h: number; color: string }[] = [
-  { label: "Authentication", y: 60, h: 80, color: "#f0f0ff" },
+  { label: "Authentication", y: 60, h: 80, color: "transparent" },
   { label: "Meal Tracking", y: 200, h: 180, color: "#f0fdf4" },
   { label: "Nutrition & AI", y: 400, h: 170, color: "#fffbeb" },
   { label: "Health Tracking", y: 495, h: 180, color: "#fef2f2" },
