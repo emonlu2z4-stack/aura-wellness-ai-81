@@ -220,20 +220,6 @@ export default function UseCaseDiagram() {
           }}
         >
           {/* Diagram Title */}
-            <p style={{ fontSize: "11pt", margin: "0 0 10px", color: "#475569" }}>
-              Course: Software Engineering (CSE 332)
-            </p>
-            <div style={{ fontSize: "10pt", color: "#475569", lineHeight: "1.8" }}>
-              <p style={{ margin: 0 }}>
-                <strong>Team Members:</strong> Emon Ahmed (0182320012101356) · MD Rayhan Akhand (0182320012101320) · Md Sams Uddin Emon (0182310012101144)
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong>Batch:</strong> 62 &nbsp;|&nbsp; <strong>Section:</strong> H &nbsp;|&nbsp; <strong>Supervisor:</strong> Kazi Md. Jahid Hasan
-              </p>
-            </div>
-          </div>
-
-          {/* Diagram Title */}
           <h1 style={{ fontSize: "16pt", fontWeight: "bold", textAlign: "center", margin: "0 0 16px", color: "#0f172a" }}>
             Use Case Diagram — NutriTrack AI Health &amp; Fitness Application
           </h1>
