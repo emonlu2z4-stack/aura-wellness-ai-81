@@ -219,28 +219,6 @@ export default function UseCaseDiagram() {
             borderRadius: "4px",
           }}
         >
-          {/* University Header */}
-          <div style={{ textAlign: "center", marginBottom: "28px", borderBottom: "2px solid #1e293b", paddingBottom: "20px" }}>
-            <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ height: "72px", margin: "0 auto 10px" }} />
-            <h2 style={{ fontSize: "18pt", fontWeight: "bold", margin: "0 0 4px", color: "#0f172a" }}>
-              Leading University, Sylhet
-            </h2>
-            <p style={{ fontSize: "12pt", margin: "0 0 2px", color: "#334155" }}>
-              Department of Computer Science &amp; Engineering
-            </p>
-            <p style={{ fontSize: "11pt", margin: "0 0 10px", color: "#475569" }}>
-              Course: Software Engineering (CSE 332)
-            </p>
-            <div style={{ fontSize: "10pt", color: "#475569", lineHeight: "1.8" }}>
-              <p style={{ margin: 0 }}>
-                <strong>Team Members:</strong> Emon Ahmed (0182320012101356) · MD Rayhan Akhand (0182320012101320) · Md Sams Uddin Emon (0182310012101144)
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong>Batch:</strong> 62 &nbsp;|&nbsp; <strong>Section:</strong> H &nbsp;|&nbsp; <strong>Supervisor:</strong> Kazi Md. Jahid Hasan
-              </p>
-            </div>
-          </div>
-
           {/* Diagram Title */}
           <h1 style={{ fontSize: "16pt", fontWeight: "bold", textAlign: "center", margin: "0 0 16px", color: "#0f172a" }}>
             Use Case Diagram — NutriTrack AI Health &amp; Fitness Application
