@@ -1,30 +1,58 @@
 
 
-## Problem Analysis
+# Redesign Use Case Diagram — Professional University-Grade Quality
 
-The current `window.open()` approach fails because the new print window doesn't have access to:
-1. **Tailwind CSS classes** (`text-center`, `page-break-after`, etc.) — these render as nothing
-2. **Vite-bundled image URLs** — the logo import resolves to a hashed URL that may not load in the new window context
-3. The `padding: 0 !important` override in the print window CSS strips all content spacing
+## Overview
+Completely rebuild the `/use-case-diagram` page to produce a clean, professional UML Use Case Diagram suitable for university submission. The current version has cramped layout, small text, and lacks the polished academic formatting expected for a CSE assignment.
 
-This is why the PDF appears blank — the content is there but unstyled and collapsed.
+## Design Approach
 
-## Solution: Use `@media print` on the current page
+**Layout**: Full A4 portrait page layout (matching the Thesis page style) with proper margins, clear spacing, and professional typography using Times New Roman throughout.
 
-Instead of opening a new window (which loses all styles), use `window.print()` directly on the current page with `@media print` CSS rules. This is the most reliable browser-based PDF approach because all styles, images, and fonts are already loaded.
+**Visual improvements**:
+- Larger SVG canvas (1200×900+) with well-spaced elements — no overlapping
+- Properly sized ellipses with readable 11-12pt text
+- Clean stick figures with proper proportions
+- System boundary box with solid border and "NutriTrack AI System" title inside top
+- Color-coded group separator lines/backgrounds for each functional area
+- Thicker, cleaner association lines with proper arrowheads for include/extend
+- Professional legend box with border
 
-### Changes to `src/pages/Thesis.tsx`:
+**Academic formatting**:
+- Leading University header with logo, department name, course info
+- Team members, IDs, batch, section, supervisor name
+- Page styled like the Thesis page (A4, white background, shadows, proper margins)
+- "Figure 1: Use Case Diagram" caption below the diagram
 
-1. **Simplify `handleDownload`** to just call `window.print()` directly — no cloning, no new windows
-2. **Add a `<style>` block** (or update `src/index.css`) with `@media print` rules that:
-   - Hide the download button and any non-thesis UI (bottom nav, etc.)
-   - Reset A4 screen styles (shadows, fixed width) for print
-   - Set `@page { size: A4; margin: 20mm 18mm; }`
-   - Ensure `page-break-after` works via CSS `break-after: page`
-   - Set body background to white, proper font
+**PDF export**:
+- High-resolution A3 landscape PDF (scale: 3) for print quality
+- White background forced for clean print output
 
-### Changes to `src/index.css`:
-- Add `@media print` rules to hide app chrome (bottom nav, button) and style the thesis content for clean PDF output
+## Technical Plan
 
-This approach guarantees all Tailwind classes, images, and fonts work because we're printing the actual rendered page.
+### Single file change: `src/pages/UseCaseDiagram.tsx`
+
+1. **Add university header block** above the SVG — Leading University logo, department, course, team details (reuse the logo from `src/assets/leading-university-logo.png`)
+
+2. **Restructure SVG layout**:
+   - Expand viewBox to ~1200×950
+   - Reposition actors: User (left, y=350), Admin (left, y=700), AI System (right, y=350), Weather API (right, y=650)
+   - Space use cases in clear horizontal rows per functional group with ~100px vertical gaps
+   - Add subtle colored background rectangles behind each group section
+   - Group labels as bold section headers inside the system boundary
+
+3. **Improve visual elements**:
+   - Larger ellipses (rx=90, ry=30) with subtle gradient fills
+   - Stick figures with slightly larger proportions
+   - Association lines: 1.5px solid gray
+   - Include/extend arrows: proper dashed lines with filled arrowheads and italic labels
+   - System boundary: solid 2.5px black rectangle with rounded corners
+
+4. **Add figure caption**: "Figure 1: Use Case Diagram of NutriTrack AI Health & Fitness Application"
+
+5. **Improve legend**: Bordered box with clear symbols and labels
+
+6. **Keep existing PDF download** logic but ensure the header/caption are included in the captured area
+
+No routing changes needed — the page already exists at `/use-case-diagram`.
 
