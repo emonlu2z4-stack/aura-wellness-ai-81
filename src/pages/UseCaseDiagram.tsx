@@ -158,6 +158,7 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
 }
 
 export default function UseCaseDiagram() {
+  const coverRef = useRef<HTMLDivElement>(null);
   const diagramRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [generating, setGenerating] = useState(false);
@@ -171,32 +172,44 @@ export default function UseCaseDiagram() {
   };
 
   const handleDownload = async () => {
-    if (!diagramRef.current) return;
+    if (!coverRef.current || !diagramRef.current) return;
     setGenerating(true);
     try {
-      const canvas = await html2canvas(diagramRef.current, {
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+
+      // Page 1: Cover page
+      const coverCanvas = await html2canvas(coverRef.current, {
         scale: 3,
         backgroundColor: "#ffffff",
         useCORS: true,
       });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
-      const pdfW = pdf.internal.pageSize.getWidth();
-      const pdfH = pdf.internal.pageSize.getHeight();
-      const canvasRatio = canvas.width / canvas.height;
+      const coverImg = coverCanvas.toDataURL("image/png");
+      const coverRatio = coverCanvas.width / coverCanvas.height;
       const pdfRatio = pdfW / pdfH;
-      let drawW = pdfW;
-      let drawH = pdfH;
-      let offsetX = 0;
-      let offsetY = 0;
-      if (canvasRatio > pdfRatio) {
-        drawH = pdfW / canvasRatio;
-        offsetY = (pdfH - drawH) / 2;
-      } else {
-        drawW = pdfH * canvasRatio;
-        offsetX = (pdfW - drawW) / 2;
-      }
-      pdf.addImage(imgData, "PNG", offsetX, offsetY, drawW, drawH);
+      let cW = pdfW, cH = pdfH, cX = 0, cY = 0;
+      if (coverRatio > pdfRatio) { cH = pdfW / coverRatio; cY = (pdfH - cH) / 2; }
+      else { cW = pdfH * coverRatio; cX = (pdfW - cW) / 2; }
+      pdf.addImage(coverImg, "PNG", cX, cY, cW, cH);
+
+      // Page 2: Diagram (landscape)
+      pdf.addPage("a3", "landscape");
+      const diagCanvas = await html2canvas(diagramRef.current, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+      const diagImg = diagCanvas.toDataURL("image/png");
+      const dPdfW = pdf.internal.pageSize.getWidth();
+      const dPdfH = pdf.internal.pageSize.getHeight();
+      const diagRatio = diagCanvas.width / diagCanvas.height;
+      const dPdfRatio = dPdfW / dPdfH;
+      let dW = dPdfW, dH = dPdfH, dX = 0, dY = 0;
+      if (diagRatio > dPdfRatio) { dH = dPdfW / diagRatio; dY = (dPdfH - dH) / 2; }
+      else { dW = dPdfH * diagRatio; dX = (dPdfW - dW) / 2; }
+      pdf.addImage(diagImg, "PNG", dX, dY, dW, dH);
+
       pdf.save("NutriTrack-Use-Case-Diagram.pdf");
     } finally {
       setGenerating(false);
@@ -216,7 +229,80 @@ export default function UseCaseDiagram() {
           </Button>
         </div>
 
-        {/* Capturable content */}
+        {/* Page 1: Cover Page */}
+        <div
+          ref={coverRef}
+          style={{
+            background: "#fff",
+            width: "794px",
+            minHeight: "1123px",
+            margin: "0 auto 40px",
+            padding: "0",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+            borderRadius: "4px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+            position: "relative",
+          }}
+        >
+          {/* Top section */}
+          <div style={{ textAlign: "center", paddingTop: "60px", width: "100%" }}>
+            <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ width: "120px", margin: "0 auto 16px" }} />
+            <h2 style={{ fontSize: "18pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 4px", letterSpacing: "2px" }}>
+              LEADING UNIVERSITY
+            </h2>
+            <p style={{ fontSize: "12pt", color: "#334155", margin: "0 0 2px" }}>Department of Computer Science &amp; Engineering</p>
+            <div style={{ width: "60%", height: "2px", background: "#1e40af", margin: "16px auto" }} />
+          </div>
+
+          {/* Middle section - Assignment details */}
+          <div style={{ textAlign: "center", padding: "0 60px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <p style={{ fontSize: "13pt", color: "#475569", margin: "0 0 8px", fontStyle: "italic" }}>An Assignment on</p>
+            <h1 style={{ fontSize: "20pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 24px", lineHeight: 1.4 }}>
+              Use Case Diagram of NutriTrack AI<br />Health &amp; Fitness Application
+            </h1>
+
+            <p style={{ fontSize: "12pt", color: "#334155", margin: "0 0 4px" }}>
+              <strong>Course Title:</strong> Software Engineering
+            </p>
+            <p style={{ fontSize: "12pt", color: "#334155", margin: "0 0 24px" }}>
+              <strong>Course Code:</strong> CSE-3213
+            </p>
+
+            <div style={{ display: "flex", justifyContent: "space-around", width: "100%", marginTop: "16px" }}>
+              {/* Submitted To */}
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 8px", textDecoration: "underline" }}>Submitted To</p>
+                <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Aushtmi Deb</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Lecturer</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Department of CSE</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Leading University</p>
+              </div>
+
+              {/* Submitted By */}
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 8px", textDecoration: "underline" }}>Submitted By</p>
+                <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Emon Ahmed</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>ID: 0182320012101356</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Section: H, Batch: 62</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Department of CSE</p>
+                <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Leading University</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom section */}
+          <div style={{ textAlign: "center", paddingBottom: "50px" }}>
+            <div style={{ width: "60%", height: "1px", background: "#94a3b8", margin: "0 auto 12px" }} />
+            <p style={{ fontSize: "12pt", color: "#334155", margin: "0" }}>
+              <strong>Date of Submission:</strong> March 14, 2026
+            </p>
+          </div>
+        </div>
+
+        {/* Page 2: Diagram */}
         <div
           ref={diagramRef}
           style={{
@@ -244,7 +330,7 @@ export default function UseCaseDiagram() {
               NutriTrack AI System
             </text>
 
-            {/* Group labels — positioned inside boundary with enough room */}
+            {/* Group labels */}
             <text x="160" y="85" fontSize="12" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
             <text x="160" y="225" fontSize="12" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
             <text x="160" y="420" fontSize="12" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
@@ -253,9 +339,8 @@ export default function UseCaseDiagram() {
             <text x="160" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
             <text x="160" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
 
-            {/* Associations — fan out from each actor */}
+            {/* Associations */}
             {(() => {
-              // Group associations by actor to spread origin points
               const byActor: Record<string, string[]> = {};
               associations.forEach(([fromId, toId]) => {
                 if (!byActor[fromId]) byActor[fromId] = [];
@@ -264,7 +349,7 @@ export default function UseCaseDiagram() {
               return Object.entries(byActor).flatMap(([actorId, targets]) => {
                 const actorPos = getPos(actorId);
                 const count = targets.length;
-                const spread = Math.min(count * 5, 60); // total spread range
+                const spread = Math.min(count * 5, 60);
                 return targets.map((toId, idx) => {
                   const offset = -spread / 2 + (count > 1 ? (idx / (count - 1)) * spread : 0);
                   const fromWithOffset = { x: actorPos.x, y: actorPos.y + offset };
