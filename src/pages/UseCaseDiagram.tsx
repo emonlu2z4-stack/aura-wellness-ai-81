@@ -396,9 +396,11 @@ export default function UseCaseDiagram() {
             ))}
 
             {/* Extend relationships */}
-            {extends_.map(([fromId, toId], i) => (
-              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" />
-            ))}
+            {extends_.map(([fromId, toId], i) => {
+              // Curve the Verify Email → Register Account arrow to avoid passing through Login/Logout
+              const curve = (fromId === "uc3" && toId === "uc1") ? -50 : 0;
+              return <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" curveOffset={curve} />;
+            })}
 
             {/* Use cases */}
             {useCases.map((uc) => (
