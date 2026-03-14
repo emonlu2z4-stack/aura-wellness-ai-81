@@ -133,12 +133,37 @@ function AssociationLine({ from, to, color }: { from: { x: number; y: number }; 
   return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={color} strokeWidth="1.6" opacity="0.75" />;
 }
 
-function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
+function DashedArrow({ from, to, label, curveOffset = 0 }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string; curveOffset?: number }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const mx = (from.x + to.x) / 2;
-  const my = (from.y + to.y) / 2;
+  const my = (from.y + to.y) / 2 + curveOffset;
+
+  if (curveOffset !== 0) {
+    // Curved path
+    const endX = to.x + (dx / len) * 32;
+    const endY = to.y + (dy / len) * 32;
+    const angle = Math.atan2(to.y - my, to.x - mx);
+    const arrowTipX = to.x + (dx / len) * 32;
+    const arrowTipY = to.y;
+    return (
+      <g>
+        <path
+          d={`M ${from.x},${from.y} Q ${mx},${my} ${endX},${endY}`}
+          fill="none" stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4"
+        />
+        <polygon
+          points={`${endX},${endY} ${endX + 10 * Math.cos(angle - 0.4)},${endY + 10 * Math.sin(angle - 0.4)} ${endX + 10 * Math.cos(angle + 0.4)},${endY + 10 * Math.sin(angle + 0.4)}`}
+          fill="#1e293b"
+        />
+        <text x={mx} y={my - 8} textAnchor="middle" fontSize="11" fontStyle="italic" fill="#475569" fontFamily="'Times New Roman', serif">
+          {label}
+        </text>
+      </g>
+    );
+  }
+
   const angle = Math.atan2(dy, dx);
   const arrowX = to.x - (dx / len) * 32;
   const arrowY = to.y - (dy / len) * 32;
@@ -371,9 +396,11 @@ export default function UseCaseDiagram() {
             ))}
 
             {/* Extend relationships */}
-            {extends_.map(([fromId, toId], i) => (
-              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" />
-            ))}
+            {extends_.map(([fromId, toId], i) => {
+              // Curve the Verify Email → Register Account arrow to avoid passing through Login/Logout
+              const curve = (fromId === "uc3" && toId === "uc1") ? -50 : 0;
+              return <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" curveOffset={curve} />;
+            })}
 
             {/* Use cases */}
             {useCases.map((uc) => (
