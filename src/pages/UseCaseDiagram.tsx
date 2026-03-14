@@ -282,7 +282,7 @@ export default function UseCaseDiagram() {
 
             {/* Include relationships */}
             {includes.map(([fromId, toId], i) => (
-              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
+              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<include>>" />
             ))}
 
             {/* Extend relationships */}
