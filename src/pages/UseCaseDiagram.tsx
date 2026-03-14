@@ -20,7 +20,7 @@ const useCases = [
   { id: "uc3", label: "Verify Email", x: 940, y: 100, group: "auth" },
 
   // Meal Tracking
-  { id: "uc4", label: "Log Meal Manually", x: 400, y: 250, group: "meal" },
+  { id: "uc4", label: "Log Meal Manually", x: 400, y: 230, group: "meal" },
   { id: "uc5", label: "Upload Meal Photo", x: 670, y: 250, group: "meal" },
   { id: "uc6", label: "Analyze Meal via AI", x: 940, y: 250, group: "meal" },
   { id: "uc7", label: "Delete Meal Entry", x: 400, y: 340, group: "meal" },
