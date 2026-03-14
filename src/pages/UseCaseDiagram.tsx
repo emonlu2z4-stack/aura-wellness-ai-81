@@ -7,49 +7,49 @@ import jsPDF from "jspdf";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 const actors = [
-  { id: "user", label: "User", x: 55, y: 380 },
-  { id: "admin", label: "Admin", x: 55, y: 750 },
-  { id: "ai", label: "AI System", x: 1095, y: 380 },
-  { id: "weather", label: "Weather API", x: 1095, y: 720 },
+  { id: "user", label: "User", x: 60, y: 460 },
+  { id: "admin", label: "Admin", x: 60, y: 940 },
+  { id: "ai", label: "AI System", x: 1290, y: 460 },
+  { id: "weather", label: "Weather API", x: 1290, y: 900 },
 ];
 
 const useCases = [
   // Auth
-  { id: "uc1", label: "Register Account", x: 350, y: 80, group: "auth" },
-  { id: "uc2", label: "Login / Logout", x: 580, y: 80, group: "auth" },
-  { id: "uc3", label: "Verify Email", x: 810, y: 80, group: "auth" },
+  { id: "uc1", label: "Register Account", x: 400, y: 100, group: "auth" },
+  { id: "uc2", label: "Login / Logout", x: 670, y: 100, group: "auth" },
+  { id: "uc3", label: "Verify Email", x: 940, y: 100, group: "auth" },
 
   // Meal Tracking
-  { id: "uc4", label: "Log Meal Manually", x: 350, y: 200, group: "meal" },
-  { id: "uc5", label: "Upload Meal Photo", x: 580, y: 200, group: "meal" },
-  { id: "uc6", label: "Analyze Meal via AI", x: 810, y: 200, group: "meal" },
-  { id: "uc7", label: "Delete Meal Entry", x: 350, y: 275, group: "meal" },
+  { id: "uc4", label: "Log Meal Manually", x: 400, y: 250, group: "meal" },
+  { id: "uc5", label: "Upload Meal Photo", x: 670, y: 250, group: "meal" },
+  { id: "uc6", label: "Analyze Meal via AI", x: 940, y: 250, group: "meal" },
+  { id: "uc7", label: "Delete Meal Entry", x: 400, y: 340, group: "meal" },
 
   // Nutrition & AI
-  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 580, y: 355, group: "nutrition" },
-  { id: "uc9", label: "View Recipe Details", x: 810, y: 355, group: "nutrition" },
-  { id: "uc10", label: "Get Nutrition\nInsights", x: 580, y: 430, group: "nutrition" },
+  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 670, y: 440, group: "nutrition" },
+  { id: "uc9", label: "View Recipe Details", x: 940, y: 440, group: "nutrition" },
+  { id: "uc10", label: "Get Nutrition\nInsights", x: 670, y: 530, group: "nutrition" },
 
   // Tracking
-  { id: "uc11", label: "Track Water Intake", x: 350, y: 430, group: "tracking" },
-  { id: "uc12", label: "Log Weight", x: 350, y: 510, group: "tracking" },
-  { id: "uc13", label: "View Macro Progress", x: 580, y: 510, group: "tracking" },
-  { id: "uc14", label: "Track Streak", x: 810, y: 510, group: "tracking" },
+  { id: "uc11", label: "Track Water Intake", x: 400, y: 530, group: "tracking" },
+  { id: "uc12", label: "Log Weight", x: 400, y: 630, group: "tracking" },
+  { id: "uc13", label: "View Macro Progress", x: 670, y: 630, group: "tracking" },
+  { id: "uc14", label: "Track Streak", x: 940, y: 630, group: "tracking" },
 
   // Progress
-  { id: "uc15", label: "Upload Progress\nPhoto", x: 350, y: 600, group: "progress" },
-  { id: "uc16", label: "Compare Progress\nPhotos", x: 580, y: 600, group: "progress" },
-  { id: "uc17", label: "View Weight Chart", x: 810, y: 600, group: "progress" },
+  { id: "uc15", label: "Upload Progress\nPhoto", x: 400, y: 740, group: "progress" },
+  { id: "uc16", label: "Compare Progress\nPhotos", x: 670, y: 740, group: "progress" },
+  { id: "uc17", label: "View Weight Chart", x: 940, y: 740, group: "progress" },
 
   // Groups
-  { id: "uc18", label: "Create / Join Group", x: 350, y: 700, group: "groups" },
-  { id: "uc19", label: "Create Challenge", x: 580, y: 700, group: "groups" },
-  { id: "uc20", label: "Check-in Challenge", x: 810, y: 700, group: "groups" },
+  { id: "uc18", label: "Create / Join Group", x: 400, y: 860, group: "groups" },
+  { id: "uc19", label: "Create Challenge", x: 670, y: 860, group: "groups" },
+  { id: "uc20", label: "Check-in Challenge", x: 940, y: 860, group: "groups" },
 
   // Profile & Settings
-  { id: "uc21", label: "Edit Profile &\nTargets", x: 350, y: 800, group: "profile" },
-  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 580, y: 800, group: "profile" },
-  { id: "uc23", label: "View Weather Info", x: 810, y: 800, group: "profile" },
+  { id: "uc21", label: "Edit Profile &\nTargets", x: 400, y: 980, group: "profile" },
+  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 670, y: 980, group: "profile" },
+  { id: "uc23", label: "View Weather Info", x: 940, y: 980, group: "profile" },
 ];
 
 const associations: [string, string][] = [
@@ -74,13 +74,13 @@ const extends_: [string, string][] = [
 ];
 
 const groupBands: { label: string; y: number; h: number; color: string }[] = [
-  { label: "Authentication", y: 45, h: 60, color: "#f0f0ff" },
-  { label: "Meal Tracking", y: 160, h: 145, color: "#f0fdf4" },
-  { label: "Nutrition & AI", y: 318, h: 140, color: "#fffbeb" },
-  { label: "Health Tracking", y: 400, h: 145, color: "#fef2f2" },
-  { label: "Progress", y: 560, h: 75, color: "#faf5ff" },
-  { label: "Groups & Challenges", y: 660, h: 75, color: "#ecfeff" },
-  { label: "Profile & Settings", y: 760, h: 75, color: "#fff1f2" },
+  { label: "Authentication", y: 60, h: 80, color: "#f0f0ff" },
+  { label: "Meal Tracking", y: 200, h: 180, color: "#f0fdf4" },
+  { label: "Nutrition & AI", y: 400, h: 170, color: "#fffbeb" },
+  { label: "Health Tracking", y: 495, h: 180, color: "#fef2f2" },
+  { label: "Progress", y: 700, h: 80, color: "#faf5ff" },
+  { label: "Groups & Challenges", y: 820, h: 80, color: "#ecfeff" },
+  { label: "Profile & Settings", y: 940, h: 80, color: "#fff1f2" },
 ];
 
 function StickFigure({ x, y, label }: { x: number; y: number; label: string }) {
