@@ -267,6 +267,7 @@ export default function UseCaseDiagram() {
             alignItems: "center",
             justifyContent: "space-between",
             minHeight: "700px",
+            marginBottom: "40px",
           }}
         >
           {/* Top section */}
