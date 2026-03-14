@@ -20,7 +20,7 @@ const useCases = [
   { id: "uc3", label: "Verify Email", x: 940, y: 100, group: "auth" },
 
   // Meal Tracking
-  { id: "uc4", label: "Log Meal Manually", x: 400, y: 250, group: "meal" },
+  { id: "uc4", label: "Log Meal Manually", x: 400, y: 230, group: "meal" },
   { id: "uc5", label: "Upload Meal Photo", x: 670, y: 250, group: "meal" },
   { id: "uc6", label: "Analyze Meal via AI", x: 940, y: 250, group: "meal" },
   { id: "uc7", label: "Delete Meal Entry", x: 400, y: 340, group: "meal" },
@@ -395,8 +395,9 @@ export default function UseCaseDiagram() {
 
             {/* Extend relationships */}
             {extends_.map(([fromId, toId], i) => {
-              // Curve the Verify Email → Register Account arrow to avoid passing through Login/Logout
-              const curve = (fromId === "uc3" && toId === "uc1") ? -50 : 0;
+              let curve = 0;
+              if (fromId === "uc3" && toId === "uc1") curve = -50;
+              if (fromId === "uc14" && toId === "uc4") curve = -40;
               return <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" curveOffset={curve} />;
             })}
 
