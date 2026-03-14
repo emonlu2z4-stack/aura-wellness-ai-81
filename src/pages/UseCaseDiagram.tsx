@@ -329,7 +329,7 @@ export default function UseCaseDiagram() {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <svg width="40" height="12"><line x1="0" y1="6" x2="32" y2="6" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="6,3" /><polygon points="32,6 26,3 26,9" fill="#1e293b" /></svg>
-                <span style={{ fontStyle: "italic" }}>«include» / «extend»</span>
+                <span style={{ fontStyle: "italic" }}>&lt;&lt;include&gt;&gt; / &lt;&lt;extend&gt;&gt;</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <svg width="26" height="18"><ellipse cx="13" cy="9" rx="12" ry="8" fill="#f8fafc" stroke="#2563eb" strokeWidth="1.3" /></svg>
