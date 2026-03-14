@@ -57,13 +57,17 @@ const associations: [string, string][] = [
 ];
 
 const includes: [string, string][] = [
-  ["uc5", "uc6"],
-  ["uc8", "uc9"],
-  ["uc1", "uc3"],
+  ["uc5", "uc6"],   // Upload Meal Photo «include» Analyze Meal via AI
+  ["uc8", "uc9"],   // Get AI Meal Suggestions «include» View Recipe Details
+  ["uc1", "uc3"],   // Register Account «include» Verify Email
+  ["uc16", "uc15"], // Compare Progress Photos «include» Upload Progress Photo
+  ["uc10", "uc6"],  // Get Nutrition Insights «include» Analyze Meal via AI
 ];
 
 const extends_: [string, string][] = [
-  ["uc14", "uc4"],
+  ["uc14", "uc4"],  // Track Streak «extend» Log Meal Manually
+  ["uc17", "uc12"], // View Weight Chart «extend» Log Weight
+  ["uc7", "uc4"],   // Delete Meal Entry «extend» Log Meal Manually
 ];
 
 // draw.io style stick figure
