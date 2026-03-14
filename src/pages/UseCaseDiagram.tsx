@@ -66,10 +66,10 @@ const associations: [string, string][] = [
 const includes: [string, string][] = [
   ["uc5", "uc6"],
   ["uc8", "uc9"],
+  ["uc1", "uc3"],
 ];
 
 const extends_: [string, string][] = [
-  ["uc3", "uc1"],
   ["uc14", "uc4"],
 ];
 
