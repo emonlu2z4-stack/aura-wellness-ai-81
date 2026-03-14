@@ -297,7 +297,7 @@ export default function UseCaseDiagram() {
             <div style={{ display: "flex", justifyContent: "space-around", width: "100%", marginTop: "16px" }}>
               {/* Submitted To */}
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 8px", textDecoration: "underline" }}>Submitted To</p>
+                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#1e293b", margin: "0 0 10px", fontStyle: "italic", textDecoration: "underline" }}>Submitted To</p>
                 <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Aushtmi Deb</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Lecturer</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Department of CSE</p>
@@ -306,11 +306,12 @@ export default function UseCaseDiagram() {
 
               {/* Submitted By */}
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 8px", textDecoration: "underline" }}>Submitted By</p>
+                <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#1e293b", margin: "0 0 10px", fontStyle: "italic", textDecoration: "underline" }}>Submitted By</p>
                 <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Emon Ahmed</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>ID: 0182320012101356</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Section: H, Batch: 62</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Department of CSE</p>
+                <div style={{ width: "80%", height: "1px", background: "#64748b", margin: "4px auto 4px" }} />
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Leading University</p>
               </div>
             </div>
