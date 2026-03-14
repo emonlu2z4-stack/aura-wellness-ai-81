@@ -258,10 +258,12 @@ export default function UseCaseDiagram() {
         <div
           ref={coverRef}
           style={{
+            background: "#fff",
             width: "794px",
             minHeight: "1123px",
             margin: "0 auto 40px",
             padding: "0",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
             borderRadius: "4px",
             display: "flex",
             flexDirection: "column",
@@ -329,7 +331,9 @@ export default function UseCaseDiagram() {
         <div
           ref={diagramRef}
           style={{
+            background: "#fff",
             padding: "40px 48px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
             borderRadius: "4px",
           }}
         >
