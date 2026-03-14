@@ -75,12 +75,12 @@ const extends_: [string, string][] = [
 
 const groupBands: { label: string; y: number; h: number; color: string }[] = [
   { label: "Authentication", y: 60, h: 80, color: "transparent" },
-  { label: "Meal Tracking", y: 200, h: 180, color: "#f0fdf4" },
-  { label: "Nutrition & AI", y: 400, h: 170, color: "#fffbeb" },
-  { label: "Health Tracking", y: 495, h: 180, color: "#fef2f2" },
-  { label: "Progress", y: 700, h: 80, color: "#faf5ff" },
-  { label: "Groups & Challenges", y: 820, h: 80, color: "#ecfeff" },
-  { label: "Profile & Settings", y: 940, h: 80, color: "#fff1f2" },
+  { label: "Meal Tracking", y: 200, h: 180, color: "transparent" },
+  { label: "Nutrition & AI", y: 400, h: 170, color: "transparent" },
+  { label: "Health Tracking", y: 495, h: 180, color: "transparent" },
+  { label: "Progress", y: 700, h: 80, color: "transparent" },
+  { label: "Groups & Challenges", y: 820, h: 80, color: "transparent" },
+  { label: "Profile & Settings", y: 940, h: 80, color: "transparent" },
 ];
 
 function StickFigure({ x, y, label }: { x: number; y: number; label: string }) {
