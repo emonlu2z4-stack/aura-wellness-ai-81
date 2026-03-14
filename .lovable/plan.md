@@ -1,58 +1,37 @@
 
 
-# Redesign Use Case Diagram — Professional University-Grade Quality
+# Redesign Use Case Diagram — Professional University-Grade
 
-## Overview
-Completely rebuild the `/use-case-diagram` page to produce a clean, professional UML Use Case Diagram suitable for university submission. The current version has cramped layout, small text, and lacks the polished academic formatting expected for a CSE assignment.
+## What's changing
 
-## Design Approach
+Completely rewrite `src/pages/UseCaseDiagram.tsx` to produce a clean, professional, academic-quality UML Use Case Diagram matching the Thesis page styling.
 
-**Layout**: Full A4 portrait page layout (matching the Thesis page style) with proper margins, clear spacing, and professional typography using Times New Roman throughout.
+## Key improvements
 
-**Visual improvements**:
-- Larger SVG canvas (1200×900+) with well-spaced elements — no overlapping
-- Properly sized ellipses with readable 11-12pt text
-- Clean stick figures with proper proportions
-- System boundary box with solid border and "NutriTrack AI System" title inside top
-- Color-coded group separator lines/backgrounds for each functional area
-- Thicker, cleaner association lines with proper arrowheads for include/extend
-- Professional legend box with border
+1. **A4 page layout** matching the Thesis page style (210mm width, white background, box shadow, 1-inch margins, Times New Roman font throughout)
 
-**Academic formatting**:
-- Leading University header with logo, department name, course info
-- Team members, IDs, batch, section, supervisor name
-- Page styled like the Thesis page (A4, white background, shadows, proper margins)
-- "Figure 1: Use Case Diagram" caption below the diagram
+2. **University header** — Leading University logo, department name, course title, team members with IDs, supervisor name, batch/section info (reusing data from Thesis page)
 
-**PDF export**:
-- High-resolution A3 landscape PDF (scale: 3) for print quality
-- White background forced for clean print output
+3. **Larger, cleaner SVG diagram** (~1100×900 viewBox):
+   - Bigger ellipses (rx=95, ry=32) with readable 12pt text
+   - Larger stick figures with proper proportions
+   - Clean system boundary rectangle with "NutriTrack AI System" label
+   - Color-coded group section backgrounds (subtle fills) with bold group headers
+   - Thicker association lines (1.5px) and properly styled dashed include/extend arrows
+   - Better spacing — no overlapping elements
 
-## Technical Plan
+4. **Professional legend** with bordered box below the diagram
 
-### Single file change: `src/pages/UseCaseDiagram.tsx`
+5. **Figure caption**: "Figure 1: Use Case Diagram of NutriTrack AI Health & Fitness Application"
 
-1. **Add university header block** above the SVG — Leading University logo, department, course, team details (reuse the logo from `src/assets/leading-university-logo.png`)
+6. **PDF export** — A3 landscape, scale 3, white background, includes header and caption in the captured area
 
-2. **Restructure SVG layout**:
-   - Expand viewBox to ~1200×950
-   - Reposition actors: User (left, y=350), Admin (left, y=700), AI System (right, y=350), Weather API (right, y=650)
-   - Space use cases in clear horizontal rows per functional group with ~100px vertical gaps
-   - Add subtle colored background rectangles behind each group section
-   - Group labels as bold section headers inside the system boundary
+## Technical approach
 
-3. **Improve visual elements**:
-   - Larger ellipses (rx=90, ry=30) with subtle gradient fills
-   - Stick figures with slightly larger proportions
-   - Association lines: 1.5px solid gray
-   - Include/extend arrows: proper dashed lines with filled arrowheads and italic labels
-   - System boundary: solid 2.5px black rectangle with rounded corners
-
-4. **Add figure caption**: "Figure 1: Use Case Diagram of NutriTrack AI Health & Fitness Application"
-
-5. **Improve legend**: Bordered box with clear symbols and labels
-
-6. **Keep existing PDF download** logic but ensure the header/caption are included in the captured area
-
-No routing changes needed — the page already exists at `/use-case-diagram`.
+- Single file change: `src/pages/UseCaseDiagram.tsx`
+- Reuse the Leading University logo import from `src/assets/leading-university-logo.png`
+- Keep same `html2canvas` + `jsPDF` approach but wrap the entire content (header + SVG + legend + caption) in the captured ref
+- Use inline styles matching the Thesis page conventions (Times New Roman, proper sizing)
+- Reposition all use cases with more vertical spacing (~120px between groups) and horizontal centering
+- Back button and Download button stay outside the captured area
 
