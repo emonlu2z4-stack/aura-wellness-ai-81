@@ -7,10 +7,10 @@ import jsPDF from "jspdf";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 const actors = [
-  { id: "user", label: "User", x: 60, y: 460 },
-  { id: "admin", label: "Admin", x: 60, y: 940 },
-  { id: "ai", label: "AI System", x: 1290, y: 460 },
-  { id: "weather", label: "Weather API", x: 1290, y: 900 },
+  { id: "user", label: "User", x: 55, y: 460 },
+  { id: "admin", label: "Admin", x: 55, y: 940 },
+  { id: "ai", label: "AI System", x: 1340, y: 460 },
+  { id: "weather", label: "Weather API", x: 1340, y: 900 },
 ];
 
 const useCases = [
