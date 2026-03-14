@@ -60,8 +60,10 @@ const includes: [string, string][] = [
   ["uc5", "uc6"],   // Upload Meal Photo «include» Analyze Meal via AI
   ["uc8", "uc9"],   // Get AI Meal Suggestions «include» View Recipe Details
   ["uc1", "uc3"],   // Register Account «include» Verify Email
+  ["uc2", "uc3"],   // Login / Logout «include» Verify Email
   ["uc16", "uc15"], // Compare Progress Photos «include» Upload Progress Photo
   ["uc10", "uc6"],  // Get Nutrition Insights «include» Analyze Meal via AI
+  ["uc14", "uc8"],  // Track Streak «include» Get AI Meal Suggestions
 ];
 
 const extends_: [string, string][] = [
