@@ -122,8 +122,15 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   );
 }
 
-function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#1e293b" strokeWidth="1.8" opacity="0.7" />;
+const actorColors: Record<string, string> = {
+  user: "#2563eb",
+  admin: "#dc2626",
+  ai: "#059669",
+  weather: "#d97706",
+};
+
+function AssociationLine({ from, to, color }: { from: { x: number; y: number }; to: { x: number; y: number }; color: string }) {
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={color} strokeWidth="1.6" opacity="0.75" />;
 }
 
 function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
