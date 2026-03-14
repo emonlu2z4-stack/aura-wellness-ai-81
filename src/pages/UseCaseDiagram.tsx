@@ -123,7 +123,7 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
 }
 
 function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#475569" strokeWidth="1.2" />;
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#1e293b" strokeWidth="1.8" opacity="0.7" />;
 }
 
 function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
@@ -138,10 +138,10 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#64748b" strokeWidth="1.5" strokeDasharray="8,4" />
+      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4" />
       <polygon
         points={`${arrowX},${arrowY} ${arrowX - 10 * Math.cos(angle - 0.4)},${arrowY - 10 * Math.sin(angle - 0.4)} ${arrowX - 10 * Math.cos(angle + 0.4)},${arrowY - 10 * Math.sin(angle + 0.4)}`}
-        fill="#64748b"
+        fill="#1e293b"
       />
       <text x={mx} y={my - 8} textAnchor="middle" fontSize="11" fontStyle="italic" fill="#475569" fontFamily="'Times New Roman', serif">
         {label}
