@@ -123,7 +123,7 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
 }
 
 function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#475569" strokeWidth="1.2" />;
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#1e293b" strokeWidth="1.8" opacity="0.7" />;
 }
 
 function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
