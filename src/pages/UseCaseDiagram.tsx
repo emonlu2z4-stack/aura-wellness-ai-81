@@ -110,9 +110,39 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   );
 }
 
-// Simple black association line (draw.io style)
+// Association line with arrow (actor → use case, draw.io style)
 function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#000" strokeWidth="1" />;
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  // Shorten to ellipse edge
+  const endX = to.x - ux * 100 * 0.85;
+  const endY = to.y - uy * 30 * 0.85;
+  const angle = Math.atan2(dy, dx);
+  const arrowLen = 8;
+
+  return (
+    <g>
+      <line x1={from.x} y1={from.y} x2={endX} y2={endY} stroke="#000" strokeWidth="1" />
+      {/* Open arrowhead */}
+      <line
+        x1={endX}
+        y1={endY}
+        x2={endX - arrowLen * Math.cos(angle - 0.4)}
+        y2={endY - arrowLen * Math.sin(angle - 0.4)}
+        stroke="#000" strokeWidth="1"
+      />
+      <line
+        x1={endX}
+        y1={endY}
+        x2={endX - arrowLen * Math.cos(angle + 0.4)}
+        y2={endY - arrowLen * Math.sin(angle + 0.4)}
+        stroke="#000" strokeWidth="1"
+      />
+    </g>
+  );
 }
 
 // Dashed arrow for include/extend (draw.io style - open arrowhead)
