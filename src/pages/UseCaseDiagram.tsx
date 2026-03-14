@@ -7,49 +7,42 @@ import jsPDF from "jspdf";
 import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 const actors = [
-  { id: "user", label: "User", x: 55, y: 460 },
-  { id: "admin", label: "Admin", x: 55, y: 940 },
-  { id: "ai", label: "AI System", x: 1340, y: 460 },
-  { id: "weather", label: "Weather API", x: 1340, y: 900 },
+  { id: "user", label: "User", x: 60, y: 440 },
+  { id: "admin", label: "Admin", x: 60, y: 920 },
+  { id: "ai", label: "AI System", x: 1340, y: 440 },
+  { id: "weather", label: "Weather API", x: 1340, y: 920 },
 ];
 
 const useCases = [
-  // Auth
-  { id: "uc1", label: "Register Account", x: 400, y: 100, group: "auth" },
-  { id: "uc2", label: "Login / Logout", x: 670, y: 100, group: "auth" },
-  { id: "uc3", label: "Verify Email", x: 940, y: 100, group: "auth" },
+  { id: "uc1", label: "Register Account", x: 420, y: 100 },
+  { id: "uc2", label: "Login / Logout", x: 700, y: 100 },
+  { id: "uc3", label: "Verify Email", x: 980, y: 100 },
 
-  // Meal Tracking
-  { id: "uc4", label: "Log Meal Manually", x: 400, y: 230, group: "meal" },
-  { id: "uc5", label: "Upload Meal Photo", x: 670, y: 250, group: "meal" },
-  { id: "uc6", label: "Analyze Meal via AI", x: 940, y: 250, group: "meal" },
-  { id: "uc7", label: "Delete Meal Entry", x: 400, y: 340, group: "meal" },
+  { id: "uc4", label: "Log Meal Manually", x: 420, y: 210 },
+  { id: "uc5", label: "Upload Meal Photo", x: 700, y: 210 },
+  { id: "uc6", label: "Analyze Meal via AI", x: 980, y: 210 },
+  { id: "uc7", label: "Delete Meal Entry", x: 420, y: 310 },
 
-  // Nutrition & AI
-  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 670, y: 440, group: "nutrition" },
-  { id: "uc9", label: "View Recipe Details", x: 940, y: 440, group: "nutrition" },
-  { id: "uc10", label: "Get Nutrition\nInsights", x: 670, y: 530, group: "nutrition" },
+  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 700, y: 400 },
+  { id: "uc9", label: "View Recipe Details", x: 980, y: 400 },
+  { id: "uc10", label: "Get Nutrition\nInsights", x: 700, y: 500 },
 
-  // Tracking
-  { id: "uc11", label: "Track Water Intake", x: 400, y: 530, group: "tracking" },
-  { id: "uc12", label: "Log Weight", x: 400, y: 630, group: "tracking" },
-  { id: "uc13", label: "View Macro Progress", x: 670, y: 630, group: "tracking" },
-  { id: "uc14", label: "Track Streak", x: 940, y: 630, group: "tracking" },
+  { id: "uc11", label: "Track Water Intake", x: 420, y: 500 },
+  { id: "uc12", label: "Log Weight", x: 420, y: 600 },
+  { id: "uc13", label: "View Macro Progress", x: 700, y: 600 },
+  { id: "uc14", label: "Track Streak", x: 980, y: 600 },
 
-  // Progress
-  { id: "uc15", label: "Upload Progress\nPhoto", x: 400, y: 740, group: "progress" },
-  { id: "uc16", label: "Compare Progress\nPhotos", x: 670, y: 740, group: "progress" },
-  { id: "uc17", label: "View Weight Chart", x: 940, y: 740, group: "progress" },
+  { id: "uc15", label: "Upload Progress\nPhoto", x: 420, y: 710 },
+  { id: "uc16", label: "Compare Progress\nPhotos", x: 700, y: 710 },
+  { id: "uc17", label: "View Weight Chart", x: 980, y: 710 },
 
-  // Groups
-  { id: "uc18", label: "Create / Join Group", x: 400, y: 860, group: "groups" },
-  { id: "uc19", label: "Create Challenge", x: 670, y: 860, group: "groups" },
-  { id: "uc20", label: "Check-in Challenge", x: 940, y: 860, group: "groups" },
+  { id: "uc18", label: "Create / Join Group", x: 420, y: 820 },
+  { id: "uc19", label: "Create Challenge", x: 700, y: 820 },
+  { id: "uc20", label: "Check-in Challenge", x: 980, y: 820 },
 
-  // Profile & Settings
-  { id: "uc21", label: "Edit Profile &\nTargets", x: 400, y: 980, group: "profile" },
-  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 670, y: 980, group: "profile" },
-  { id: "uc23", label: "View Weather Info", x: 940, y: 980, group: "profile" },
+  { id: "uc21", label: "Edit Profile &\nTargets", x: 420, y: 930 },
+  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 700, y: 930 },
+  { id: "uc23", label: "View Weather Info", x: 980, y: 930 },
 ];
 
 const associations: [string, string][] = [
@@ -73,36 +66,28 @@ const extends_: [string, string][] = [
   ["uc14", "uc4"],
 ];
 
-const groupBands: { label: string; y: number; h: number; color: string }[] = [
-  { label: "Authentication", y: 60, h: 80, color: "transparent" },
-  { label: "Meal Tracking", y: 200, h: 180, color: "transparent" },
-  { label: "Nutrition & AI", y: 400, h: 170, color: "transparent" },
-  { label: "Health Tracking", y: 495, h: 180, color: "transparent" },
-  { label: "Progress", y: 700, h: 80, color: "transparent" },
-  { label: "Groups & Challenges", y: 820, h: 80, color: "transparent" },
-  { label: "Profile & Settings", y: 940, h: 80, color: "transparent" },
-];
-
+// draw.io style stick figure
 function StickFigure({ x, y, label }: { x: number; y: number; label: string }) {
   return (
     <g>
-      <circle cx={x} cy={y - 32} r={12} fill="none" stroke="#1e293b" strokeWidth="2.2" />
-      <line x1={x} y1={y - 20} x2={x} y2={y + 8} stroke="#1e293b" strokeWidth="2.2" />
-      <line x1={x - 16} y1={y - 8} x2={x + 16} y2={y - 8} stroke="#1e293b" strokeWidth="2.2" />
-      <line x1={x} y1={y + 8} x2={x - 14} y2={y + 30} stroke="#1e293b" strokeWidth="2.2" />
-      <line x1={x} y1={y + 8} x2={x + 14} y2={y + 30} stroke="#1e293b" strokeWidth="2.2" />
-      <text x={x} y={y + 48} textAnchor="middle" fontSize="13" fontWeight="700" fill="#0f172a" fontFamily="'Times New Roman', serif">
+      <circle cx={x} cy={y - 30} r={10} fill="none" stroke="#000" strokeWidth="1.5" />
+      <line x1={x} y1={y - 20} x2={x} y2={y + 5} stroke="#000" strokeWidth="1.5" />
+      <line x1={x - 14} y1={y - 10} x2={x + 14} y2={y - 10} stroke="#000" strokeWidth="1.5" />
+      <line x1={x} y1={y + 5} x2={x - 12} y2={y + 25} stroke="#000" strokeWidth="1.5" />
+      <line x1={x} y1={y + 5} x2={x + 12} y2={y + 25} stroke="#000" strokeWidth="1.5" />
+      <text x={x} y={y + 42} textAnchor="middle" fontSize="12" fontFamily="Helvetica, Arial, sans-serif" fill="#000">
         {label}
       </text>
     </g>
   );
 }
 
+// draw.io style ellipse - light blue fill, darker blue border
 function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }) {
   const lines = label.split("\n");
   return (
     <g>
-      <ellipse cx={x} cy={y} rx={95} ry={32} fill="#f8fafc" stroke="#2563eb" strokeWidth="1.8" />
+      <ellipse cx={x} cy={y} rx={100} ry={30} fill="#dae8fc" stroke="#6c8ebf" strokeWidth="1.5" />
       {lines.map((line, i) => (
         <text
           key={i}
@@ -110,10 +95,9 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
           y={y + (i - (lines.length - 1) / 2) * 14}
           textAnchor="middle"
           dominantBaseline="central"
-          fontSize="12"
-          fontFamily="'Times New Roman', serif"
-          fill="#0f172a"
-          fontWeight="500"
+          fontSize="11"
+          fontFamily="Helvetica, Arial, sans-serif"
+          fill="#000"
         >
           {line}
         </text>
@@ -122,60 +106,54 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   );
 }
 
-const actorColors: Record<string, string> = {
-  user: "#2563eb",
-  admin: "#dc2626",
-  ai: "#059669",
-  weather: "#d97706",
-};
-
-function AssociationLine({ from, to, color }: { from: { x: number; y: number }; to: { x: number; y: number }; color: string }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={color} strokeWidth="1.6" opacity="0.75" />;
+// Simple black association line (draw.io style)
+function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#000" strokeWidth="1" />;
 }
 
-function DashedArrow({ from, to, label, curveOffset = 0 }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string; curveOffset?: number }) {
+// Dashed arrow for include/extend (draw.io style - open arrowhead)
+function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const mx = (from.x + to.x) / 2;
-  const my = (from.y + to.y) / 2 + curveOffset;
+  const my = (from.y + to.y) / 2;
 
-  if (curveOffset !== 0) {
-    // Curved path
-    const endX = to.x + (dx / len) * 32;
-    const endY = to.y + (dy / len) * 32;
-    const angle = Math.atan2(to.y - my, to.x - mx);
-    const arrowTipX = to.x + (dx / len) * 32;
-    const arrowTipY = to.y;
-    return (
-      <g>
-        <path
-          d={`M ${from.x},${from.y} Q ${mx},${my} ${endX},${endY}`}
-          fill="none" stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4"
-        />
-        <polygon
-          points={`${endX},${endY} ${endX + 10 * Math.cos(angle - 0.4)},${endY + 10 * Math.sin(angle - 0.4)} ${endX + 10 * Math.cos(angle + 0.4)},${endY + 10 * Math.sin(angle + 0.4)}`}
-          fill="#1e293b"
-        />
-        <text x={mx} y={my - 8} textAnchor="middle" fontSize="11" fontStyle="italic" fill="#475569" fontFamily="'Times New Roman', serif">
-          {label}
-        </text>
-      </g>
-    );
-  }
+  // Shorten line to ellipse edge
+  const ux = dx / len;
+  const uy = dy / len;
+  const endX = to.x - ux * 30;
+  const endY = to.y - uy * 30;
 
   const angle = Math.atan2(dy, dx);
-  const arrowX = to.x - (dx / len) * 32;
-  const arrowY = to.y - (dy / len) * 32;
+  const arrowLen = 10;
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4" />
-      <polygon
-        points={`${arrowX},${arrowY} ${arrowX - 10 * Math.cos(angle - 0.4)},${arrowY - 10 * Math.sin(angle - 0.4)} ${arrowX - 10 * Math.cos(angle + 0.4)},${arrowY - 10 * Math.sin(angle + 0.4)}`}
-        fill="#1e293b"
+      <line x1={from.x} y1={from.y} x2={endX} y2={endY} stroke="#000" strokeWidth="1" strokeDasharray="7,4" />
+      {/* Open arrowhead */}
+      <line
+        x1={endX}
+        y1={endY}
+        x2={endX - arrowLen * Math.cos(angle - 0.4)}
+        y2={endY - arrowLen * Math.sin(angle - 0.4)}
+        stroke="#000" strokeWidth="1.2"
       />
-      <text x={mx} y={my - 8} textAnchor="middle" fontSize="11" fontStyle="italic" fill="#475569" fontFamily="'Times New Roman', serif">
+      <line
+        x1={endX}
+        y1={endY}
+        x2={endX - arrowLen * Math.cos(angle + 0.4)}
+        y2={endY - arrowLen * Math.sin(angle + 0.4)}
+        stroke="#000" strokeWidth="1.2"
+      />
+      <text
+        x={mx}
+        y={my - 8}
+        textAnchor="middle"
+        fontSize="10"
+        fontFamily="Helvetica, Arial, sans-serif"
+        fill="#000"
+      >
         {label}
       </text>
     </g>
@@ -204,7 +182,6 @@ export default function UseCaseDiagram() {
       const pdfW = pdf.internal.pageSize.getWidth();
       const pdfH = pdf.internal.pageSize.getHeight();
 
-      // Page 1: Cover page (A3 landscape)
       const coverCanvas = await html2canvas(coverRef.current, {
         scale: 3,
         backgroundColor: "#ffffff",
@@ -218,7 +195,6 @@ export default function UseCaseDiagram() {
       else { cW = pdfH * coverRatio; cX = (pdfW - cW) / 2; }
       pdf.addImage(coverImg, "PNG", cX, cY, cW, cH);
 
-      // Page 2: Diagram (A3 landscape)
       pdf.addPage("a3", "landscape");
       const diagCanvas = await html2canvas(diagramRef.current, {
         scale: 3,
@@ -242,7 +218,7 @@ export default function UseCaseDiagram() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", padding: "24px", fontFamily: "'Times New Roman', serif" }}>
+    <div style={{ minHeight: "100vh", padding: "24px", background: "#f5f5f5", fontFamily: "Helvetica, Arial, sans-serif" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Controls */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
@@ -268,9 +244,9 @@ export default function UseCaseDiagram() {
             justifyContent: "space-between",
             minHeight: "700px",
             marginBottom: "40px",
+            fontFamily: "'Times New Roman', serif",
           }}
         >
-          {/* Top section */}
           <div style={{ textAlign: "center", paddingTop: "60px", width: "100%" }}>
             <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ width: "120px", margin: "0 auto 16px" }} />
             <h2 style={{ fontSize: "18pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 4px", letterSpacing: "2px" }}>
@@ -280,22 +256,18 @@ export default function UseCaseDiagram() {
             <div style={{ width: "60%", height: "2px", background: "#1e40af", margin: "16px auto" }} />
           </div>
 
-          {/* Middle section - Assignment details */}
           <div style={{ textAlign: "center", padding: "0 60px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <p style={{ fontSize: "13pt", color: "#475569", margin: "0 0 8px", fontStyle: "italic" }}>An Assignment on</p>
             <h1 style={{ fontSize: "20pt", fontWeight: "bold", color: "#0f172a", margin: "0 0 24px", lineHeight: 1.4 }}>
               Use Case Diagram of NutriTrack AI<br />Health &amp; Fitness Application
             </h1>
-
             <p style={{ fontSize: "12pt", color: "#334155", margin: "0 0 4px" }}>
               <strong>Course Title:</strong> Software Engineering
             </p>
             <p style={{ fontSize: "12pt", color: "#334155", margin: "0 0 24px" }}>
               <strong>Course Code:</strong> CSE-3213
             </p>
-
             <div style={{ display: "flex", justifyContent: "space-around", width: "100%", marginTop: "16px" }}>
-              {/* Submitted To */}
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#1e293b", margin: "0 0 10px", fontStyle: "italic", textDecoration: "underline" }}>Submitted To</p>
                 <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Aushtmi Deb</p>
@@ -303,8 +275,6 @@ export default function UseCaseDiagram() {
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Department of CSE</p>
                 <p style={{ fontSize: "11pt", color: "#475569", margin: "0" }}>Leading University</p>
               </div>
-
-              {/* Submitted By */}
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "13pt", fontWeight: "bold", color: "#1e293b", margin: "0 0 10px", fontStyle: "italic", textDecoration: "underline" }}>Submitted By</p>
                 <p style={{ fontSize: "12pt", color: "#1e293b", margin: "0 0 2px", fontWeight: "bold" }}>Emon Ahmed</p>
@@ -317,7 +287,6 @@ export default function UseCaseDiagram() {
             </div>
           </div>
 
-          {/* Bottom section */}
           <div style={{ textAlign: "center", paddingBottom: "50px" }}>
             <div style={{ width: "60%", height: "1px", background: "#94a3b8", margin: "0 auto 12px" }} />
             <p style={{ fontSize: "12pt", color: "#334155", margin: "0" }}>
@@ -326,83 +295,57 @@ export default function UseCaseDiagram() {
           </div>
         </div>
 
-        {/* Page 2: Diagram */}
+        {/* Page 2: Diagram (draw.io style) */}
         <div
           ref={diagramRef}
           style={{
             background: "#fff",
-            padding: "40px 48px",
+            padding: "30px 20px",
             boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
             borderRadius: "4px",
           }}
         >
-          {/* Diagram Title */}
-          <h1 style={{ fontSize: "16pt", fontWeight: "bold", textAlign: "center", margin: "0 0 16px", color: "#0f172a" }}>
+          <h1 style={{ fontSize: "14pt", fontWeight: "bold", textAlign: "center", margin: "0 0 10px", color: "#000", fontFamily: "Helvetica, Arial, sans-serif" }}>
             Use Case Diagram — NutriTrack AI Health &amp; Fitness Application
           </h1>
 
-          {/* SVG Diagram */}
-          <svg viewBox="0 0 1400 1060" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
-            {/* Group background bands */}
-            {groupBands.map((g, i) => (
-              <rect key={i} x="148" y={g.y} width="1010" height={g.h} rx="6" fill={g.color} opacity="0.6" />
-            ))}
+          <svg viewBox="0 0 1400 1020" style={{ width: "100%", fontFamily: "Helvetica, Arial, sans-serif" }}>
+            <defs>
+              <marker id="arrowOpen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                <path d="M0,0 L10,3.5 L0,7" fill="none" stroke="#000" strokeWidth="1" />
+              </marker>
+            </defs>
 
-            {/* System boundary */}
-            <rect x="140" y="35" width="1025" height="1000" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
-            <text x="652" y="26" textAnchor="middle" fontSize="16" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
+            {/* System boundary rectangle - draw.io style */}
+            <rect x="170" y="40" width="1060" height="960" rx="0" fill="none" stroke="#000" strokeWidth="2" />
+            <text x="700" y="30" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#000" fontFamily="Helvetica, Arial, sans-serif">
               NutriTrack AI System
             </text>
 
-            {/* Group labels */}
-            <text x="160" y="85" fontSize="12" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
-            <text x="160" y="225" fontSize="12" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
-            <text x="160" y="420" fontSize="12" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
-            <text x="160" y="515" fontSize="12" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
-            <text x="160" y="720" fontSize="12" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
-            <text x="160" y="840" fontSize="12" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
-            <text x="160" y="960" fontSize="12" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
+            {/* Separator lines between groups (subtle, draw.io style) */}
+            <line x1="180" y1="155" x2="1220" y2="155" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
+            <line x1="180" y1="360" x2="1220" y2="360" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
+            <line x1="180" y1="550" x2="1220" y2="550" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
+            <line x1="180" y1="660" x2="1220" y2="660" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
+            <line x1="180" y1="770" x2="1220" y2="770" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
+            <line x1="180" y1="880" x2="1220" y2="880" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
 
-            {/* Associations */}
-            {(() => {
-              const byActor: Record<string, string[]> = {};
-              associations.forEach(([fromId, toId]) => {
-                if (!byActor[fromId]) byActor[fromId] = [];
-                byActor[fromId].push(toId);
-              });
-              return Object.entries(byActor).flatMap(([actorId, targets]) => {
-                const actorPos = getPos(actorId);
-                const count = targets.length;
-                const spread = Math.min(count * 5, 60);
-                return targets.map((toId, idx) => {
-                  const offset = -spread / 2 + (count > 1 ? (idx / (count - 1)) * spread : 0);
-                  const fromWithOffset = { x: actorPos.x, y: actorPos.y + offset };
-                  return (
-                    <AssociationLine
-                      key={`${actorId}-${toId}`}
-                      from={fromWithOffset}
-                      to={getPos(toId)}
-                      color={actorColors[actorId] || "#1e293b"}
-                    />
-                  );
-                });
-              });
-            })()}
+            {/* Association lines */}
+            {associations.map(([fromId, toId], i) => (
+              <AssociationLine key={`assoc-${i}`} from={getPos(fromId)} to={getPos(toId)} />
+            ))}
 
             {/* Include relationships */}
             {includes.map(([fromId, toId], i) => (
-              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<include>>" />
+              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
             ))}
 
             {/* Extend relationships */}
-            {extends_.map(([fromId, toId], i) => {
-              let curve = 0;
-              if (fromId === "uc3" && toId === "uc1") curve = -50;
-              if (fromId === "uc14" && toId === "uc4") curve = -40;
-              return <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" curveOffset={curve} />;
-            })}
+            {extends_.map(([fromId, toId], i) => (
+              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
+            ))}
 
-            {/* Use cases */}
+            {/* Use case ellipses */}
             {useCases.map((uc) => (
               <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
             ))}
@@ -413,55 +356,7 @@ export default function UseCaseDiagram() {
             ))}
           </svg>
 
-          {/* Legend */}
-          <div style={{
-            border: "1.5px solid #334155",
-            borderRadius: "4px",
-            padding: "14px 20px",
-            marginTop: "16px",
-            fontSize: "10pt",
-            color: "#1e293b",
-          }}>
-            <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#2563eb" strokeWidth="1.8" /></svg>
-                <span style={{ color: "#2563eb" }}>User</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#dc2626" strokeWidth="1.8" /></svg>
-                <span style={{ color: "#dc2626" }}>Admin</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#059669" strokeWidth="1.8" /></svg>
-                <span style={{ color: "#059669" }}>AI System</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="30" height="12"><line x1="0" y1="6" x2="30" y2="6" stroke="#d97706" strokeWidth="1.8" /></svg>
-                <span style={{ color: "#d97706" }}>Weather API</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="40" height="12"><line x1="0" y1="6" x2="32" y2="6" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="6,3" /><polygon points="32,6 26,3 26,9" fill="#1e293b" /></svg>
-                <span style={{ fontStyle: "italic" }}>&lt;&lt;include&gt;&gt; / &lt;&lt;extend&gt;&gt;</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="26" height="18"><ellipse cx="13" cy="9" rx="12" ry="8" fill="#f8fafc" stroke="#2563eb" strokeWidth="1.3" /></svg>
-                <span>Use Case</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <svg width="18" height="26">
-                  <circle cx="9" cy="4" r="3.5" fill="none" stroke="#1e293b" strokeWidth="1.3" />
-                  <line x1="9" y1="7.5" x2="9" y2="15" stroke="#1e293b" strokeWidth="1.3" />
-                  <line x1="3" y1="10" x2="15" y2="10" stroke="#1e293b" strokeWidth="1.3" />
-                  <line x1="9" y1="15" x2="4" y2="22" stroke="#1e293b" strokeWidth="1.3" />
-                  <line x1="9" y1="15" x2="14" y2="22" stroke="#1e293b" strokeWidth="1.3" />
-                </svg>
-                <span>Actor</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Figure caption */}
-          <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "16px", color: "#334155" }}>
+          <p style={{ textAlign: "center", fontSize: "10pt", fontStyle: "italic", marginTop: "10px", color: "#555", fontFamily: "Helvetica, Arial, sans-serif" }}>
             Figure 1: Use Case Diagram of NutriTrack AI Health &amp; Fitness Application
           </p>
         </div>
