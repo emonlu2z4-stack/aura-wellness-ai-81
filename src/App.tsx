@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 import Thesis from "./pages/Thesis";
+import UseCaseDiagram from "./pages/UseCaseDiagram";
 
 const queryClient = new QueryClient();
 
