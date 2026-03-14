@@ -287,7 +287,7 @@ export default function UseCaseDiagram() {
 
             {/* Extend relationships */}
             {extends_.map(([fromId, toId], i) => (
-              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
+              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="<<extend>>" />
             ))}
 
             {/* Use cases */}
