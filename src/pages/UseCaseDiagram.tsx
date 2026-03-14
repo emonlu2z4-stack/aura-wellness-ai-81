@@ -217,7 +217,7 @@ export default function UseCaseDiagram() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f1f5f9", padding: "24px", fontFamily: "'Times New Roman', serif" }}>
+    <div style={{ minHeight: "100vh", padding: "24px", fontFamily: "'Times New Roman', serif" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Controls */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
