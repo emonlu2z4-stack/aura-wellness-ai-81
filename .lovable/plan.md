@@ -1,37 +1,30 @@
 
 
-# Redesign Use Case Diagram — Professional University-Grade
+## Problem Analysis
 
-## What's changing
+The current `window.open()` approach fails because the new print window doesn't have access to:
+1. **Tailwind CSS classes** (`text-center`, `page-break-after`, etc.) — these render as nothing
+2. **Vite-bundled image URLs** — the logo import resolves to a hashed URL that may not load in the new window context
+3. The `padding: 0 !important` override in the print window CSS strips all content spacing
 
-Completely rewrite `src/pages/UseCaseDiagram.tsx` to produce a clean, professional, academic-quality UML Use Case Diagram matching the Thesis page styling.
+This is why the PDF appears blank — the content is there but unstyled and collapsed.
 
-## Key improvements
+## Solution: Use `@media print` on the current page
 
-1. **A4 page layout** matching the Thesis page style (210mm width, white background, box shadow, 1-inch margins, Times New Roman font throughout)
+Instead of opening a new window (which loses all styles), use `window.print()` directly on the current page with `@media print` CSS rules. This is the most reliable browser-based PDF approach because all styles, images, and fonts are already loaded.
 
-2. **University header** — Leading University logo, department name, course title, team members with IDs, supervisor name, batch/section info (reusing data from Thesis page)
+### Changes to `src/pages/Thesis.tsx`:
 
-3. **Larger, cleaner SVG diagram** (~1100×900 viewBox):
-   - Bigger ellipses (rx=95, ry=32) with readable 12pt text
-   - Larger stick figures with proper proportions
-   - Clean system boundary rectangle with "NutriTrack AI System" label
-   - Color-coded group section backgrounds (subtle fills) with bold group headers
-   - Thicker association lines (1.5px) and properly styled dashed include/extend arrows
-   - Better spacing — no overlapping elements
+1. **Simplify `handleDownload`** to just call `window.print()` directly — no cloning, no new windows
+2. **Add a `<style>` block** (or update `src/index.css`) with `@media print` rules that:
+   - Hide the download button and any non-thesis UI (bottom nav, etc.)
+   - Reset A4 screen styles (shadows, fixed width) for print
+   - Set `@page { size: A4; margin: 20mm 18mm; }`
+   - Ensure `page-break-after` works via CSS `break-after: page`
+   - Set body background to white, proper font
 
-4. **Professional legend** with bordered box below the diagram
+### Changes to `src/index.css`:
+- Add `@media print` rules to hide app chrome (bottom nav, button) and style the thesis content for clean PDF output
 
-5. **Figure caption**: "Figure 1: Use Case Diagram of NutriTrack AI Health & Fitness Application"
-
-6. **PDF export** — A3 landscape, scale 3, white background, includes header and caption in the captured area
-
-## Technical approach
-
-- Single file change: `src/pages/UseCaseDiagram.tsx`
-- Reuse the Leading University logo import from `src/assets/leading-university-logo.png`
-- Keep same `html2canvas` + `jsPDF` approach but wrap the entire content (header + SVG + legend + caption) in the captured ref
-- Use inline styles matching the Thesis page conventions (Times New Roman, proper sizing)
-- Reposition all use cases with more vertical spacing (~120px between groups) and horizontal centering
-- Back button and Download button stay outside the captured area
+This approach guarantees all Tailwind classes, images, and fonts work because we're printing the actual rendered page.
 

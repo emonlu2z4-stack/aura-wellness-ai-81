@@ -1,90 +1,97 @@
-import { useRef, useCallback } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import leadingUniversityLogo from "@/assets/leading-university-logo.png";
 
 const actors = [
-  { id: "user", label: "User", x: 60, y: 340 },
-  { id: "admin", label: "Admin", x: 60, y: 620 },
-  { id: "ai", label: "AI System", x: 940, y: 340 },
-  { id: "weather", label: "Weather API", x: 940, y: 560 },
+  { id: "user", label: "User", x: 55, y: 380 },
+  { id: "admin", label: "Admin", x: 55, y: 750 },
+  { id: "ai", label: "AI System", x: 1095, y: 380 },
+  { id: "weather", label: "Weather API", x: 1095, y: 720 },
 ];
 
 const useCases = [
   // Auth
-  { id: "uc1", label: "Register Account", x: 340, y: 60, group: "auth" },
-  { id: "uc2", label: "Login / Logout", x: 540, y: 60, group: "auth" },
-  { id: "uc3", label: "Verify Email", x: 740, y: 60, group: "auth" },
+  { id: "uc1", label: "Register Account", x: 350, y: 80, group: "auth" },
+  { id: "uc2", label: "Login / Logout", x: 580, y: 80, group: "auth" },
+  { id: "uc3", label: "Verify Email", x: 810, y: 80, group: "auth" },
 
   // Meal Tracking
-  { id: "uc4", label: "Log Meal Manually", x: 340, y: 180, group: "meal" },
-  { id: "uc5", label: "Upload Meal Photo", x: 540, y: 180, group: "meal" },
-  { id: "uc6", label: "Analyze Meal via AI", x: 740, y: 200, group: "meal" },
-  { id: "uc7", label: "Delete Meal Entry", x: 340, y: 250, group: "meal" },
+  { id: "uc4", label: "Log Meal Manually", x: 350, y: 200, group: "meal" },
+  { id: "uc5", label: "Upload Meal Photo", x: 580, y: 200, group: "meal" },
+  { id: "uc6", label: "Analyze Meal via AI", x: 810, y: 200, group: "meal" },
+  { id: "uc7", label: "Delete Meal Entry", x: 350, y: 275, group: "meal" },
 
   // Nutrition & AI
-  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 540, y: 300, group: "nutrition" },
-  { id: "uc9", label: "View Recipe Details", x: 740, y: 320, group: "nutrition" },
-  { id: "uc10", label: "Get Nutrition\nInsights", x: 540, y: 380, group: "nutrition" },
+  { id: "uc8", label: "Get AI Meal\nSuggestions", x: 580, y: 355, group: "nutrition" },
+  { id: "uc9", label: "View Recipe Details", x: 810, y: 355, group: "nutrition" },
+  { id: "uc10", label: "Get Nutrition\nInsights", x: 580, y: 430, group: "nutrition" },
 
   // Tracking
-  { id: "uc11", label: "Track Water Intake", x: 340, y: 380, group: "tracking" },
-  { id: "uc12", label: "Log Weight", x: 340, y: 460, group: "tracking" },
-  { id: "uc13", label: "View Macro Progress", x: 540, y: 460, group: "tracking" },
-  { id: "uc14", label: "Track Streak", x: 740, y: 440, group: "tracking" },
+  { id: "uc11", label: "Track Water Intake", x: 350, y: 430, group: "tracking" },
+  { id: "uc12", label: "Log Weight", x: 350, y: 510, group: "tracking" },
+  { id: "uc13", label: "View Macro Progress", x: 580, y: 510, group: "tracking" },
+  { id: "uc14", label: "Track Streak", x: 810, y: 510, group: "tracking" },
 
   // Progress
-  { id: "uc15", label: "Upload Progress\nPhoto", x: 340, y: 540, group: "progress" },
-  { id: "uc16", label: "Compare Progress\nPhotos", x: 540, y: 540, group: "progress" },
-  { id: "uc17", label: "View Weight Chart", x: 740, y: 540, group: "progress" },
+  { id: "uc15", label: "Upload Progress\nPhoto", x: 350, y: 600, group: "progress" },
+  { id: "uc16", label: "Compare Progress\nPhotos", x: 580, y: 600, group: "progress" },
+  { id: "uc17", label: "View Weight Chart", x: 810, y: 600, group: "progress" },
 
   // Groups
-  { id: "uc18", label: "Create / Join Group", x: 340, y: 640, group: "groups" },
-  { id: "uc19", label: "Create Challenge", x: 540, y: 640, group: "groups" },
-  { id: "uc20", label: "Check-in Challenge", x: 740, y: 640, group: "groups" },
+  { id: "uc18", label: "Create / Join Group", x: 350, y: 700, group: "groups" },
+  { id: "uc19", label: "Create Challenge", x: 580, y: 700, group: "groups" },
+  { id: "uc20", label: "Check-in Challenge", x: 810, y: 700, group: "groups" },
 
   // Profile & Settings
-  { id: "uc21", label: "Edit Profile &\nTargets", x: 340, y: 740, group: "profile" },
-  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 540, y: 740, group: "profile" },
-  { id: "uc23", label: "View Weather Info", x: 740, y: 740, group: "profile" },
+  { id: "uc21", label: "Edit Profile &\nTargets", x: 350, y: 800, group: "profile" },
+  { id: "uc22", label: "Toggle Dark/Light\nTheme", x: 580, y: 800, group: "profile" },
+  { id: "uc23", label: "View Weather Info", x: 810, y: 800, group: "profile" },
 ];
 
 const associations: [string, string][] = [
-  // User associations
   ["user", "uc1"], ["user", "uc2"], ["user", "uc4"], ["user", "uc5"],
   ["user", "uc7"], ["user", "uc8"], ["user", "uc10"], ["user", "uc11"],
   ["user", "uc12"], ["user", "uc13"], ["user", "uc15"], ["user", "uc16"],
   ["user", "uc17"], ["user", "uc18"], ["user", "uc19"], ["user", "uc20"],
   ["user", "uc21"], ["user", "uc22"], ["user", "uc23"],
-  // Admin
   ["admin", "uc18"], ["admin", "uc19"],
-  // AI System
   ["ai", "uc6"], ["ai", "uc8"], ["ai", "uc9"], ["ai", "uc10"],
-  // Weather
   ["weather", "uc23"],
 ];
 
 const includes: [string, string][] = [
-  ["uc5", "uc6"], // Upload photo includes AI analysis
-  ["uc8", "uc9"], // Suggestions include recipe details
+  ["uc5", "uc6"],
+  ["uc8", "uc9"],
 ];
 
 const extends_: [string, string][] = [
-  ["uc3", "uc1"], // Verify email extends register
-  ["uc14", "uc4"], // Streak tracking extends meal logging
+  ["uc3", "uc1"],
+  ["uc14", "uc4"],
+];
+
+const groupBands: { label: string; y: number; h: number; color: string }[] = [
+  { label: "Authentication", y: 45, h: 60, color: "#f0f0ff" },
+  { label: "Meal Tracking", y: 160, h: 145, color: "#f0fdf4" },
+  { label: "Nutrition & AI", y: 318, h: 140, color: "#fffbeb" },
+  { label: "Health Tracking", y: 400, h: 145, color: "#fef2f2" },
+  { label: "Progress", y: 560, h: 75, color: "#faf5ff" },
+  { label: "Groups & Challenges", y: 660, h: 75, color: "#ecfeff" },
+  { label: "Profile & Settings", y: 760, h: 75, color: "#fff1f2" },
 ];
 
 function StickFigure({ x, y, label }: { x: number; y: number; label: string }) {
   return (
     <g>
-      <circle cx={x} cy={y - 28} r={10} fill="none" stroke="#334155" strokeWidth="2" />
-      <line x1={x} y1={y - 18} x2={x} y2={y + 5} stroke="#334155" strokeWidth="2" />
-      <line x1={x - 14} y1={y - 8} x2={x + 14} y2={y - 8} stroke="#334155" strokeWidth="2" />
-      <line x1={x} y1={y + 5} x2={x - 12} y2={y + 25} stroke="#334155" strokeWidth="2" />
-      <line x1={x} y1={y + 5} x2={x + 12} y2={y + 25} stroke="#334155" strokeWidth="2" />
-      <text x={x} y={y + 42} textAnchor="middle" fontSize="11" fontWeight="600" fill="#1e293b" fontFamily="'Times New Roman', serif">
+      <circle cx={x} cy={y - 32} r={12} fill="none" stroke="#1e293b" strokeWidth="2.2" />
+      <line x1={x} y1={y - 20} x2={x} y2={y + 8} stroke="#1e293b" strokeWidth="2.2" />
+      <line x1={x - 16} y1={y - 8} x2={x + 16} y2={y - 8} stroke="#1e293b" strokeWidth="2.2" />
+      <line x1={x} y1={y + 8} x2={x - 14} y2={y + 30} stroke="#1e293b" strokeWidth="2.2" />
+      <line x1={x} y1={y + 8} x2={x + 14} y2={y + 30} stroke="#1e293b" strokeWidth="2.2" />
+      <text x={x} y={y + 48} textAnchor="middle" fontSize="13" fontWeight="700" fill="#0f172a" fontFamily="'Times New Roman', serif">
         {label}
       </text>
     </g>
@@ -95,17 +102,17 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   const lines = label.split("\n");
   return (
     <g>
-      <ellipse cx={x} cy={y} rx={80} ry={28} fill="#f0f9ff" stroke="#3b82f6" strokeWidth="1.5" />
+      <ellipse cx={x} cy={y} rx={95} ry={32} fill="#f8fafc" stroke="#2563eb" strokeWidth="1.8" />
       {lines.map((line, i) => (
         <text
           key={i}
           x={x}
-          y={y + (i - (lines.length - 1) / 2) * 13}
+          y={y + (i - (lines.length - 1) / 2) * 14}
           textAnchor="middle"
           dominantBaseline="central"
-          fontSize="10"
+          fontSize="12"
           fontFamily="'Times New Roman', serif"
-          fill="#1e293b"
+          fill="#0f172a"
           fontWeight="500"
         >
           {line}
@@ -116,7 +123,7 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
 }
 
 function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
-  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#64748b" strokeWidth="1" />;
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#475569" strokeWidth="1.2" />;
 }
 
 function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
@@ -126,17 +133,17 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
   const mx = (from.x + to.x) / 2;
   const my = (from.y + to.y) / 2;
   const angle = Math.atan2(dy, dx);
-  const arrowX = to.x - (dx / len) * 28;
-  const arrowY = to.y - (dy / len) * 28;
+  const arrowX = to.x - (dx / len) * 32;
+  const arrowY = to.y - (dy / len) * 32;
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#94a3b8" strokeWidth="1" strokeDasharray="6,3" />
+      <line x1={from.x} y1={from.y} x2={arrowX} y2={arrowY} stroke="#64748b" strokeWidth="1.5" strokeDasharray="8,4" />
       <polygon
-        points={`${arrowX},${arrowY} ${arrowX - 8 * Math.cos(angle - 0.4)},${arrowY - 8 * Math.sin(angle - 0.4)} ${arrowX - 8 * Math.cos(angle + 0.4)},${arrowY - 8 * Math.sin(angle + 0.4)}`}
-        fill="#94a3b8"
+        points={`${arrowX},${arrowY} ${arrowX - 10 * Math.cos(angle - 0.4)},${arrowY - 10 * Math.sin(angle - 0.4)} ${arrowX - 10 * Math.cos(angle + 0.4)},${arrowY - 10 * Math.sin(angle + 0.4)}`}
+        fill="#64748b"
       />
-      <text x={mx} y={my - 6} textAnchor="middle" fontSize="9" fontStyle="italic" fill="#64748b" fontFamily="'Times New Roman', serif">
+      <text x={mx} y={my - 8} textAnchor="middle" fontSize="11" fontStyle="italic" fill="#475569" fontFamily="'Times New Roman', serif">
         {label}
       </text>
     </g>
@@ -146,71 +153,120 @@ function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: 
 export default function UseCaseDiagram() {
   const diagramRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [generating, setGenerating] = useState(false);
 
-  const getPos = useCallback((id: string) => {
+  const getPos = (id: string) => {
     const actor = actors.find((a) => a.id === id);
     if (actor) return { x: actor.x, y: actor.y };
     const uc = useCases.find((u) => u.id === id);
     if (uc) return { x: uc.x, y: uc.y };
     return { x: 0, y: 0 };
-  }, []);
+  };
 
   const handleDownload = async () => {
     if (!diagramRef.current) return;
-    const canvas = await html2canvas(diagramRef.current, {
-      scale: 3,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
-    const pdfW = pdf.internal.pageSize.getWidth();
-    const pdfH = pdf.internal.pageSize.getHeight();
-    pdf.addImage(imgData, "PNG", 0, 0, pdfW, pdfH);
-    pdf.save("NutriTrack-Use-Case-Diagram.pdf");
+    setGenerating(true);
+    try {
+      const canvas = await html2canvas(diagramRef.current, {
+        scale: 3,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a3" });
+      const pdfW = pdf.internal.pageSize.getWidth();
+      const pdfH = pdf.internal.pageSize.getHeight();
+      const canvasRatio = canvas.width / canvas.height;
+      const pdfRatio = pdfW / pdfH;
+      let drawW = pdfW;
+      let drawH = pdfH;
+      let offsetX = 0;
+      let offsetY = 0;
+      if (canvasRatio > pdfRatio) {
+        drawH = pdfW / canvasRatio;
+        offsetY = (pdfH - drawH) / 2;
+      } else {
+        drawW = pdfH * canvasRatio;
+        offsetX = (pdfW - drawW) / 2;
+      }
+      pdf.addImage(imgData, "PNG", offsetX, offsetY, drawW, drawH);
+      pdf.save("NutriTrack-Use-Case-Diagram.pdf");
+    } finally {
+      setGenerating(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-white p-6">
-      <div className="max-w-[1100px] mx-auto">
-        <div className="flex items-center justify-between mb-6">
+    <div style={{ minHeight: "100vh", background: "#f1f5f9", padding: "24px", fontFamily: "'Times New Roman', serif" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* Controls */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
           <Button variant="outline" size="sm" onClick={() => navigate(-1)}>
             <ArrowLeft className="w-4 h-4 mr-1" /> Back
           </Button>
-          <Button onClick={handleDownload} className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Download className="w-4 h-4 mr-2" /> Download as PDF
+          <Button onClick={handleDownload} disabled={generating} style={{ background: "#1e40af", color: "#fff" }}>
+            <Download className="w-4 h-4 mr-2" /> {generating ? "Generating..." : "Download as PDF"}
           </Button>
         </div>
 
-        <div ref={diagramRef} className="bg-white p-8 border border-gray-200 rounded">
-          {/* Title */}
-          <div className="text-center mb-2">
-            <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Times New Roman', serif" }}>
-              Use Case Diagram — NutriTrack AI Health & Fitness Application
-            </h1>
-            <p className="text-sm text-gray-500 mt-1" style={{ fontFamily: "'Times New Roman', serif" }}>
-              Department of Computer Science & Engineering, Leading University, Sylhet
+        {/* Capturable content */}
+        <div
+          ref={diagramRef}
+          style={{
+            background: "#fff",
+            padding: "40px 48px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+            borderRadius: "4px",
+          }}
+        >
+          {/* University Header */}
+          <div style={{ textAlign: "center", marginBottom: "28px", borderBottom: "2px solid #1e293b", paddingBottom: "20px" }}>
+            <img src={leadingUniversityLogo} alt="Leading University Logo" style={{ height: "72px", margin: "0 auto 10px" }} />
+            <h2 style={{ fontSize: "18pt", fontWeight: "bold", margin: "0 0 4px", color: "#0f172a" }}>
+              Leading University, Sylhet
+            </h2>
+            <p style={{ fontSize: "12pt", margin: "0 0 2px", color: "#334155" }}>
+              Department of Computer Science &amp; Engineering
             </p>
-            <p className="text-xs text-gray-400 mt-0.5" style={{ fontFamily: "'Times New Roman', serif" }}>
-              Emon Ahmed (0182320012101356) · MD Rayhan Akhand (0182320012101320) · Md Sams Uddin Emon (0182310012101144)
+            <p style={{ fontSize: "11pt", margin: "0 0 10px", color: "#475569" }}>
+              Course: Software Engineering (CSE 332)
             </p>
+            <div style={{ fontSize: "10pt", color: "#475569", lineHeight: "1.8" }}>
+              <p style={{ margin: 0 }}>
+                <strong>Team Members:</strong> Emon Ahmed (0182320012101356) · MD Rayhan Akhand (0182320012101320) · Md Sams Uddin Emon (0182310012101144)
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Batch:</strong> 62 &nbsp;|&nbsp; <strong>Section:</strong> H &nbsp;|&nbsp; <strong>Supervisor:</strong> Kazi Md. Jahid Hasan
+              </p>
+            </div>
           </div>
 
-          <svg viewBox="0 0 1000 820" className="w-full" style={{ fontFamily: "'Times New Roman', serif" }}>
+          {/* Diagram Title */}
+          <h1 style={{ fontSize: "16pt", fontWeight: "bold", textAlign: "center", margin: "0 0 16px", color: "#0f172a" }}>
+            Use Case Diagram — NutriTrack AI Health &amp; Fitness Application
+          </h1>
+
+          {/* SVG Diagram */}
+          <svg viewBox="0 0 1150 870" style={{ width: "100%", fontFamily: "'Times New Roman', serif" }}>
+            {/* Group background bands */}
+            {groupBands.map((g, i) => (
+              <rect key={i} x="168" y={g.y} width="815" height={g.h} rx="6" fill={g.color} opacity="0.6" />
+            ))}
+
             {/* System boundary */}
-            <rect x="200" y="30" width="680" height="740" rx="12" fill="none" stroke="#1e293b" strokeWidth="2" strokeDasharray="8,4" />
-            <text x="540" y="22" textAnchor="middle" fontSize="13" fontWeight="700" fill="#1e293b" fontFamily="'Times New Roman', serif">
+            <rect x="160" y="30" width="830" height="820" rx="8" fill="none" stroke="#0f172a" strokeWidth="2.5" />
+            <text x="575" y="22" textAnchor="middle" fontSize="15" fontWeight="800" fill="#0f172a" fontFamily="'Times New Roman', serif">
               NutriTrack AI System
             </text>
 
             {/* Group labels */}
-            <text x="220" y="78" fontSize="9" fill="#6366f1" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
-            <text x="220" y="195" fontSize="9" fill="#059669" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
-            <text x="220" y="315" fontSize="9" fill="#d97706" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition & AI</text>
-            <text x="220" y="395" fontSize="9" fill="#dc2626" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
-            <text x="220" y="555" fontSize="9" fill="#7c3aed" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
-            <text x="220" y="655" fontSize="9" fill="#0891b2" fontWeight="700" fontFamily="'Times New Roman', serif">Groups & Challenges</text>
-            <text x="220" y="755" fontSize="9" fill="#be185d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile & Settings</text>
+            <text x="178" y="70" fontSize="11" fill="#4338ca" fontWeight="700" fontFamily="'Times New Roman', serif">Authentication</text>
+            <text x="178" y="185" fontSize="11" fill="#047857" fontWeight="700" fontFamily="'Times New Roman', serif">Meal Tracking</text>
+            <text x="178" y="340" fontSize="11" fill="#b45309" fontWeight="700" fontFamily="'Times New Roman', serif">Nutrition &amp; AI</text>
+            <text x="178" y="415" fontSize="11" fill="#b91c1c" fontWeight="700" fontFamily="'Times New Roman', serif">Health Tracking</text>
+            <text x="178" y="580" fontSize="11" fill="#6d28d9" fontWeight="700" fontFamily="'Times New Roman', serif">Progress</text>
+            <text x="178" y="680" fontSize="11" fill="#0e7490" fontWeight="700" fontFamily="'Times New Roman', serif">Groups &amp; Challenges</text>
+            <text x="178" y="780" fontSize="11" fill="#9d174d" fontWeight="700" fontFamily="'Times New Roman', serif">Profile &amp; Settings</text>
 
             {/* Associations */}
             {associations.map(([fromId, toId], i) => (
@@ -239,20 +295,45 @@ export default function UseCaseDiagram() {
           </svg>
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-8 mt-4 text-xs text-gray-600" style={{ fontFamily: "'Times New Roman', serif" }}>
-            <div className="flex items-center gap-2">
-              <svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="#64748b" strokeWidth="1.5" /></svg>
+          <div style={{
+            border: "1.5px solid #334155",
+            borderRadius: "4px",
+            padding: "12px 24px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "40px",
+            marginTop: "16px",
+            fontSize: "11pt",
+            color: "#1e293b",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="36" height="14"><line x1="0" y1="7" x2="36" y2="7" stroke="#475569" strokeWidth="1.5" /></svg>
               <span>Association</span>
             </div>
-            <div className="flex items-center gap-2">
-              <svg width="40" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="#94a3b8" strokeWidth="1" strokeDasharray="4,2" /><polygon points="30,5 24,2 24,8" fill="#94a3b8" /></svg>
-              <span>«include» / «extend»</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="48" height="14"><line x1="0" y1="7" x2="38" y2="7" stroke="#64748b" strokeWidth="1.5" strokeDasharray="6,3" /><polygon points="38,7 31,3 31,11" fill="#64748b" /></svg>
+              <span style={{ fontStyle: "italic" }}>«include» / «extend»</span>
             </div>
-            <div className="flex items-center gap-2">
-              <svg width="20" height="16"><ellipse cx="10" cy="8" rx="10" ry="7" fill="#f0f9ff" stroke="#3b82f6" strokeWidth="1" /></svg>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="28" height="20"><ellipse cx="14" cy="10" rx="13" ry="9" fill="#f8fafc" stroke="#2563eb" strokeWidth="1.5" /></svg>
               <span>Use Case</span>
             </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="20" height="30">
+                <circle cx="10" cy="4" r="4" fill="none" stroke="#1e293b" strokeWidth="1.5" />
+                <line x1="10" y1="8" x2="10" y2="18" stroke="#1e293b" strokeWidth="1.5" />
+                <line x1="3" y1="12" x2="17" y2="12" stroke="#1e293b" strokeWidth="1.5" />
+                <line x1="10" y1="18" x2="4" y2="26" stroke="#1e293b" strokeWidth="1.5" />
+                <line x1="10" y1="18" x2="16" y2="26" stroke="#1e293b" strokeWidth="1.5" />
+              </svg>
+              <span>Actor</span>
+            </div>
           </div>
+
+          {/* Figure caption */}
+          <p style={{ textAlign: "center", fontSize: "11pt", fontStyle: "italic", marginTop: "16px", color: "#334155" }}>
+            Figure 1: Use Case Diagram of NutriTrack AI Health &amp; Fitness Application
+          </p>
         </div>
       </div>
     </div>
