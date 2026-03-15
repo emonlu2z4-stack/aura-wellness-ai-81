@@ -117,29 +117,31 @@ function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x
   const len = Math.sqrt(dx * dx + dy * dy);
   const ux = dx / len;
   const uy = dy / len;
-  // Shorten to ellipse edge
-  const endX = to.x - ux * 100 * 0.85;
-  const endY = to.y - uy * 30 * 0.85;
+  // Exact ellipse edge intersection (rx=100, ry=30)
+  const rx = 100;
+  const ry = 30;
+  const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
+  const endX = to.x - ux * scale;
+  const endY = to.y - uy * scale;
   const angle = Math.atan2(dy, dx);
-  const arrowLen = 8;
+  const arrowLen = 10;
+
+  // Arrow tip sits exactly at ellipse edge
+  const tipX = endX;
+  const tipY = endY;
+  // Shorten line to base of arrowhead
+  const lineEndX = endX - ux * arrowLen * 0.8;
+  const lineEndY = endY - uy * arrowLen * 0.8;
 
   return (
     <g>
-      <line x1={from.x} y1={from.y} x2={endX} y2={endY} stroke="#000" strokeWidth="1" />
-      {/* Open arrowhead */}
-      <line
-        x1={endX}
-        y1={endY}
-        x2={endX - arrowLen * Math.cos(angle - 0.4)}
-        y2={endY - arrowLen * Math.sin(angle - 0.4)}
-        stroke="#000" strokeWidth="1"
-      />
-      <line
-        x1={endX}
-        y1={endY}
-        x2={endX - arrowLen * Math.cos(angle + 0.4)}
-        y2={endY - arrowLen * Math.sin(angle + 0.4)}
-        stroke="#000" strokeWidth="1"
+      <line x1={from.x} y1={from.y} x2={lineEndX} y2={lineEndY} stroke="#000" strokeWidth="1" />
+      {/* Filled arrowhead touching ellipse */}
+      <polygon
+        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
+        fill="#000"
+        stroke="#000"
+        strokeWidth="1"
       />
     </g>
   );
@@ -386,7 +388,12 @@ export default function UseCaseDiagram() {
             <line x1="180" y1="770" x2="1220" y2="770" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
             <line x1="180" y1="880" x2="1220" y2="880" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
 
-            {/* Association lines */}
+            {/* Use case ellipses (drawn first so arrows appear on top) */}
+            {useCases.map((uc) => (
+              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
+            ))}
+
+            {/* Association lines (on top of ellipses so arrows are visible) */}
             {associations.map(([fromId, toId], i) => (
               <AssociationLine key={`assoc-${i}`} from={getPos(fromId)} to={getPos(toId)} />
             ))}
@@ -399,11 +406,6 @@ export default function UseCaseDiagram() {
             {/* Extend relationships */}
             {extends_.map(([fromId, toId], i) => (
               <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
-            ))}
-
-            {/* Use case ellipses */}
-            {useCases.map((uc) => (
-              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
             ))}
 
             {/* Actors */}
