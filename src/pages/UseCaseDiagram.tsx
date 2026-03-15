@@ -151,7 +151,13 @@ function DashedLineSegment({ from, to }: { from: { x: number; y: number }; to: {
   const startEdgeY = from.y + uy * scale;
   const endEdgeX = to.x - ux * scale;
   const endEdgeY = to.y - uy * scale;
-  return <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />;
+  return (
+    <g>
+      {/* White background stroke for visibility over crossing lines */}
+      <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#fff" strokeWidth="5" />
+      <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.8" strokeDasharray="8,4" />
+    </g>
+  );
 }
 
 // Dashed arrowhead + label ONLY - rendered on top of ellipses
@@ -167,18 +173,21 @@ function DashedArrowheadLabel({ from, to, label }: { from: { x: number; y: numbe
   const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
   const tipX = to.x - ux * scale;
   const tipY = to.y - uy * scale;
-  const arrowLen = 12;
+  const arrowLen = 14;
   const angle = Math.atan2(dy, dx);
+  // For vertical/near-vertical lines, offset label to the right so it's readable
+  const isNearVertical = Math.abs(dx) < 20;
+  const labelOffsetX = isNearVertical ? 40 : 0;
   return (
     <g>
       <polygon
-        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
+        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.4)},${tipY - arrowLen * Math.sin(angle - 0.4)} ${tipX - arrowLen * Math.cos(angle + 0.4)},${tipY - arrowLen * Math.sin(angle + 0.4)}`}
         fill="#4a90d9"
         stroke="#4a90d9"
         strokeWidth="1"
       />
-      <rect x={mx - 30} y={my - 20} width={60} height={14} fill="#fff" stroke="none" rx={2} />
-      <text x={mx} y={my - 9} textAnchor="middle" fontSize="11" fontFamily="Helvetica, Arial, sans-serif" fill="#4a90d9" fontWeight="bold">
+      <rect x={mx - 30 + labelOffsetX} y={my - 20} width={60} height={14} fill="#fff" stroke="none" rx={2} />
+      <text x={mx + labelOffsetX} y={my - 9} textAnchor="middle" fontSize="11" fontFamily="Helvetica, Arial, sans-serif" fill="#4a90d9" fontWeight="bold">
         {label}
       </text>
     </g>
