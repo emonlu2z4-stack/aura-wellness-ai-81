@@ -110,40 +110,31 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   );
 }
 
-// Association line with arrow (actor → use case, draw.io style)
-function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+// Association line ONLY (no arrowhead) - rendered behind ellipses
+function AssociationLineSegment({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#000" strokeWidth="1" />;
+}
+
+// Association arrowhead ONLY - rendered on top of ellipses
+function AssociationArrowhead({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const ux = dx / len;
   const uy = dy / len;
-  // Exact ellipse edge intersection (rx=100, ry=30)
-  const rx = 100;
-  const ry = 30;
+  const rx = 100, ry = 30;
   const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
-  const endX = to.x - ux * scale;
-  const endY = to.y - uy * scale;
+  const tipX = to.x - ux * scale;
+  const tipY = to.y - uy * scale;
   const angle = Math.atan2(dy, dx);
   const arrowLen = 10;
-
-  // Arrow tip sits exactly at ellipse edge
-  const tipX = endX;
-  const tipY = endY;
-  // Shorten line to base of arrowhead
-  const lineEndX = endX - ux * arrowLen * 0.8;
-  const lineEndY = endY - uy * arrowLen * 0.8;
-
   return (
-    <g>
-      <line x1={from.x} y1={from.y} x2={lineEndX} y2={lineEndY} stroke="#000" strokeWidth="1" />
-      {/* Filled arrowhead touching ellipse */}
-      <polygon
-        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
-        fill="#000"
-        stroke="#000"
-        strokeWidth="1"
-      />
-    </g>
+    <polygon
+      points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
+      fill="#000"
+      stroke="#000"
+      strokeWidth="1"
+    />
   );
 }
 
