@@ -151,7 +151,13 @@ function DashedLineSegment({ from, to }: { from: { x: number; y: number }; to: {
   const startEdgeY = from.y + uy * scale;
   const endEdgeX = to.x - ux * scale;
   const endEdgeY = to.y - uy * scale;
-  return <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />;
+  return (
+    <g>
+      {/* White background stroke for visibility over crossing lines */}
+      <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#fff" strokeWidth="5" />
+      <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.8" strokeDasharray="8,4" />
+    </g>
+  );
 }
 
 // Dashed arrowhead + label ONLY - rendered on top of ellipses
