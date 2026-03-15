@@ -355,14 +355,8 @@ export default function UseCaseDiagram() {
             <line x1="180" y1="770" x2="1220" y2="770" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
             <line x1="180" y1="880" x2="1220" y2="880" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
 
-            {/* Use case ellipses (drawn first so arrows appear on top) */}
-            {useCases.map((uc) => (
-              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
-            ))}
-
-            {/* Association lines (on top of ellipses so arrows are visible) */}
+            {/* LAYER 1: Association line segments (behind ellipses) */}
             {(() => {
-              // Group associations by actor to fan out start points
               const actorGroups: Record<string, [string, string][]> = {};
               associations.forEach(([fromId, toId]) => {
                 const actorId = actors.find(a => a.id === fromId) ? fromId : (actors.find(a => a.id === toId) ? toId : null);
@@ -378,30 +372,62 @@ export default function UseCaseDiagram() {
                 const group = actorGroups[actorId] || [];
                 const idx = group.findIndex(([f, t]) => f === fromId && t === toId);
                 const count = group.length;
-                // Spread start points vertically around actor center
-                const spread = Math.min(8, 120 / count); // px between each line
+                const spread = Math.min(8, 120 / count);
                 const offset = (idx - (count - 1) / 2) * spread;
                 const actorPos = getPos(actorId);
                 const ucPos = getPos(isFromActor ? toId : fromId);
-                const fromPos = isFromActor
-                  ? { x: actorPos.x, y: actorPos.y + offset }
-                  : ucPos;
-                const toPos = isFromActor
-                  ? ucPos
-                  : { x: actorPos.x, y: actorPos.y + offset };
-
-                return <AssociationLine key={`assoc-${i}`} from={fromPos} to={toPos} />;
+                const fromPos = isFromActor ? { x: actorPos.x, y: actorPos.y + offset } : ucPos;
+                const toPos = isFromActor ? ucPos : { x: actorPos.x, y: actorPos.y + offset };
+                return <AssociationLineSegment key={`assoc-line-${i}`} from={fromPos} to={toPos} />;
               });
             })()}
 
-            {/* Include relationships */}
+            {/* LAYER 2: Dashed line segments (behind ellipses) */}
             {includes.map(([fromId, toId], i) => (
-              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
+              <DashedLineSegment key={`inc-line-${i}`} from={getPos(fromId)} to={getPos(toId)} />
+            ))}
+            {extends_.map(([fromId, toId], i) => (
+              <DashedLineSegment key={`ext-line-${i}`} from={getPos(fromId)} to={getPos(toId)} />
             ))}
 
-            {/* Extend relationships */}
+            {/* LAYER 3: Use case ellipses (cover crossing lines) */}
+            {useCases.map((uc) => (
+              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
+            ))}
+
+            {/* LAYER 4: Association arrowheads (on top of ellipses) */}
+            {(() => {
+              const actorGroups: Record<string, [string, string][]> = {};
+              associations.forEach(([fromId, toId]) => {
+                const actorId = actors.find(a => a.id === fromId) ? fromId : (actors.find(a => a.id === toId) ? toId : null);
+                if (actorId) {
+                  if (!actorGroups[actorId]) actorGroups[actorId] = [];
+                  actorGroups[actorId].push([fromId, toId]);
+                }
+              });
+
+              return associations.map(([fromId, toId], i) => {
+                const isFromActor = !!actors.find(a => a.id === fromId);
+                const actorId = isFromActor ? fromId : toId;
+                const group = actorGroups[actorId] || [];
+                const idx = group.findIndex(([f, t]) => f === fromId && t === toId);
+                const count = group.length;
+                const spread = Math.min(8, 120 / count);
+                const offset = (idx - (count - 1) / 2) * spread;
+                const actorPos = getPos(actorId);
+                const ucPos = getPos(isFromActor ? toId : fromId);
+                const fromPos = isFromActor ? { x: actorPos.x, y: actorPos.y + offset } : ucPos;
+                const toPos = isFromActor ? ucPos : { x: actorPos.x, y: actorPos.y + offset };
+                return <AssociationArrowhead key={`assoc-arrow-${i}`} from={fromPos} to={toPos} />;
+              });
+            })()}
+
+            {/* LAYER 5: Dashed arrowheads + labels (on top of ellipses) */}
+            {includes.map(([fromId, toId], i) => (
+              <DashedArrowheadLabel key={`inc-arrow-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
+            ))}
             {extends_.map(([fromId, toId], i) => (
-              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
+              <DashedArrowheadLabel key={`ext-arrow-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
             ))}
 
             {/* Actors */}
