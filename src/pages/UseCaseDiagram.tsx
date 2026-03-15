@@ -394,9 +394,38 @@ export default function UseCaseDiagram() {
             ))}
 
             {/* Association lines (on top of ellipses so arrows are visible) */}
-            {associations.map(([fromId, toId], i) => (
-              <AssociationLine key={`assoc-${i}`} from={getPos(fromId)} to={getPos(toId)} />
-            ))}
+            {(() => {
+              // Group associations by actor to fan out start points
+              const actorGroups: Record<string, [string, string][]> = {};
+              associations.forEach(([fromId, toId]) => {
+                const actorId = actors.find(a => a.id === fromId) ? fromId : (actors.find(a => a.id === toId) ? toId : null);
+                if (actorId) {
+                  if (!actorGroups[actorId]) actorGroups[actorId] = [];
+                  actorGroups[actorId].push([fromId, toId]);
+                }
+              });
+
+              return associations.map(([fromId, toId], i) => {
+                const isFromActor = !!actors.find(a => a.id === fromId);
+                const actorId = isFromActor ? fromId : toId;
+                const group = actorGroups[actorId] || [];
+                const idx = group.findIndex(([f, t]) => f === fromId && t === toId);
+                const count = group.length;
+                // Spread start points vertically around actor center
+                const spread = Math.min(8, 120 / count); // px between each line
+                const offset = (idx - (count - 1) / 2) * spread;
+                const actorPos = getPos(actorId);
+                const ucPos = getPos(isFromActor ? toId : fromId);
+                const fromPos = isFromActor
+                  ? { x: actorPos.x, y: actorPos.y + offset }
+                  : ucPos;
+                const toPos = isFromActor
+                  ? ucPos
+                  : { x: actorPos.x, y: actorPos.y + offset };
+
+                return <AssociationLine key={`assoc-${i}`} from={fromPos} to={toPos} />;
+              });
+            })()}
 
             {/* Include relationships */}
             {includes.map(([fromId, toId], i) => (
