@@ -138,71 +138,47 @@ function AssociationArrowhead({ from, to }: { from: { x: number; y: number }; to
   );
 }
 
-// Dashed arrow for include/extend (draw.io style - filled blue arrowhead)
-function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
+// Dashed line ONLY for include/extend - rendered behind ellipses
+function DashedLineSegment({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const rx = 100, ry = 30;
+  const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
+  const startEdgeX = from.x + ux * scale;
+  const startEdgeY = from.y + uy * scale;
+  const endEdgeX = to.x - ux * scale;
+  const endEdgeY = to.y - uy * scale;
+  return <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />;
+}
+
+// Dashed arrowhead + label ONLY - rendered on top of ellipses
+function DashedArrowheadLabel({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const mx = (from.x + to.x) / 2;
   const my = (from.y + to.y) / 2;
-
   const ux = dx / len;
   const uy = dy / len;
-
-  // Calculate exact ellipse edge intersection (rx=100, ry=30)
-  // Point on ellipse: parametric angle t where cos(t)=-ux, sin(t)=-uy scaled
-  const rx = 100;
-  const ry = 30;
+  const rx = 100, ry = 30;
   const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
-  const edgeX = to.x - ux * scale;
-  const edgeY = to.y - uy * scale;
-
-  // Also compute start edge (from ellipse)
-  const startEdgeX = from.x + ux * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
-  const startEdgeY = from.y + uy * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
-
+  const tipX = to.x - ux * scale;
+  const tipY = to.y - uy * scale;
   const arrowLen = 12;
   const angle = Math.atan2(dy, dx);
-  const tipX = edgeX;
-  const tipY = edgeY;
-  const leftX = tipX - arrowLen * Math.cos(angle - 0.35);
-  const leftY = tipY - arrowLen * Math.sin(angle - 0.35);
-  const rightX = tipX - arrowLen * Math.cos(angle + 0.35);
-  const rightY = tipY - arrowLen * Math.sin(angle + 0.35);
-
-  // Shorten the dashed line so it ends at the base of the arrowhead
-  const lineEndX = edgeX - ux * arrowLen * 0.8;
-  const lineEndY = edgeY - uy * arrowLen * 0.8;
-
   return (
     <g>
-      <line x1={startEdgeX} y1={startEdgeY} x2={lineEndX} y2={lineEndY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />
-      {/* Filled blue arrowhead */}
       <polygon
-        points={`${tipX},${tipY} ${leftX},${leftY} ${rightX},${rightY}`}
+        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
         fill="#4a90d9"
         stroke="#4a90d9"
         strokeWidth="1"
       />
-      {/* Label background for visibility */}
-      <rect
-        x={mx - 30}
-        y={my - 20}
-        width={60}
-        height={14}
-        fill="#fff"
-        stroke="none"
-        rx={2}
-      />
-      <text
-        x={mx}
-        y={my - 9}
-        textAnchor="middle"
-        fontSize="11"
-        fontFamily="Helvetica, Arial, sans-serif"
-        fill="#4a90d9"
-        fontWeight="bold"
-      >
+      <rect x={mx - 30} y={my - 20} width={60} height={14} fill="#fff" stroke="none" rx={2} />
+      <text x={mx} y={my - 9} textAnchor="middle" fontSize="11" fontFamily="Helvetica, Arial, sans-serif" fill="#4a90d9" fontWeight="bold">
         {label}
       </text>
     </g>
