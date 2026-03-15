@@ -388,7 +388,12 @@ export default function UseCaseDiagram() {
             <line x1="180" y1="770" x2="1220" y2="770" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
             <line x1="180" y1="880" x2="1220" y2="880" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
 
-            {/* Association lines */}
+            {/* Use case ellipses (drawn first so arrows appear on top) */}
+            {useCases.map((uc) => (
+              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
+            ))}
+
+            {/* Association lines (on top of ellipses so arrows are visible) */}
             {associations.map(([fromId, toId], i) => (
               <AssociationLine key={`assoc-${i}`} from={getPos(fromId)} to={getPos(toId)} />
             ))}
@@ -401,11 +406,6 @@ export default function UseCaseDiagram() {
             {/* Extend relationships */}
             {extends_.map(([fromId, toId], i) => (
               <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
-            ))}
-
-            {/* Use case ellipses */}
-            {useCases.map((uc) => (
-              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
             ))}
 
             {/* Actors */}
