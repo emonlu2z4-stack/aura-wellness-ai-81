@@ -110,108 +110,75 @@ function UseCaseEllipse({ x, y, label }: { x: number; y: number; label: string }
   );
 }
 
-// Association line with arrow (actor → use case, draw.io style)
-function AssociationLine({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+// Association line ONLY (no arrowhead) - rendered behind ellipses
+function AssociationLineSegment({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+  return <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#000" strokeWidth="1" />;
+}
+
+// Association arrowhead ONLY - rendered on top of ellipses
+function AssociationArrowhead({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const ux = dx / len;
   const uy = dy / len;
-  // Exact ellipse edge intersection (rx=100, ry=30)
-  const rx = 100;
-  const ry = 30;
+  const rx = 100, ry = 30;
   const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
-  const endX = to.x - ux * scale;
-  const endY = to.y - uy * scale;
+  const tipX = to.x - ux * scale;
+  const tipY = to.y - uy * scale;
   const angle = Math.atan2(dy, dx);
   const arrowLen = 10;
-
-  // Arrow tip sits exactly at ellipse edge
-  const tipX = endX;
-  const tipY = endY;
-  // Shorten line to base of arrowhead
-  const lineEndX = endX - ux * arrowLen * 0.8;
-  const lineEndY = endY - uy * arrowLen * 0.8;
-
   return (
-    <g>
-      <line x1={from.x} y1={from.y} x2={lineEndX} y2={lineEndY} stroke="#000" strokeWidth="1" />
-      {/* Filled arrowhead touching ellipse */}
-      <polygon
-        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
-        fill="#000"
-        stroke="#000"
-        strokeWidth="1"
-      />
-    </g>
+    <polygon
+      points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
+      fill="#000"
+      stroke="#000"
+      strokeWidth="1"
+    />
   );
 }
 
-// Dashed arrow for include/extend (draw.io style - filled blue arrowhead)
-function DashedArrow({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
+// Dashed line ONLY for include/extend - rendered behind ellipses
+function DashedLineSegment({ from, to }: { from: { x: number; y: number }; to: { x: number; y: number } }) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const rx = 100, ry = 30;
+  const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
+  const startEdgeX = from.x + ux * scale;
+  const startEdgeY = from.y + uy * scale;
+  const endEdgeX = to.x - ux * scale;
+  const endEdgeY = to.y - uy * scale;
+  return <line x1={startEdgeX} y1={startEdgeY} x2={endEdgeX} y2={endEdgeY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />;
+}
+
+// Dashed arrowhead + label ONLY - rendered on top of ellipses
+function DashedArrowheadLabel({ from, to, label }: { from: { x: number; y: number }; to: { x: number; y: number }; label: string }) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.sqrt(dx * dx + dy * dy);
   const mx = (from.x + to.x) / 2;
   const my = (from.y + to.y) / 2;
-
   const ux = dx / len;
   const uy = dy / len;
-
-  // Calculate exact ellipse edge intersection (rx=100, ry=30)
-  // Point on ellipse: parametric angle t where cos(t)=-ux, sin(t)=-uy scaled
-  const rx = 100;
-  const ry = 30;
+  const rx = 100, ry = 30;
   const scale = 1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry));
-  const edgeX = to.x - ux * scale;
-  const edgeY = to.y - uy * scale;
-
-  // Also compute start edge (from ellipse)
-  const startEdgeX = from.x + ux * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
-  const startEdgeY = from.y + uy * (1 / Math.sqrt((ux * ux) / (rx * rx) + (uy * uy) / (ry * ry)));
-
+  const tipX = to.x - ux * scale;
+  const tipY = to.y - uy * scale;
   const arrowLen = 12;
   const angle = Math.atan2(dy, dx);
-  const tipX = edgeX;
-  const tipY = edgeY;
-  const leftX = tipX - arrowLen * Math.cos(angle - 0.35);
-  const leftY = tipY - arrowLen * Math.sin(angle - 0.35);
-  const rightX = tipX - arrowLen * Math.cos(angle + 0.35);
-  const rightY = tipY - arrowLen * Math.sin(angle + 0.35);
-
-  // Shorten the dashed line so it ends at the base of the arrowhead
-  const lineEndX = edgeX - ux * arrowLen * 0.8;
-  const lineEndY = edgeY - uy * arrowLen * 0.8;
-
   return (
     <g>
-      <line x1={startEdgeX} y1={startEdgeY} x2={lineEndX} y2={lineEndY} stroke="#4a90d9" strokeWidth="1.5" strokeDasharray="8,4" />
-      {/* Filled blue arrowhead */}
       <polygon
-        points={`${tipX},${tipY} ${leftX},${leftY} ${rightX},${rightY}`}
+        points={`${tipX},${tipY} ${tipX - arrowLen * Math.cos(angle - 0.35)},${tipY - arrowLen * Math.sin(angle - 0.35)} ${tipX - arrowLen * Math.cos(angle + 0.35)},${tipY - arrowLen * Math.sin(angle + 0.35)}`}
         fill="#4a90d9"
         stroke="#4a90d9"
         strokeWidth="1"
       />
-      {/* Label background for visibility */}
-      <rect
-        x={mx - 30}
-        y={my - 20}
-        width={60}
-        height={14}
-        fill="#fff"
-        stroke="none"
-        rx={2}
-      />
-      <text
-        x={mx}
-        y={my - 9}
-        textAnchor="middle"
-        fontSize="11"
-        fontFamily="Helvetica, Arial, sans-serif"
-        fill="#4a90d9"
-        fontWeight="bold"
-      >
+      <rect x={mx - 30} y={my - 20} width={60} height={14} fill="#fff" stroke="none" rx={2} />
+      <text x={mx} y={my - 9} textAnchor="middle" fontSize="11" fontFamily="Helvetica, Arial, sans-serif" fill="#4a90d9" fontWeight="bold">
         {label}
       </text>
     </g>
@@ -388,14 +355,8 @@ export default function UseCaseDiagram() {
             <line x1="180" y1="770" x2="1220" y2="770" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
             <line x1="180" y1="880" x2="1220" y2="880" stroke="#e0e0e0" strokeWidth="0.5" strokeDasharray="4,4" />
 
-            {/* Use case ellipses (drawn first so arrows appear on top) */}
-            {useCases.map((uc) => (
-              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
-            ))}
-
-            {/* Association lines (on top of ellipses so arrows are visible) */}
+            {/* LAYER 1: Association line segments (behind ellipses) */}
             {(() => {
-              // Group associations by actor to fan out start points
               const actorGroups: Record<string, [string, string][]> = {};
               associations.forEach(([fromId, toId]) => {
                 const actorId = actors.find(a => a.id === fromId) ? fromId : (actors.find(a => a.id === toId) ? toId : null);
@@ -411,30 +372,62 @@ export default function UseCaseDiagram() {
                 const group = actorGroups[actorId] || [];
                 const idx = group.findIndex(([f, t]) => f === fromId && t === toId);
                 const count = group.length;
-                // Spread start points vertically around actor center
-                const spread = Math.min(8, 120 / count); // px between each line
+                const spread = Math.min(8, 120 / count);
                 const offset = (idx - (count - 1) / 2) * spread;
                 const actorPos = getPos(actorId);
                 const ucPos = getPos(isFromActor ? toId : fromId);
-                const fromPos = isFromActor
-                  ? { x: actorPos.x, y: actorPos.y + offset }
-                  : ucPos;
-                const toPos = isFromActor
-                  ? ucPos
-                  : { x: actorPos.x, y: actorPos.y + offset };
-
-                return <AssociationLine key={`assoc-${i}`} from={fromPos} to={toPos} />;
+                const fromPos = isFromActor ? { x: actorPos.x, y: actorPos.y + offset } : ucPos;
+                const toPos = isFromActor ? ucPos : { x: actorPos.x, y: actorPos.y + offset };
+                return <AssociationLineSegment key={`assoc-line-${i}`} from={fromPos} to={toPos} />;
               });
             })()}
 
-            {/* Include relationships */}
+            {/* LAYER 2: Dashed line segments (behind ellipses) */}
             {includes.map(([fromId, toId], i) => (
-              <DashedArrow key={`inc-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
+              <DashedLineSegment key={`inc-line-${i}`} from={getPos(fromId)} to={getPos(toId)} />
+            ))}
+            {extends_.map(([fromId, toId], i) => (
+              <DashedLineSegment key={`ext-line-${i}`} from={getPos(fromId)} to={getPos(toId)} />
             ))}
 
-            {/* Extend relationships */}
+            {/* LAYER 3: Use case ellipses (cover crossing lines) */}
+            {useCases.map((uc) => (
+              <UseCaseEllipse key={uc.id} x={uc.x} y={uc.y} label={uc.label} />
+            ))}
+
+            {/* LAYER 4: Association arrowheads (on top of ellipses) */}
+            {(() => {
+              const actorGroups: Record<string, [string, string][]> = {};
+              associations.forEach(([fromId, toId]) => {
+                const actorId = actors.find(a => a.id === fromId) ? fromId : (actors.find(a => a.id === toId) ? toId : null);
+                if (actorId) {
+                  if (!actorGroups[actorId]) actorGroups[actorId] = [];
+                  actorGroups[actorId].push([fromId, toId]);
+                }
+              });
+
+              return associations.map(([fromId, toId], i) => {
+                const isFromActor = !!actors.find(a => a.id === fromId);
+                const actorId = isFromActor ? fromId : toId;
+                const group = actorGroups[actorId] || [];
+                const idx = group.findIndex(([f, t]) => f === fromId && t === toId);
+                const count = group.length;
+                const spread = Math.min(8, 120 / count);
+                const offset = (idx - (count - 1) / 2) * spread;
+                const actorPos = getPos(actorId);
+                const ucPos = getPos(isFromActor ? toId : fromId);
+                const fromPos = isFromActor ? { x: actorPos.x, y: actorPos.y + offset } : ucPos;
+                const toPos = isFromActor ? ucPos : { x: actorPos.x, y: actorPos.y + offset };
+                return <AssociationArrowhead key={`assoc-arrow-${i}`} from={fromPos} to={toPos} />;
+              });
+            })()}
+
+            {/* LAYER 5: Dashed arrowheads + labels (on top of ellipses) */}
+            {includes.map(([fromId, toId], i) => (
+              <DashedArrowheadLabel key={`inc-arrow-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«include»" />
+            ))}
             {extends_.map(([fromId, toId], i) => (
-              <DashedArrow key={`ext-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
+              <DashedArrowheadLabel key={`ext-arrow-${i}`} from={getPos(fromId)} to={getPos(toId)} label="«extend»" />
             ))}
 
             {/* Actors */}
